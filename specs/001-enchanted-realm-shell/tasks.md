@@ -19,16 +19,16 @@ This document breaks down the Enchanted Realm Shell feature into executable task
 
 ### Tasks
 
-- [ ] T001 Initialize npm project with package.json in project root
-- [ ] T002 Install Vite 5.x as dev dependency with `npm install -D vite`
-- [ ] T003 Install sql.js 1.10+ with `npm install sql.js`
-- [ ] T004 Install ESLint and Prettier with `npm install -D eslint prettier eslint-config-prettier`
-- [ ] T005 Create .eslintrc.json with JavaScript linting rules in project root
-- [ ] T006 Create .prettierrc.json with formatting rules in project root
-- [ ] T007 Create vite.config.js with build settings (minification, tree-shaking, <500KB target) in project root
-- [ ] T008 Create src/ directory structure (core/, desktop/, window/, apps/, sidebar/, storage/, utils/, assets/, styles/) in project root
-- [ ] T009 Create index.html with COEP/COOP meta tags for SharedArrayBuffer support in project root
-- [ ] T010 Create vercel.json with deployment headers (COEP, COOP) in project root
+- [X] T001 Initialize npm project with package.json in project root
+- [X] T002 Install Vite 5.x as dev dependency with `npm install -D vite`
+- [X] T003 Install sql.js 1.10+ with `npm install sql.js`
+- [X] T004 Install ESLint and Prettier with `npm install -D eslint prettier eslint-config-prettier`
+- [X] T005 Create .eslintrc.json with JavaScript linting rules in project root
+- [X] T006 Create .prettierrc.json with formatting rules in project root
+- [X] T007 Create vite.config.js with build settings (minification, tree-shaking, <500KB target) in project root
+- [X] T008 Create src/ directory structure (core/, desktop/, window/, apps/, sidebar/, storage/, utils/, assets/, styles/) in project root
+- [X] T009 Create index.html with COEP/COOP meta tags for SharedArrayBuffer support in project root
+- [X] T010 Create vercel.json with deployment headers (COEP, COOP) in project root
 
 ---
 

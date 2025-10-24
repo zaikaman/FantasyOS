@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- COEP/COOP Headers for SharedArrayBuffer (sql.js requirement) -->
+    <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp" />
+    <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin" />
+
+    <!-- Theme and Appearance -->
+    <meta name="theme-color" content="#2d5016" />
+    <meta name="color-scheme" content="dark light" />
+
+    <!-- SEO -->
+    <meta
+      name="description"
+      content="Enchanted Realm Shell - A fantasy-themed desktop environment in your browser"
+    />
+    <meta
+      name="keywords"
+      content="fantasy, desktop, browser OS, window manager, sql.js, vite"
+    />
+    <meta name="author" content="FantasyOS Team" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Enchanted Realm Shell" />
+    <meta
+      property="og:description"
+      content="A mystical desktop environment where magic meets technology"
+    />
+    <meta property="og:type" content="website" />
+
+    <title>Enchanted Realm Shell</title>
+
+    <!-- Preload critical resources -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  </head>
+  <body>
+    <!-- Full-viewport desktop container -->
+    <div id="desktop-root" class="desktop-container">
+      <!-- Canvas for particle system (fireflies) -->
+      <canvas id="particles-canvas" class="particles-layer"></canvas>
+
+      <!-- Desktop background layer -->
+      <div id="desktop-background" class="desktop-background"></div>
+
+      <!-- Application launcher (rune icons) -->
+      <div id="app-launcher" class="app-launcher"></div>
+
+      <!-- Windows container -->
+      <div id="windows-container" class="windows-container"></div>
+
+      <!-- Tavern sidebar -->
+      <aside id="tavern-sidebar" class="tavern-sidebar">
+        <div class="sidebar-content">
+          <div class="minimized-windows"></div>
+          <div class="notifications-panel"></div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Loading overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+      <div class="loading-spinner">
+        <div class="rune-spinner"></div>
+      </div>
+      <p class="loading-text">Initializing the Enchanted Realm...</p>
+    </div>
+
+    <!-- Error boundary fallback -->
+    <div id="error-boundary" class="error-boundary hidden">
+      <div class="error-container">
+        <h1>🧙‍♂️ The Mana Flows Are Disrupted!</h1>
+        <p class="error-message"></p>
+        <button id="reload-realm" class="btn-reload">Restart the Realm</button>
+      </div>
+    </div>
+
+    <!-- Main application entry point -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

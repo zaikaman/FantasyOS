@@ -1,0 +1,25 @@
+# Prettier Ignore Configuration
+# Generated: 2025-10-25
+
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+coverage/
+
+# Lock files (preserve exact formatting)
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Minified files
+*.min.js
+*.min.css
+
+# Generated files
+CHANGELOG.md
+
+# Markdown in specs (may have specific formatting)
+specs/**/spec.md

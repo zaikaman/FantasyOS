@@ -1,0 +1,22 @@
+# ESLint Ignore Configuration
+# Generated: 2025-10-25
+
+# Build output
+node_modules/
+dist/
+build/
+coverage/
+
+# Minified files
+*.min.js
+*.min.css
+
+# External dependencies
+src/assets/external/
+
+# Test fixtures
+tests/fixtures/
+
+# Configuration files (linted separately)
+*.config.js
+*.config.ts

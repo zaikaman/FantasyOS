@@ -1,0 +1,32 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": ["eslint:recommended", "prettier"],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "rules": {
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
+    "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+    "no-var": "error",
+    "prefer-const": "error",
+    "prefer-arrow-callback": "error",
+    "arrow-body-style": ["error", "as-needed"],
+    "no-undef": "error",
+    "eqeqeq": ["error", "always"],
+    "curly": ["error", "all"],
+    "brace-style": ["error", "1tbs"],
+    "no-multiple-empty-lines": ["error", { "max": 1 }],
+    "no-trailing-spaces": "error",
+    "comma-dangle": ["error", "never"],
+    "semi": ["error", "always"],
+    "quotes": ["error", "single", { "avoidEscape": true }]
+  },
+  "globals": {
+    "performance": "readonly",
+    "crypto": "readonly"
+  }
+}
