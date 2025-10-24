@@ -95,31 +95,31 @@ This document breaks down the Enchanted Realm Shell feature into executable task
 
 ### Tasks
 
-- [ ] T046 [P] [US2] Create src/styles/window.css with parchment-style window theming (borders, shadows, textures)
-- [ ] T047 [US2] Create src/window/window-manager.js with window lifecycle functions (create, close, focus, minimize, restore)
-- [ ] T048 [US2] Implement createWindow function in src/window/window-manager.js (insert to database, render DOM, update state)
-- [ ] T049 [US2] Implement window DOM rendering in src/window/window-renderer.js (title bar, content area, close button, minimize button)
-- [ ] T050 [US2] Implement z-index management in src/window/window-manager.js (MAX(z_index) + 1 on focus, cap at 9999)
-- [ ] T051 [P] [US2] Create src/window/drag-handler.js with pointer event listeners for window dragging
-- [ ] T052 [US2] Implement drag start (pointerdown on title bar) in src/window/drag-handler.js
-- [ ] T053 [US2] Implement drag move (pointermove with position updates) in src/window/drag-handler.js
-- [ ] T054 [US2] Implement drag end (pointerup with database persistence) in src/window/drag-handler.js
-- [ ] T055 [US2] Implement boundary validation (prevent off-screen dragging) in src/window/drag-handler.js
-- [ ] T056 [P] [US2] Create src/window/resize-handler.js with pointer event listeners for window resizing
-- [ ] T057 [US2] Implement resize start (pointerdown on corners/edges) in src/window/resize-handler.js
-- [ ] T058 [US2] Implement resize move (pointermove with size updates) in src/window/resize-handler.js
-- [ ] T059 [US2] Implement resize end (pointerup with database persistence) in src/window/resize-handler.js
-- [ ] T060 [US2] Implement size constraints (min 300x200, max screen dimensions) in src/window/resize-handler.js
-- [ ] T061 [US2] Implement window focus behavior (click window to bring to front) in src/window/window-manager.js
-- [ ] T062 [US2] Implement minimize function in src/window/window-manager.js (set minimized=1 in DB, hide window, show in sidebar)
-- [ ] T063 [US2] Implement restore function in src/window/window-manager.js (set minimized=0, restore position/size from DB)
-- [ ] T064 [US2] Implement close function in src/window/window-manager.js (DELETE from DB, fade-out animation, remove DOM)
-- [ ] T065 [US2] Create src/sidebar/sidebar.js with tavern sidebar rendering (minimized windows section)
-- [ ] T066 [US2] Implement minimized window icons in sidebar in src/sidebar/sidebar.js
-- [ ] T067 [US2] Wire restore click handlers in sidebar to window-manager in src/sidebar/sidebar.js
-- [ ] T068 [US2] Implement keyboard shortcuts (Esc to close, Ctrl/Cmd+M to minimize) in src/window/keyboard-shortcuts.js
-- [ ] T069 [US2] Implement frame time monitoring for drag/resize (target <16ms per frame) in src/utils/performance.js
-- [ ] T070 [US2] Implement window state persistence on browser refresh in src/storage/restore-session.js
+- [x] T046 [P] [US2] Create src/styles/window.css with parchment-style window theming (borders, shadows, textures)
+- [x] T047 [US2] Create src/window/window-manager.js with window lifecycle functions (create, close, focus, minimize, restore)
+- [x] T048 [US2] Implement createWindow function in src/window/window-manager.js (insert to database, render DOM, update state)
+- [x] T049 [US2] Implement window DOM rendering in src/window/window-renderer.js (title bar, content area, close button, minimize button)
+- [x] T050 [US2] Implement z-index management in src/window/window-manager.js (MAX(z_index) + 1 on focus, cap at 9999)
+- [x] T051 [P] [US2] Create src/window/drag-handler.js with pointer event listeners for window dragging
+- [x] T052 [US2] Implement drag start (pointerdown on title bar) in src/window/drag-handler.js
+- [x] T053 [US2] Implement drag move (pointermove with position updates) in src/window/drag-handler.js
+- [x] T054 [US2] Implement drag end (pointerup with database persistence) in src/window/drag-handler.js
+- [x] T055 [US2] Implement boundary validation (prevent off-screen dragging) in src/window/drag-handler.js
+- [x] T056 [P] [US2] Create src/window/resize-handler.js with pointer event listeners for window resizing
+- [x] T057 [US2] Implement resize start (pointerdown on corners/edges) in src/window/resize-handler.js
+- [x] T058 [US2] Implement resize move (pointermove with size updates) in src/window/resize-handler.js
+- [x] T059 [US2] Implement resize end (pointerup with database persistence) in src/window/resize-handler.js
+- [x] T060 [US2] Implement size constraints (min 300x200, max screen dimensions) in src/window/resize-handler.js
+- [x] T061 [US2] Implement window focus behavior (click window to bring to front) in src/window/window-manager.js
+- [x] T062 [US2] Implement minimize function in src/window/window-manager.js (set minimized=1 in DB, hide window, show in sidebar)
+- [x] T063 [US2] Implement restore function in src/window/window-manager.js (set minimized=0, restore position/size from DB)
+- [x] T064 [US2] Implement close function in src/window/window-manager.js (DELETE from DB, fade-out animation, remove DOM)
+- [x] T065 [US2] Create src/sidebar/sidebar.js with tavern sidebar rendering (minimized windows section)
+- [x] T066 [US2] Implement minimized window icons in sidebar in src/sidebar/sidebar.js
+- [x] T067 [US2] Wire restore click handlers in sidebar to window-manager in src/sidebar/sidebar.js
+- [x] T068 [US2] Implement keyboard shortcuts (Esc to close, Ctrl/Cmd+M to minimize) in src/window/keyboard-shortcuts.js
+- [x] T069 [US2] Implement frame time monitoring for drag/resize (target <16ms per frame) in src/utils/performance.js
+- [x] T070 [US2] Implement window state persistence on browser refresh in src/storage/restore-session.js
 
 ---
 

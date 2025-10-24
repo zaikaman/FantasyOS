@@ -5,6 +5,7 @@
 
 import { getAllApps } from '../apps/app-registry.js';
 import { eventBus, Events } from '../core/event-bus.js';
+import { createWindow } from '../window/window-manager.js';
 
 let desktopElement = null;
 let launcherElement = null;
@@ -86,7 +87,14 @@ function createRuneIcon(app) {
 function handleRuneClick(app) {
   console.log(`[Desktop] Launching app: ${app.name}`);
 
-  // Emit app launch event (window manager will handle window creation)
+  // Create window for the app
+  try {
+    createWindow(app.id);
+  } catch (error) {
+    console.error('[Desktop] Failed to create window:', error);
+  }
+
+  // Emit app launch event
   eventBus.emit(Events.APP_LAUNCHED, {
     appId: app.id,
     appName: app.name,

@@ -18,6 +18,16 @@ const metrics = {
     samples: [],
     maxSamples: 60, // Track last 60 frames (~1 second at 60 FPS)
   },
+  frameTime: {
+    current: 0,
+    avg: 0,
+    min: Infinity,
+    max: 0,
+    samples: [],
+    maxSamples: 60,
+    isTracking: false,
+    lastFrameStart: 0,
+  },
   marks: new Map(),
   measures: new Map(),
 };
@@ -329,3 +339,104 @@ export function showFPSCounter(enable = true) {
     counter.remove();
   }
 }
+
+/**
+ * Start frame time monitoring for drag/resize operations
+ * Call this when starting a drag or resize operation
+ * Target: <16ms per frame (60 FPS = 16.67ms per frame)
+ */
+export function startFrameTimeMonitoring() {
+  metrics.frameTime.isTracking = true;
+  metrics.frameTime.lastFrameStart = performance.now();
+  metrics.frameTime.samples = [];
+  metrics.frameTime.min = Infinity;
+  metrics.frameTime.max = 0;
+
+  console.log('[Performance] Frame time monitoring started (target: <16ms per frame)');
+}
+
+/**
+ * Update frame time measurement
+ * Call this at the end of each frame in your drag/resize loop
+ * @returns {number} Current frame time in milliseconds
+ */
+export function updateFrameTime() {
+  if (!metrics.frameTime.isTracking) {
+    return 0;
+  }
+
+  const now = performance.now();
+  const frameTime = now - metrics.frameTime.lastFrameStart;
+  metrics.frameTime.lastFrameStart = now;
+
+  metrics.frameTime.current = frameTime;
+
+  // Update min/max
+  if (frameTime < metrics.frameTime.min) metrics.frameTime.min = frameTime;
+  if (frameTime > metrics.frameTime.max) metrics.frameTime.max = frameTime;
+
+  // Add to samples (rolling window)
+  metrics.frameTime.samples.push(frameTime);
+  if (metrics.frameTime.samples.length > metrics.frameTime.maxSamples) {
+    metrics.frameTime.samples.shift();
+  }
+
+  // Calculate average
+  const sum = metrics.frameTime.samples.reduce((acc, val) => acc + val, 0);
+  metrics.frameTime.avg = sum / metrics.frameTime.samples.length;
+
+  // Warn if frame time exceeds 16ms (60 FPS threshold)
+  if (frameTime > 16 && metrics.frameTime.samples.length >= 10) {
+    console.warn(
+      `[Performance] ⚠ Slow frame detected: ${frameTime.toFixed(2)}ms (target: <16ms)`
+    );
+  }
+
+  return frameTime;
+}
+
+/**
+ * Stop frame time monitoring
+ */
+export function stopFrameTimeMonitoring() {
+  if (!metrics.frameTime.isTracking) {
+    return;
+  }
+
+  metrics.frameTime.isTracking = false;
+
+  // Log summary
+  const stats = getFrameTimeMetrics();
+  const isGood = stats.avg < 16;
+  const status = isGood ? '✓' : '✗';
+  const color = isGood ? 'color: green' : 'color: orange';
+
+  console.log(
+    `%c[Performance] ${status} Frame time: avg=${stats.avg.toFixed(2)}ms, min=${stats.min.toFixed(2)}ms, max=${stats.max.toFixed(2)}ms (${stats.samples} frames)`,
+    color
+  );
+}
+
+/**
+ * Get current frame time metrics
+ * @returns {Object} Frame time stats
+ */
+export function getFrameTimeMetrics() {
+  return {
+    current: metrics.frameTime.current.toFixed(2),
+    avg: metrics.frameTime.avg,
+    min: metrics.frameTime.min === Infinity ? 0 : metrics.frameTime.min,
+    max: metrics.frameTime.max,
+    samples: metrics.frameTime.samples.length,
+    isTracking: metrics.frameTime.isTracking,
+  };
+}
+
+/**
+ * Check if frame time meets the <16ms target
+ * @returns {boolean} true if average frame time < 16ms
+ */
+export function isFrameTimeGood() {
+  return metrics.frameTime.avg < 16;
+}
+

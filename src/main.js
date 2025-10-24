@@ -6,14 +6,22 @@
 import './styles/reset.css';
 import './styles/variables.css';
 import './styles/desktop.css';
+import '../styles/window.css';
+import '../styles/sidebar.css';
 
 import { initDatabase, saveToIndexedDB } from './storage/database.js';
 import { getAllWindows, getAllFiles, getAllNotifications, getAllSettings } from './storage/queries.js';
+import { restoreWindowSession, setupAutoSnapshot } from './storage/restore-session.js';
 import { initializeState, subscribe } from './core/state.js';
 import { eventBus, Events } from './core/event-bus.js';
 import { initDesktop, showDesktop } from './desktop/desktop.js';
 import { initParticles, startParticles, setParticleDensity } from './desktop/particles.js';
 import { initPerformanceMonitoring, mark, measure, logAllMetrics, showFPSCounter } from './utils/performance.js';
+import { initWindowManager } from './window/window-manager.js';
+import { initDragHandler } from './window/drag-handler.js';
+import { initResizeHandler } from './window/resize-handler.js';
+import { initSidebar } from './sidebar/sidebar.js';
+import { initKeyboardShortcuts } from './window/keyboard-shortcuts.js';
 
 // Global error handling
 let errorBoundary = null;
@@ -70,8 +78,16 @@ async function init() {
     console.log('[Main] Step 4: Initializing desktop...');
     initDesktop();
 
-    // Step 5: Initialize particle system
-    console.log('[Main] Step 5: Initializing particles...');
+    // Step 5: Initialize window management
+    console.log('[Main] Step 5: Initializing window system...');
+    initWindowManager();
+    initDragHandler();
+    initResizeHandler();
+    initSidebar();
+    initKeyboardShortcuts();
+
+    // Step 6: Initialize particle system
+    console.log('[Main] Step 6: Initializing particles...');
     const canvas = document.getElementById('particles-canvas');
     if (canvas) {
       initParticles(canvas);
@@ -87,11 +103,18 @@ async function init() {
       }
     }
 
-    // Step 6: Setup auto-save on state changes
+    // Step 7: Setup auto-save on state changes
     setupAutoSave();
 
-    // Step 7: Show desktop
-    console.log('[Main] Step 7: Showing desktop...');
+    // Step 8: Restore window session (recreate windows from previous session)
+    console.log('[Main] Step 8: Restoring window session...');
+    await restoreWindowSession();
+
+    // Setup auto-snapshot for window state backup
+    setupAutoSnapshot();
+
+    // Step 9: Show desktop
+    console.log('[Main] Step 9: Showing desktop...');
     hideLoading();
     showDesktop();
     
