@@ -1,0 +1,276 @@
+/**
+ * Desktop Styles
+ * Full-screen layout with mossy background and particle layer
+ */
+
+/* Desktop Container - Full viewport */
+.desktop-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--color-bg-dark);
+}
+
+/* Particles Layer - Canvas background */
+.particles-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-particles);
+  pointer-events: none;
+}
+
+/* Desktop Background - Mossy gradient */
+.desktop-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-background);
+  background: linear-gradient(
+    135deg,
+    var(--color-primary-dark) 0%,
+    var(--color-primary) 50%,
+    var(--color-primary-light) 100%
+  );
+  background-size: 400% 400%;
+  animation: gradientShift 20s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Add texture overlay */
+.desktop-background::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: repeating-linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.03) 0px,
+      transparent 1px,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 3px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      rgba(0, 0, 0, 0.03) 0px,
+      transparent 1px,
+      transparent 2px,
+      rgba(0, 0, 0, 0.03) 3px
+    );
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* App Launcher - Rune icons grid */
+.app-launcher {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: var(--z-desktop);
+  display: flex;
+  gap: var(--rune-spacing);
+  align-items: center;
+  justify-content: center;
+}
+
+/* Rune Icon Container */
+.rune-icon {
+  position: relative;
+  width: var(--rune-icon-size);
+  height: var(--rune-icon-size);
+  cursor: pointer;
+  transition: transform var(--transition-normal);
+  animation: float 3s ease-in-out infinite;
+}
+
+.rune-icon:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.rune-icon:nth-child(2) {
+  animation-delay: 0.5s;
+}
+
+.rune-icon:nth-child(3) {
+  animation-delay: 1s;
+}
+
+/* Rune Icon SVG */
+.rune-icon svg {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+  transition: filter var(--transition-normal);
+}
+
+/* Rune Hover Effects */
+.rune-icon:hover {
+  transform: scale(1.1);
+}
+
+.rune-icon:hover svg {
+  filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
+}
+
+.rune-icon:active {
+  transform: scale(0.95);
+}
+
+/* Rune Tooltip */
+.rune-tooltip {
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: var(--spacing-sm) var(--spacing-md);
+  background: rgba(26, 20, 16, 0.9);
+  color: var(--color-text-light);
+  font-size: var(--font-size-sm);
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-fast);
+  z-index: var(--z-tooltip);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.rune-icon:hover .rune-tooltip {
+  opacity: 1;
+}
+
+/* Windows Container */
+.windows-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-desktop);
+  pointer-events: none;
+}
+
+.windows-container > * {
+  pointer-events: auto;
+}
+
+/* Loading Overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--color-bg-dark);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-loading);
+  animation: fadeOut var(--transition-slow) forwards;
+  animation-delay: 1s;
+}
+
+.loading-overlay.hidden {
+  display: none;
+}
+
+.loading-spinner {
+  width: 80px;
+  height: 80px;
+  margin-bottom: var(--spacing-lg);
+}
+
+.rune-spinner {
+  width: 100%;
+  height: 100%;
+  border: 4px solid rgba(255, 215, 0, 0.2);
+  border-top-color: var(--color-accent);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+.loading-text {
+  color: var(--color-text-light);
+  font-size: var(--font-size-lg);
+  opacity: 0.8;
+}
+
+/* Error Boundary */
+.error-boundary {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--color-bg-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-loading);
+}
+
+.error-boundary.hidden {
+  display: none;
+}
+
+.error-container {
+  text-align: center;
+  padding: var(--spacing-2xl);
+  max-width: 500px;
+}
+
+.error-container h1 {
+  color: var(--color-text-light);
+  font-size: var(--font-size-3xl);
+  margin-bottom: var(--spacing-lg);
+}
+
+.error-message {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-base);
+  margin-bottom: var(--spacing-xl);
+}
+
+.btn-reload {
+  padding: var(--spacing-md) var(--spacing-xl);
+  background: var(--color-accent);
+  color: var(--color-text-dark);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+  box-shadow: var(--glow-gold);
+}
+
+.btn-reload:hover {
+  background: var(--color-accent-light);
+  transform: translateY(-2px);
+}
+
+.btn-reload:active {
+  transform: translateY(0);
+}

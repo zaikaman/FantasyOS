@@ -38,18 +38,18 @@ This document breaks down the Enchanted Realm Shell feature into executable task
 
 ### Tasks
 
-- [ ] T011 [P] Create src/storage/database.js with sql.js initialization and IndexedDB persistence adapter
-- [ ] T012 [P] Create migrations/001_initial_schema.sql with windows, files, notifications, settings tables from data-model.md
-- [ ] T013 Create src/storage/migrations.js with migration runner logic referenced in data-model.md
-- [ ] T014 Create src/core/state.js with Proxy-based global state singleton (windows, apps, files, notifications, desktop, sidebar, settings)
-- [ ] T015 Implement state subscription API in src/core/state.js (subscribe, unsubscribe, getState, setState)
-- [ ] T016 [P] Create src/core/event-bus.js with event publish/subscribe pattern for cross-module communication
-- [ ] T017 [P] Create src/utils/uuid.js with UUID v4 generator for window/file/notification IDs
-- [ ] T018 [P] Create src/utils/validators.js with position/size validation functions from data-model.md
-- [ ] T019 [P] Create src/utils/date.js with timestamp utilities (Unix milliseconds format)
-- [ ] T020 Create src/storage/queries.js with prepared statement functions (windows CRUD, files CRUD, notifications CRUD, settings CRUD)
-- [ ] T021 Implement database auto-save interval (30 seconds) using setInterval in src/storage/database.js
-- [ ] T022 Implement storage quota check function in src/storage/database.js (warn at 40MB, error at 50MB)
+- [X] T011 [P] Create src/storage/database.js with sql.js initialization and IndexedDB persistence adapter
+- [X] T012 [P] Create migrations/001_initial_schema.sql with windows, files, notifications, settings tables from data-model.md
+- [X] T013 Create src/storage/migrations.js with migration runner logic referenced in data-model.md
+- [X] T014 Create src/core/state.js with Proxy-based global state singleton (windows, apps, files, notifications, desktop, sidebar, settings)
+- [X] T015 Implement state subscription API in src/core/state.js (subscribe, unsubscribe, getState, setState)
+- [X] T016 [P] Create src/core/event-bus.js with event publish/subscribe pattern for cross-module communication
+- [X] T017 [P] Create src/utils/uuid.js with UUID v4 generator for window/file/notification IDs
+- [X] T018 [P] Create src/utils/validators.js with position/size validation functions from data-model.md
+- [X] T019 [P] Create src/utils/date.js with timestamp utilities (Unix milliseconds format)
+- [X] T020 Create src/storage/queries.js with prepared statement functions (windows CRUD, files CRUD, notifications CRUD, settings CRUD)
+- [X] T021 Implement database auto-save interval (30 seconds) using setInterval in src/storage/database.js
+- [X] T022 Implement storage quota check function in src/storage/database.js (warn at 40MB, error at 50MB)
 
 ---
 
@@ -61,29 +61,29 @@ This document breaks down the Enchanted Realm Shell feature into executable task
 
 ### Tasks
 
-- [ ] T023 [P] [US1] Create src/styles/reset.css with CSS reset and box-sizing rules
-- [ ] T024 [P] [US1] Create src/styles/variables.css with CSS custom properties (fantasy color palette, fonts, spacing)
-- [ ] T025 [P] [US1] Create src/styles/desktop.css with full-screen layout and mossy background gradient
-- [ ] T026 [US1] Create src/desktop/desktop.js with desktop initialization function
-- [ ] T027 [US1] Implement mossy background rendering in src/desktop/desktop.js (CSS gradient with texture overlay)
-- [ ] T028 [P] [US1] Create src/desktop/particles.js with Canvas 2D firefly particle system (100-200 particles)
-- [ ] T029 [US1] Implement particle update loop (requestAnimationFrame) with 60 FPS target in src/desktop/particles.js
-- [ ] T030 [US1] Implement particle glow effects (radial gradient) in src/desktop/particles.js
-- [ ] T031 [P] [US1] Create src/assets/runes.js with inline SVG definitions for app icons (calculator, chest, quest log)
-- [ ] T032 [US1] Create src/desktop/app-launcher.js with rune icon rendering logic
-- [ ] T033 [US1] Implement rune icon grid layout (3 icons, centered) in src/desktop/app-launcher.js
-- [ ] T034 [US1] Implement rune hover effects (brightness increase, glow animation) in src/desktop/app-launcher.js
-- [ ] T035 [US1] Implement tooltip display on rune hover (fantasy-style text) in src/desktop/app-launcher.js
-- [ ] T036 [US1] Create app registry in src/core/app-registry.js with metadata (id, name, icon, component)
-- [ ] T037 [US1] Register 3 default apps in src/core/app-registry.js (mana-calculator, treasure-chest, quest-log)
-- [ ] T038 [US1] Wire rune icon click handlers to app launcher in src/desktop/app-launcher.js
-- [ ] T039 [US1] Create src/main.js as application entry point
-- [ ] T040 [US1] Initialize database and run migrations in src/main.js
-- [ ] T041 [US1] Initialize global state from database in src/main.js
-- [ ] T042 [US1] Render desktop environment in src/main.js
-- [ ] T043 [US1] Start particle system animation loop in src/main.js
-- [ ] T044 [US1] Implement FCP performance monitoring (target <1.5s) in src/utils/performance.js
-- [ ] T045 [US1] Implement FPS monitoring for particle system in src/utils/performance.js
+- [x] T023 [P] [US1] Create src/styles/reset.css with CSS reset and box-sizing rules
+- [x] T024 [P] [US1] Create src/styles/variables.css with CSS custom properties (fantasy color palette, fonts, spacing)
+- [x] T025 [P] [US1] Create src/styles/desktop.css with full-screen layout and mossy background gradient
+- [x] T026 [US1] Create src/desktop/desktop.js with desktop initialization function
+- [x] T027 [US1] Implement mossy background rendering in src/desktop/desktop.js (CSS gradient with texture overlay)
+- [x] T028 [P] [US1] Create src/desktop/particles.js with Canvas 2D firefly particle system (100-200 particles)
+- [x] T029 [US1] Implement particle update loop (requestAnimationFrame) with 60 FPS target in src/desktop/particles.js
+- [x] T030 [US1] Implement particle glow effects (radial gradient) in src/desktop/particles.js
+- [x] T031 [P] [US1] Create src/assets/runes.js with inline SVG definitions for app icons (calculator, chest, quest log)
+- [x] T032 [US1] Create src/desktop/app-launcher.js with rune icon rendering logic
+- [x] T033 [US1] Implement rune icon grid layout (3 icons, centered) in src/desktop/app-launcher.js
+- [x] T034 [US1] Implement rune hover effects (brightness increase, glow animation) in src/desktop/app-launcher.js
+- [x] T035 [US1] Implement tooltip display on rune hover (fantasy-style text) in src/desktop/app-launcher.js
+- [x] T036 [US1] Create app registry in src/core/app-registry.js with metadata (id, name, icon, component)
+- [x] T037 [US1] Register 3 default apps in src/core/app-registry.js (mana-calculator, treasure-chest, quest-log)
+- [x] T038 [US1] Wire rune icon click handlers to app launcher in src/desktop/app-launcher.js
+- [x] T039 [US1] Create src/main.js as application entry point
+- [x] T040 [US1] Initialize database and run migrations in src/main.js
+- [x] T041 [US1] Initialize global state from database in src/main.js
+- [x] T042 [US1] Render desktop environment in src/main.js
+- [x] T043 [US1] Start particle system animation loop in src/main.js
+- [x] T044 [US1] Implement FCP performance monitoring (target <1.5s) in src/utils/performance.js
+- [x] T045 [US1] Implement FPS monitoring for particle system in src/utils/performance.js
 
 ---
 
