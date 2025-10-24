@@ -9,9 +9,11 @@ import '../styles/desktop.css';
 import '../styles/window.css';
 import '../styles/sidebar.css';
 import '../styles/treasure-chest.css';
+import '../styles/mana-calculator.css';
+import '../styles/notifications.css';
 
 import { initDatabase, saveToIndexedDB } from './storage/database.js';
-import { getAllWindows, getAllFiles, getAllNotifications, getAllSettings } from './storage/queries.js';
+import { getAllWindows, getAllFiles, getAllNotifications, getAllSettings, deleteAllWindows } from './storage/queries.js';
 import { restoreWindowSession, setupAutoSnapshot } from './storage/restore-session.js';
 import { initializeState, subscribe } from './core/state.js';
 import { eventBus, Events } from './core/event-bus.js';
@@ -23,6 +25,8 @@ import { initDragHandler } from './window/drag-handler.js';
 import { initResizeHandler } from './window/resize-handler.js';
 import { initSidebar } from './sidebar/sidebar.js';
 import { initKeyboardShortcuts } from './window/keyboard-shortcuts.js';
+import { initializeNotificationTriggers } from './core/notification-triggers.js';
+import { initializeCleanup } from './storage/cleanup.js';
 
 // Global error handling
 let errorBoundary = null;
@@ -54,7 +58,12 @@ async function init() {
 
     // Step 2: Load data from database
     console.log('[Main] Step 2: Loading data from database...');
-    const windows = getAllWindows();
+    
+    // Clear old windows (windows should not persist between sessions)
+    // Window state restoration happens separately in Step 8
+    deleteAllWindows();
+    
+    const windows = []; // Start with no windows
     const files = getAllFiles();
     const notifications = getAllNotifications();
     const settings = getAllSettings();
@@ -86,6 +95,11 @@ async function init() {
     initResizeHandler();
     initSidebar();
     initKeyboardShortcuts();
+
+    // Step 5.5: Initialize notification system
+    console.log('[Main] Step 5.5: Initializing notifications...');
+    initializeNotificationTriggers();
+    initializeCleanup();
 
     // Step 6: Initialize particle system
     console.log('[Main] Step 6: Initializing particles...');

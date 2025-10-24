@@ -191,10 +191,20 @@ export function getState(path) {
 
 /**
  * Set state value (triggers reactivity)
- * @param {string} path - State path
- * @param {*} value - New value
+ * @param {string|Object} pathOrUpdates - State path string OR object with updates
+ * @param {*} value - New value (only if first param is string)
  */
-export function setState(path, value) {
+export function setState(pathOrUpdates, value) {
+  // Handle object-based updates: setState({ windows: [], activeWindowId: 'abc' })
+  if (typeof pathOrUpdates === 'object' && pathOrUpdates !== null) {
+    Object.keys(pathOrUpdates).forEach(key => {
+      reactiveState[key] = pathOrUpdates[key];
+    });
+    return;
+  }
+
+  // Handle path-based updates: setState('windows', [])
+  const path = pathOrUpdates;
   const parts = path.split('.');
   const lastPart = parts.pop();
   let target = reactiveState;

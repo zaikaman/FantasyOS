@@ -124,7 +124,7 @@
   transition: filter var(--transition-normal);
 }
 
-/* Rune Hover Effects */
+/* Rune Icon Hover Effects */
 .rune-icon:hover {
   transform: scale(1.1);
 }
@@ -159,6 +159,21 @@
 
 .rune-icon:hover .rune-tooltip {
   opacity: 1;
+}
+
+/* Desktop Workspace - Windows container */
+.desktop-workspace {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-desktop);
+  pointer-events: none;
+}
+
+.desktop-workspace > * {
+  pointer-events: auto;
 }
 
 /* Windows Container */

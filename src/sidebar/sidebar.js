@@ -6,6 +6,7 @@
 import { getState, subscribe } from '../core/state.js';
 import { restoreWindow } from '../window/window-manager.js';
 import { getAppById } from '../apps/app-registry.js';
+import { initializeNotifications } from './notifications.js';
 
 let sidebarElement = null;
 let minimizedContainer = null;
@@ -30,6 +31,9 @@ export function initSidebar() {
   `;
   
   sidebarElement.appendChild(minimizedContainer);
+
+  // Initialize notifications section
+  initializeNotifications(sidebarElement);
 
   // Subscribe to window state changes
   subscribe('windows', renderMinimizedWindows);

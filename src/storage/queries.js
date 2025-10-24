@@ -64,7 +64,7 @@ export function insertWindow(window) {
     window.z_index,
     window.minimized ? 1 : 0,
     window.created_at,
-    window.modified_at
+    window.updated_at || window.modified_at || window.created_at
   ]);
 
   stmt.free();
@@ -87,6 +87,13 @@ export function deleteWindow(id) {
   const db = getDatabase();
   const stmt = db.prepare('DELETE FROM windows WHERE id = ?');
   stmt.run([id]);
+  stmt.free();
+}
+
+export function deleteAllWindows() {
+  const db = getDatabase();
+  const stmt = db.prepare('DELETE FROM windows');
+  stmt.run();
   stmt.free();
 }
 
@@ -291,6 +298,21 @@ export function deleteOldDismissedNotifications(daysAgo) {
   const cutoffTimestamp = Date.now() - daysAgo * 24 * 60 * 60 * 1000;
   const stmt = db.prepare('DELETE FROM notifications WHERE dismissed = 1 AND timestamp < ?');
   stmt.run([cutoffTimestamp]);
+  stmt.free();
+}
+
+export function dismissNotification(id) {
+  const db = getDatabase();
+  const stmt = db.prepare('UPDATE notifications SET dismissed = 1 WHERE id = ?');
+  stmt.run([id]);
+  stmt.free();
+}
+
+export function deleteOldNotifications(daysOld = 7) {
+  const db = getDatabase();
+  const cutoffTime = Date.now() - (daysOld * 24 * 60 * 60 * 1000);
+  const stmt = db.prepare('DELETE FROM notifications WHERE dismissed = 1 AND timestamp < ?');
+  stmt.run([cutoffTime]);
   stmt.free();
 }
 

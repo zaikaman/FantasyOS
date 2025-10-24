@@ -1,0 +1,308 @@
+/**
+ * Notifications Styles
+ * Quest notification theming with scroll-style cards
+ */
+
+/* Notifications Section */
+.notifications-section {
+  margin-top: 20px;
+  padding: 0 12px;
+}
+
+.notifications-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: linear-gradient(135deg, rgba(90, 58, 26, 0.3) 0%, rgba(61, 40, 23, 0.3) 100%);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+.notifications-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-gold);
+  margin: 0;
+  text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.notification-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 6px;
+  background: linear-gradient(135deg, #c84a3a 0%, #a83a2a 100%);
+  border: 2px solid var(--color-gold);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  box-shadow: 0 0 12px rgba(200, 74, 58, 0.6);
+  animation: badgePulse 2s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 12px rgba(200, 74, 58, 0.6);
+  }
+  50% {
+    transform: scale(1.1);
+    box-shadow: 0 0 20px rgba(200, 74, 58, 0.8);
+  }
+}
+
+/* Notifications List */
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.notifications-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.notifications-list::-webkit-scrollbar-track {
+  background: rgba(26, 15, 8, 0.3);
+  border-radius: 3px;
+}
+
+.notifications-list::-webkit-scrollbar-thumb {
+  background: rgba(90, 58, 26, 0.6);
+  border-radius: 3px;
+}
+
+.notifications-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(90, 58, 26, 0.8);
+}
+
+/* Empty State */
+.notifications-empty {
+  text-align: center;
+  padding: 32px 16px;
+  color: rgba(184, 153, 104, 0.6);
+}
+
+.empty-icon {
+  font-size: 32px;
+  margin-bottom: 8px;
+  opacity: 0.5;
+}
+
+.notifications-empty p {
+  font-size: 13px;
+  margin: 0;
+  font-style: italic;
+}
+
+/* Notification Item */
+.notification-item {
+  background: linear-gradient(135deg, #f4e4c1 0%, #e8d4a8 100%);
+  border: 2px solid #c4b491;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.notification-item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    circle at 50% 0%,
+    rgba(255, 215, 0, 0.1) 0%,
+    transparent 60%
+  );
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.notification-item:hover {
+  border-color: var(--color-gold);
+  box-shadow: 0 0 16px rgba(255, 215, 0, 0.4);
+  transform: translateX(-4px);
+}
+
+.notification-item:hover::before {
+  opacity: 1;
+}
+
+.notification-item.dismissing {
+  animation: notificationDismiss 0.5s ease-out forwards;
+}
+
+@keyframes notificationDismiss {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateX(20px) scale(0.9);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(40px) scale(0.7);
+  }
+}
+
+/* Notification Header */
+.notification-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px;
+  position: relative;
+}
+
+.notification-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+.notification-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: #2d5016;
+  margin-bottom: 2px;
+  word-wrap: break-word;
+}
+
+.notification-timestamp {
+  font-size: 10px;
+  color: #8a7a5a;
+  font-style: italic;
+}
+
+.notification-dismiss {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  background: rgba(90, 58, 26, 0.2);
+  border: 1px solid rgba(90, 58, 26, 0.4);
+  border-radius: 50%;
+  color: #5a3a1a;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+}
+
+.notification-item:hover .notification-dismiss {
+  opacity: 1;
+}
+
+.notification-dismiss:hover {
+  background: rgba(200, 74, 58, 0.8);
+  border-color: #c84a3a;
+  color: #fff;
+  transform: scale(1.1);
+}
+
+/* Notification Body */
+.notification-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  padding: 0 12px;
+}
+
+.notification-body.expanded {
+  max-height: 200px;
+  padding: 0 12px 12px 12px;
+}
+
+.notification-message {
+  font-size: 12px;
+  color: #5a3a1a;
+  line-height: 1.5;
+  margin: 0;
+  word-wrap: break-word;
+  background: rgba(255, 255, 255, 0.5);
+  padding: 8px;
+  border-radius: 4px;
+  border-left: 3px solid var(--color-gold);
+}
+
+/* Dismiss Particles */
+.notification-particle {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: radial-gradient(circle, var(--color-gold) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10001;
+  animation: particleFly 1s ease-out forwards;
+}
+
+@keyframes particleFly {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(0);
+  }
+}
+
+/* Notification Entrance Animation */
+@keyframes notificationEnter {
+  0% {
+    opacity: 0;
+    transform: translateX(20px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.notification-item {
+  animation: notificationEnter 0.4s ease-out;
+}
+
+/* Scroll-style parchment effect */
+.notification-item::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(90, 58, 26, 0.3) 50%,
+    transparent 100%
+  );
+}

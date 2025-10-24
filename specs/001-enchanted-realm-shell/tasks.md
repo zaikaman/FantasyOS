@@ -131,32 +131,32 @@ This document breaks down the Enchanted Realm Shell feature into executable task
 
 ### Tasks
 
-- [ ] T071 [P] [US3] Create src/apps/treasure-chest/treasure-chest.js with app initialization
-- [ ] T072 [P] [US3] Create src/styles/treasure-chest.css with chest UI theming (wood texture, glowing items)
-- [ ] T073 [US3] Implement chest container rendering in src/apps/treasure-chest/treasure-chest.js
-- [ ] T074 [US3] Implement file list rendering (scrolls for notes, artifacts for doodles) in src/apps/treasure-chest/file-list.js
-- [ ] T075 [US3] Load files from database on app launch in src/apps/treasure-chest/treasure-chest.js
-- [ ] T076 [US3] Implement "Create New Scroll" button handler in src/apps/treasure-chest/treasure-chest.js
-- [ ] T077 [P] [US3] Create src/apps/treasure-chest/scroll-editor.js with note editor UI (parchment textarea)
-- [ ] T078 [US3] Implement scroll editor save function (INSERT/UPDATE files table) in src/apps/treasure-chest/scroll-editor.js
-- [ ] T079 [US3] Implement scroll editor cancel function in src/apps/treasure-chest/scroll-editor.js
-- [ ] T080 [US3] Implement scroll content validation (<100KB limit) in src/apps/treasure-chest/scroll-editor.js
-- [ ] T081 [US3] Implement "Create New Artifact" button handler in src/apps/treasure-chest/treasure-chest.js
-- [ ] T082 [P] [US3] Create src/apps/treasure-chest/artifact-editor.js with canvas doodle UI
-- [ ] T083 [US3] Implement canvas drawing tools (pen, eraser, color picker) in src/apps/treasure-chest/artifact-editor.js
-- [ ] T084 [US3] Implement canvas clear function in src/apps/treasure-chest/artifact-editor.js
-- [ ] T085 [US3] Implement canvas save function (toDataURL → base64 → files table) in src/apps/treasure-chest/artifact-editor.js
-- [ ] T086 [US3] Implement thumbnail generation (200x200px preview) in src/apps/treasure-chest/artifact-editor.js
-- [ ] T087 [US3] Implement artifact content validation (<10MB limit) in src/apps/treasure-chest/artifact-editor.js
-- [ ] T088 [US3] Implement file delete function with confirmation dialog in src/apps/treasure-chest/file-list.js
-- [ ] T089 [US3] Implement file rename function in src/apps/treasure-chest/file-list.js
-- [ ] T090 [US3] Implement file search/filter by name in src/apps/treasure-chest/file-list.js
-- [ ] T091 [US3] Implement file sorting (by name, date created, date modified, size) in src/apps/treasure-chest/file-list.js
-- [ ] T092 [US3] Implement storage quota warning display (warn at 40MB) in src/apps/treasure-chest/treasure-chest.js
-- [ ] T093 [US3] Implement graceful error handling for quota exceeded in src/apps/treasure-chest/treasure-chest.js
-- [ ] T094 [US3] Implement data integrity validation (100% success rate) in src/storage/queries.js
-- [ ] T095 [US3] Implement save operation performance monitoring (target <500ms) in src/utils/performance.js
-- [ ] T100 [US3] Implement save operation performance monitoring (target <500ms) in src/utils/performance.js
+- [x] T071 [P] [US3] Create src/apps/treasure-chest/treasure-chest.js with app initialization
+- [x] T072 [P] [US3] Create src/styles/treasure-chest.css with chest UI theming (wood texture, glowing items)
+- [x] T073 [US3] Implement chest container rendering in src/apps/treasure-chest/treasure-chest.js
+- [x] T074 [US3] Implement file list rendering (scrolls for notes, artifacts for doodles) in src/apps/treasure-chest/file-list.js
+- [x] T075 [US3] Load files from database on app launch in src/apps/treasure-chest/treasure-chest.js
+- [x] T076 [US3] Implement "Create New Scroll" button handler in src/apps/treasure-chest/treasure-chest.js
+- [x] T077 [P] [US3] Create src/apps/treasure-chest/scroll-editor.js with note editor UI (parchment textarea)
+- [x] T078 [US3] Implement scroll editor save function (INSERT/UPDATE files table) in src/apps/treasure-chest/scroll-editor.js
+- [x] T079 [US3] Implement scroll editor cancel function in src/apps/treasure-chest/scroll-editor.js
+- [x] T080 [US3] Implement scroll content validation (<100KB limit) in src/apps/treasure-chest/scroll-editor.js
+- [x] T081 [US3] Implement "Create New Artifact" button handler in src/apps/treasure-chest/treasure-chest.js
+- [x] T082 [P] [US3] Create src/apps/treasure-chest/artifact-editor.js with canvas doodle UI
+- [x] T083 [US3] Implement canvas drawing tools (pen, eraser, color picker) in src/apps/treasure-chest/artifact-editor.js
+- [x] T084 [US3] Implement canvas clear function in src/apps/treasure-chest/artifact-editor.js
+- [x] T085 [US3] Implement canvas save function (toDataURL → base64 → files table) in src/apps/treasure-chest/artifact-editor.js
+- [x] T086 [US3] Implement thumbnail generation (200x200px preview) in src/apps/treasure-chest/artifact-editor.js
+- [x] T087 [US3] Implement artifact content validation (<10MB limit) in src/apps/treasure-chest/artifact-editor.js
+- [x] T088 [US3] Implement file delete function with confirmation dialog in src/apps/treasure-chest/file-list.js
+- [x] T089 [US3] Implement file rename function in src/apps/treasure-chest/file-list.js
+- [x] T090 [US3] Implement file search/filter by name in src/apps/treasure-chest/file-list.js
+- [x] T091 [US3] Implement file sorting (by name, date created, date modified, size) in src/apps/treasure-chest/file-list.js
+- [x] T092 [US3] Implement storage quota warning display (warn at 40MB) in src/apps/treasure-chest/treasure-chest.js
+- [x] T093 [US3] Implement graceful error handling for quota exceeded in src/apps/treasure-chest/treasure-chest.js
+- [x] T094 [US3] Implement data integrity validation (100% success rate) in src/storage/queries.js
+- [x] T095 [US3] Implement save operation performance monitoring (target <500ms) in src/utils/performance.js
+- [x] T100 [US3] Implement save operation performance monitoring (target <500ms) in src/utils/performance.js
 
 ---
 
@@ -168,22 +168,22 @@ This document breaks down the Enchanted Realm Shell feature into executable task
 
 ### Tasks
 
-- [ ] T096 [P] [US5] Create src/apps/mana-calculator/mana-calculator.js with app initialization
-- [ ] T097 [P] [US5] Create src/styles/mana-calculator.css with orb UI theming (crystal ball aesthetic, glowing runes)
-- [ ] T098 [US5] Implement calculator orb container rendering in src/apps/mana-calculator/mana-calculator.js
-- [ ] T099 [US5] Implement calculator display area (glowing runes for numbers) in src/apps/mana-calculator/calculator-display.js
-- [ ] T100 [US5] Implement number button grid (0-9) in src/apps/mana-calculator/calculator-buttons.js
-- [ ] T101 [US5] Implement operation buttons (+, -, *, /) in src/apps/mana-calculator/calculator-buttons.js
-- [ ] T102 [US5] Implement equals button ("Cast" spell) in src/apps/mana-calculator/calculator-buttons.js
-- [ ] T103 [US5] Implement clear button in src/apps/mana-calculator/calculator-buttons.js
-- [ ] T104 [US5] Create src/apps/mana-calculator/calculator-engine.js with arithmetic logic
-- [ ] T105 [US5] Implement addition operation in src/apps/mana-calculator/calculator-engine.js
-- [ ] T106 [US5] Implement subtraction operation in src/apps/mana-calculator/calculator-engine.js
-- [ ] T107 [US5] Implement multiplication operation in src/apps/mana-calculator/calculator-engine.js
-- [ ] T108 [US5] Implement division operation in src/apps/mana-calculator/calculator-engine.js
-- [ ] T109 [US5] Implement division by zero error handling (display "The mana flows are unstable!") in src/apps/mana-calculator/calculator-engine.js
-- [ ] T110 [US5] Implement result glow animation on equals button click in src/apps/mana-calculator/mana-calculator.js
-- [ ] T111 [US5] Implement keyboard input support (number keys, operators, Enter for equals) in src/apps/mana-calculator/keyboard-handler.js
+- [x] T096 [P] [US5] Create src/apps/mana-calculator/mana-calculator.js with app initialization
+- [x] T097 [P] [US5] Create src/styles/mana-calculator.css with orb UI theming (crystal ball aesthetic, glowing runes)
+- [x] T098 [US5] Implement calculator orb container rendering in src/apps/mana-calculator/mana-calculator.js
+- [x] T099 [US5] Implement calculator display area (glowing runes for numbers) in src/apps/mana-calculator/calculator-display.js
+- [x] T100 [US5] Implement number button grid (0-9) in src/apps/mana-calculator/calculator-buttons.js
+- [x] T101 [US5] Implement operation buttons (+, -, *, /) in src/apps/mana-calculator/calculator-buttons.js
+- [x] T102 [US5] Implement equals button ("Cast" spell) in src/apps/mana-calculator/calculator-buttons.js
+- [x] T103 [US5] Implement clear button in src/apps/mana-calculator/calculator-buttons.js
+- [x] T104 [US5] Create src/apps/mana-calculator/calculator-engine.js with arithmetic logic
+- [x] T105 [US5] Implement addition operation in src/apps/mana-calculator/calculator-engine.js
+- [x] T106 [US5] Implement subtraction operation in src/apps/mana-calculator/calculator-engine.js
+- [x] T107 [US5] Implement multiplication operation in src/apps/mana-calculator/calculator-engine.js
+- [x] T108 [US5] Implement division operation in src/apps/mana-calculator/calculator-engine.js
+- [x] T109 [US5] Implement division by zero error handling (display "The mana flows are unstable!") in src/apps/mana-calculator/calculator-engine.js
+- [x] T110 [US5] Implement result glow animation on equals button click in src/apps/mana-calculator/mana-calculator.js
+- [x] T111 [US5] Implement keyboard input support (number keys, operators, Enter for equals) in src/apps/mana-calculator/keyboard-handler.js
 
 ---
 
@@ -195,28 +195,28 @@ This document breaks down the Enchanted Realm Shell feature into executable task
 
 ### Tasks
 
-- [ ] T112 [P] [US4] Create src/sidebar/notifications.js with notification rendering in tavern sidebar
-- [ ] T113 [P] [US4] Create src/styles/notifications.css with quest notification theming (scroll-style cards)
-- [ ] T114 [US4] Create src/core/notification-triggers.js with event listeners for notification triggers
-- [ ] T115 [US4] Implement idle timer (trigger notification after 2 minutes idle) in src/core/notification-triggers.js
-- [ ] T116 [US4] Implement file save trigger in src/core/notification-triggers.js
-- [ ] T117 [US4] Implement file delete trigger in src/core/notification-triggers.js
-- [ ] T118 [US4] Implement window open trigger in src/core/notification-triggers.js
-- [ ] T119 [US4] Implement window close trigger in src/core/notification-triggers.js
-- [ ] T120 [US4] Implement calculator use trigger in src/core/notification-triggers.js
-- [ ] T121 [P] [US4] Create src/ai/notification-generator.js with OpenAI API integration
-- [ ] T122 [US4] Implement AI prompt construction (context-aware messages) in src/ai/notification-generator.js
-- [ ] T123 [US4] Implement OpenAI API call with error handling in src/ai/notification-generator.js
-- [ ] T124 [US4] Implement template fallback system (pre-written notifications) in src/ai/notification-generator.js
-- [ ] T125 [US4] Create notification template bank in src/ai/templates.js (30+ fantasy-themed messages)
-- [ ] T126 [US4] Implement notification insert to database in src/storage/queries.js
-- [ ] T127 [US4] Implement notification rendering in sidebar (unread badge, timestamp) in src/sidebar/notifications.js
-- [ ] T128 [US4] Implement notification expand/collapse on click in src/sidebar/notifications.js
-- [ ] T129 [US4] Implement notification dismiss function (set dismissed=1) in src/sidebar/notifications.js
-- [ ] T130 [US4] Implement notification fade-out animation with particle effects in src/sidebar/notifications.js
-- [ ] T131 [US4] Implement notification auto-archive (delete dismissed notifications >7 days) in src/storage/cleanup.js
-- [ ] T132 [US4] Implement notification frequency setting (low, normal, high) in src/core/settings.js
-- [ ] T133 [US4] Implement AI notification toggle in settings in src/core/settings.js
+- [x] T112 [P] [US4] Create src/sidebar/notifications.js with notification rendering in tavern sidebar
+- [x] T113 [P] [US4] Create src/styles/notifications.css with quest notification theming (scroll-style cards)
+- [x] T114 [US4] Create src/core/notification-triggers.js with event listeners for notification triggers
+- [x] T115 [US4] Implement idle timer (trigger notification after 2 minutes idle) in src/core/notification-triggers.js
+- [x] T116 [US4] Implement file save trigger in src/core/notification-triggers.js
+- [x] T117 [US4] Implement file delete trigger in src/core/notification-triggers.js
+- [x] T118 [US4] Implement window open trigger in src/core/notification-triggers.js
+- [x] T119 [US4] Implement window close trigger in src/core/notification-triggers.js
+- [x] T120 [US4] Implement calculator use trigger in src/core/notification-triggers.js
+- [x] T121 [P] [US4] Create src/ai/notification-generator.js with OpenAI API integration
+- [x] T122 [US4] Implement AI prompt construction (context-aware messages) in src/ai/notification-generator.js
+- [x] T123 [US4] Implement OpenAI API call with error handling in src/ai/notification-generator.js
+- [x] T124 [US4] Implement template fallback system (pre-written notifications) in src/ai/notification-generator.js
+- [x] T125 [US4] Create notification template bank in src/ai/templates.js (30+ fantasy-themed messages)
+- [x] T126 [US4] Implement notification insert to database in src/storage/queries.js
+- [x] T127 [US4] Implement notification rendering in sidebar (unread badge, timestamp) in src/sidebar/notifications.js
+- [x] T128 [US4] Implement notification expand/collapse on click in src/sidebar/notifications.js
+- [x] T129 [US4] Implement notification dismiss function (set dismissed=1) in src/sidebar/notifications.js
+- [x] T130 [US4] Implement notification fade-out animation with particle effects in src/sidebar/notifications.js
+- [x] T131 [US4] Implement notification auto-archive (delete dismissed notifications >7 days) in src/storage/cleanup.js
+- [x] T132 [US4] Implement notification frequency setting (low, normal, high) in src/core/settings.js
+- [x] T133 [US4] Implement AI notification toggle in settings in src/core/settings.js
 
 ---
 

@@ -9,6 +9,7 @@ import {
   questLogRune
 } from '../assets/runes/app-icons.js';
 import { createTreasureChestApp } from './treasure-chest/treasure-chest.js';
+import { createManaCalculatorApp } from './mana-calculator/mana-calculator.js';
 
 /**
  * Application registry
@@ -21,11 +22,9 @@ export const appRegistry = [
     icon: calculatorRune('#FFD700', 64),
     runeColor: '#FFD700',
     description: 'Perform arcane calculations with mystical precision',
-    component: () => createPlaceholderApp('Mana Calculator', '🔮'),
-    defaultWindow: {
-      width: 400,
-      height: 500
-    },
+    component: createManaCalculatorApp,
+    defaultWidth: 400,
+    defaultHeight: 550,
     singleton: true // Only one instance allowed
   },
   {
