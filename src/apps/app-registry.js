@@ -8,6 +8,7 @@ import {
   treasureChestRune,
   questLogRune
 } from '../assets/runes/app-icons.js';
+import { createTreasureChestApp } from './treasure-chest/treasure-chest.js';
 
 /**
  * Application registry
@@ -33,11 +34,9 @@ export const appRegistry = [
     icon: treasureChestRune('#FFD700', 64),
     runeColor: '#FFD700',
     description: 'Browse and manage your scrolls and artifacts',
-    component: () => createPlaceholderApp('Treasure Chest', '📦'),
-    defaultWindow: {
-      width: 800,
-      height: 600
-    },
+    component: createTreasureChestApp,
+    defaultWidth: 800,
+    defaultHeight: 600,
     singleton: false // Multiple instances allowed
   },
   {

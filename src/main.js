@@ -3,11 +3,12 @@
  * Application initialization and orchestration
  */
 
-import './styles/reset.css';
-import './styles/variables.css';
-import './styles/desktop.css';
+import '../styles/reset.css';
+import '../styles/variables.css';
+import '../styles/desktop.css';
 import '../styles/window.css';
 import '../styles/sidebar.css';
+import '../styles/treasure-chest.css';
 
 import { initDatabase, saveToIndexedDB } from './storage/database.js';
 import { getAllWindows, getAllFiles, getAllNotifications, getAllSettings } from './storage/queries.js';
