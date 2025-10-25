@@ -65,7 +65,8 @@ html, body {
 .games-arcade-icon,
 .spell-tome-reader,
 .bardic-lute-player,
-.hex-canvas-studio {
+.hex-canvas-studio,
+.meditation-chamber {
   position: absolute;
   width: 150px;
   height: auto;
@@ -89,7 +90,8 @@ html, body {
 .games-arcade-icon img,
 .spell-tome-reader img,
 .bardic-lute-player img,
-.hex-canvas-studio img {
+.hex-canvas-studio img,
+.meditation-chamber img {
   width: 100%;
   height: auto;
   display: block;
@@ -130,7 +132,8 @@ html, body {
 .games-arcade-icon:hover .app-icon-label,
 .spell-tome-reader:hover .app-icon-label,
 .bardic-lute-player:hover .app-icon-label,
-.hex-canvas-studio:hover .app-icon-label {
+.hex-canvas-studio:hover .app-icon-label,
+.meditation-chamber:hover .app-icon-label {
   color: #FFF;
   border-color: rgba(255, 215, 0, 0.6);
   text-shadow: 
@@ -339,6 +342,24 @@ html, body {
 }
 
 .hex-canvas-studio:active {
+  transform: scale(0.95) translateY(-2px);
+}
+
+/* Meditation Chamber - Column 4, Row 3 (Bottom Right) */
+.meditation-chamber {
+  bottom: 80px; /* Base position for row 3 */
+  left: calc(50px + 250px * 3); /* Column 4 */
+  animation: float 4.0s ease-in-out infinite;
+  animation-delay: 0.8s;
+}
+
+.meditation-chamber:hover {
+  transform: scale(1.08) translateY(-5px);
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.7))
+          drop-shadow(0 0 30px rgba(157, 127, 240, 0.6));
+}
+
+.meditation-chamber:active {
   transform: scale(0.95) translateY(-2px);
 }
 

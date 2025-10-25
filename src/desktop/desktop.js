@@ -68,6 +68,9 @@ export function initDesktop() {
   // Initialize hex canvas studio click handler
   initHexCanvasStudio();
 
+  // Initialize meditation chamber click handler
+  initMeditationChamber();
+
   console.log('[Desktop] Initialized');
 }
 
@@ -287,6 +290,44 @@ function initManaCalculatorOrb() {
   });
 
   console.log('[Desktop] Bardic lute player initialized');
+}
+
+/**
+ * Initialize meditation chamber click handler
+ */
+function initMeditationChamber() {
+  const chamberElement = document.getElementById('meditation-chamber');
+  
+  if (!chamberElement) {
+    console.warn('[Desktop] Meditation chamber element not found');
+    return;
+  }
+
+  chamberElement.addEventListener('click', () => {
+    console.log('[Desktop] Opening meditation chamber...');
+    
+    // Create window for meditation chamber app
+    try {
+      createWindow('meditation-chamber');
+      
+      // Emit app launch event
+      eventBus.emit(Events.APP_LAUNCHED, {
+        appId: 'meditation-chamber',
+        appName: 'Meditation Chamber',
+        timestamp: Date.now()
+      });
+      
+      // Visual feedback
+      chamberElement.style.transform = 'scale(0.95) translateY(-2px)';
+      setTimeout(() => {
+        chamberElement.style.transform = '';
+      }, 150);
+    } catch (error) {
+      console.error('[Desktop] Failed to open meditation chamber:', error);
+    }
+  });
+
+  console.log('[Desktop] Meditation chamber initialized');
 }
 
 /**

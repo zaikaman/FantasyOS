@@ -20,6 +20,7 @@ import { createGamesArcadeApp } from './games-arcade/games-arcade.js';
 import { createSpellTomeLibraryApp } from './spell-tome-library/spell-tome-library.js';
 import { createBardicLutePlayerApp } from './bardic-lute-player/bardic-lute-player.js';
 import { createHexCanvasApp } from './hex-canvas/hex-canvas.js';
+import { createMeditationChamberApp } from './meditation-chamber/meditation-chamber.js';
 
 /**
  * Application registry
@@ -154,6 +155,17 @@ const hiddenApps = [
     defaultWidth: 1400,
     defaultHeight: 850,
     singleton: false // Multiple canvases allowed
+  },
+  {
+    id: 'meditation-chamber',
+    name: 'Meditation Chamber',
+    icon: '<img src="/src/assets/timer.png" alt="Meditation Chamber" style="width: 100%; height: 100%; object-fit: contain;" />',
+    runeColor: '#9D7FF0',
+    description: 'A mystical Pomodoro timer and focus app with ambient sounds for deep concentration',
+    component: createMeditationChamberApp,
+    defaultWidth: 900,
+    defaultHeight: 850,
+    singleton: true // Only one meditation session at a time
   }
 ];
 

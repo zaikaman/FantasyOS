@@ -22,6 +22,7 @@ import '../styles/games-arcade.css';
 import '../styles/spell-tome-library.css';
 import '../styles/bardic-lute-player.css';
 import '../styles/hex-canvas.css';
+import '../styles/meditation-chamber.css';
 
 import { initDatabase, saveToIndexedDB } from './storage/database.js';
 import { getAllWindows, getAllFiles, getAllNotifications, getAllSettings, deleteAllWindows, getCalendarEvents } from './storage/queries.js';
