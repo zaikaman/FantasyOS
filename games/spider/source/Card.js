@@ -32,10 +32,10 @@ export default class Card {
         this.element.innerHTML = `
             <div class="card-inner">
                 <div class="card-front">
-                    <img src="images/${this.file}.svg" alt="${this.name}" />
+                    <img src="./images/${this.file}.svg" alt="${this.name}" />
                 </div>
                 <div class="card-back">
-                    <img src="images/2B.svg" alt="${this.name}" />
+                    <img src="./images/2B.svg" alt="${this.name}" />
                 </div>
             </div>
         `;

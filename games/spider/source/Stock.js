@@ -94,7 +94,7 @@ export default class Stock {
      */
     add() {
         const img = document.createElement("img");
-        img.src = "images/2B.svg";
+        img.src = "./images/2B.svg";
         img.alt = `Stock ${this.children.length + 1}`;
         img.dataset.action = "deal";
         this.container.appendChild(img);

@@ -58,7 +58,7 @@ export default class Puzzle {
 
         const imageUrl         = imageName.match(/([0-9]+)|([a-zA-Z]+)/g).join("/");
         this.#imageElem        = this.#previewElem.querySelector("img");
-        this.#imageElem.src    = `images/${imageUrl}.jpg`;
+        this.#imageElem.src    = `./images/${imageUrl}.jpg`;
         this.#imageElem.alt    = imageName;
         this.#imageElem.onload = () => this.build(pieceCount);
     }

@@ -100,7 +100,7 @@ export default class Foundations {
      */
     push(cards) {
         const suit = cards[0].suit;
-        this.children[this.index].innerHTML = `<img src="images/A${suit[0]}.svg" alt="${suit}" />`;
+        this.children[this.index].innerHTML = `<img src="./images/A${suit[0]}.svg" alt="${suit}" />`;
         this.columns[this.index] = cards;
         this.amount += 1;
     }
