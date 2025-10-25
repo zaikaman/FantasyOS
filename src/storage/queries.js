@@ -54,13 +54,28 @@ export function insertWindow(window) {
     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
+  // Ensure x and y are always valid numbers, never null
+  const x = (window.x !== undefined && window.x !== null && typeof window.x === 'number') ? window.x : 50;
+  const y = (window.y !== undefined && window.y !== null && typeof window.y === 'number') ? window.y : 50;
+  
+  // Ensure width and height are always valid numbers, handle 'auto' and non-numeric values
+  let width = window.width;
+  if (width === null || width === undefined || width === 'auto' || typeof width !== 'number') {
+    width = 600;
+  }
+  
+  let height = window.height;
+  if (height === null || height === undefined || height === 'auto' || typeof height !== 'number') {
+    height = 400;
+  }
+
   stmt.run([
     window.id,
     window.app_id,
-    window.x,
-    window.y,
-    window.width,
-    window.height,
+    x,
+    y,
+    width,
+    height,
     window.z_index,
     window.minimized ? 1 : 0,
     window.created_at,
@@ -72,11 +87,39 @@ export function insertWindow(window) {
 
 export function updateWindow(id, updates) {
   const db = getDatabase();
-  const fields = Object.keys(updates)
+  
+  // Sanitize updates to ensure x, y, width, and height are never null
+  const sanitizedUpdates = { ...updates };
+  if ('x' in sanitizedUpdates && (sanitizedUpdates.x === null || sanitizedUpdates.x === undefined)) {
+    sanitizedUpdates.x = 50;
+  }
+  if ('y' in sanitizedUpdates && (sanitizedUpdates.y === null || sanitizedUpdates.y === undefined)) {
+    sanitizedUpdates.y = 50;
+  }
+  if ('width' in sanitizedUpdates) {
+    // Convert 'auto' or non-numeric width to a default value
+    if (sanitizedUpdates.width === null || 
+        sanitizedUpdates.width === undefined || 
+        sanitizedUpdates.width === 'auto' || 
+        typeof sanitizedUpdates.width !== 'number') {
+      sanitizedUpdates.width = 600;
+    }
+  }
+  if ('height' in sanitizedUpdates) {
+    // Convert 'auto' or non-numeric height to a default value
+    if (sanitizedUpdates.height === null || 
+        sanitizedUpdates.height === undefined || 
+        sanitizedUpdates.height === 'auto' || 
+        typeof sanitizedUpdates.height !== 'number') {
+      sanitizedUpdates.height = 400;
+    }
+  }
+  
+  const fields = Object.keys(sanitizedUpdates)
     .map(key => `${key} = ?`)
     .join(', ');
 
-  const values = Object.values(updates).map(val => (typeof val === 'boolean' ? (val ? 1 : 0) : val));
+  const values = Object.values(sanitizedUpdates).map(val => (typeof val === 'boolean' ? (val ? 1 : 0) : val));
 
   const stmt = db.prepare(`UPDATE windows SET ${fields} WHERE id = ?`);
   stmt.run([...values, id]);

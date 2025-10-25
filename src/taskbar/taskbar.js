@@ -9,6 +9,8 @@ import { getAppById } from '../apps/app-registry.js';
 
 let taskbarElement = null;
 let windowsContainer = null;
+let toggleButton = null;
+let isTaskbarShown = false;
 
 /**
  * Initialize taskbar
@@ -22,6 +24,16 @@ export function initTaskbar() {
     console.error('[Taskbar] Taskbar element not found');
     return;
   }
+
+  // Create toggle button
+  toggleButton = document.createElement('div');
+  toggleButton.className = 'taskbar-toggle';
+  toggleButton.innerHTML = `
+    <div class="taskbar-toggle-arrow up">▲</div>
+    <div class="taskbar-toggle-arrow down">▼</div>
+  `;
+  toggleButton.addEventListener('click', toggleTaskbarVisibility);
+  document.body.appendChild(toggleButton);
 
   // Create windows container
   windowsContainer = document.createElement('div');
@@ -45,40 +57,24 @@ export function initTaskbar() {
   // Initial render
   renderTaskbarWindows();
 
-  // Setup auto-hide behavior
-  setupAutoHide();
-
   console.log('[Taskbar] Initialized successfully');
 }
 
 /**
- * Setup auto-hide behavior for taskbar
+ * Toggle taskbar visibility with button
  */
-function setupAutoHide() {
-  const TRIGGER_ZONE_HEIGHT = 50; // pixels from bottom to trigger show
+function toggleTaskbarVisibility() {
+  isTaskbarShown = !isTaskbarShown;
   
-  let isTaskbarShown = false;
+  if (isTaskbarShown) {
+    taskbarElement.classList.add('show');
+    toggleButton.classList.add('taskbar-open');
+  } else {
+    taskbarElement.classList.remove('show');
+    toggleButton.classList.remove('taskbar-open');
+  }
   
-  // Track mouse movement
-  document.addEventListener('mousemove', (e) => {
-    const distanceFromBottom = window.innerHeight - e.clientY;
-    
-    if (distanceFromBottom <= TRIGGER_ZONE_HEIGHT) {
-      // Mouse is near bottom, show taskbar
-      if (!isTaskbarShown) {
-        taskbarElement.classList.add('show');
-        isTaskbarShown = true;
-      }
-    } else {
-      // Mouse is away from bottom, hide taskbar
-      if (isTaskbarShown) {
-        taskbarElement.classList.remove('show');
-        isTaskbarShown = false;
-      }
-    }
-  });
-  
-  console.log('[Taskbar] Auto-hide enabled');
+  console.log('[Taskbar] Toggled to:', isTaskbarShown ? 'shown' : 'hidden');
 }
 
 /**

@@ -91,8 +91,8 @@ export function createWindow(appId, options = {}) {
   const windowCount = state.windows.length;
   const defaultPos = calculateCascadePosition(windowCount);
   
-  let x = options.x !== undefined ? options.x : defaultPos.x;
-  let y = options.y !== undefined ? options.y : defaultPos.y;
+  let x = options.x !== undefined ? options.x : (defaultPos?.x ?? 50);
+  let y = options.y !== undefined ? options.y : (defaultPos?.y ?? 50);
   
   // Support both old format (defaultWidth/defaultHeight) and new format (defaultWindow.width/height)
   const defaultWidth = app.defaultWindow?.width || app.defaultWidth || 600;
@@ -238,9 +238,6 @@ export async function closeWindow(windowId) {
   if (windowEl) {
     await removeWindow(windowEl);
   }
-
-  // Update clock tower visibility after closing
-  updateClockTowerVisibility();
 
   // Focus next window
   if (newActiveWindowId) {
@@ -471,12 +468,18 @@ export function toggleMaximizeWindow(windowId) {
       height: window.height
     };
 
+    // Ensure all values are valid numbers
+    const validX = (typeof restoreData.x === 'number') ? restoreData.x : 50;
+    const validY = (typeof restoreData.y === 'number') ? restoreData.y : 50;
+    const validWidth = (typeof restoreData.width === 'number') ? restoreData.width : 600;
+    const validHeight = (typeof restoreData.height === 'number') ? restoreData.height : 400;
+
     restoreWindowFromMaximized(
       windowEl,
-      restoreData.x,
-      restoreData.y,
-      restoreData.width,
-      restoreData.height
+      validX,
+      validY,
+      validWidth,
+      validHeight
     );
 
     // Update state - remove preMaximizeState
@@ -484,10 +487,10 @@ export function toggleMaximizeWindow(windowId) {
       w.id === windowId 
         ? { 
             ...w, 
-            x: restoreData.x,
-            y: restoreData.y,
-            width: restoreData.width,
-            height: restoreData.height,
+            x: validX,
+            y: validY,
+            width: validWidth,
+            height: validHeight,
             preMaximizeState: undefined,
             updated_at: now()
           } 
@@ -498,14 +501,11 @@ export function toggleMaximizeWindow(windowId) {
 
     // Update database
     updateWindow(windowId, {
-      x: restoreData.x,
-      y: restoreData.y,
-      width: restoreData.width,
-      height: restoreData.height
+      x: validX,
+      y: validY,
+      width: validWidth,
+      height: validHeight
     });
-
-    // Show clock tower if no other windows are maximized
-    updateClockTowerVisibility();
 
     // Emit event
     eventBus.emit(Events.WINDOW_RESTORED, { windowId });
@@ -536,50 +536,10 @@ export function toggleMaximizeWindow(windowId) {
 
     setState({ windows: newWindows });
 
-    // Hide clock tower when maximized
-    hideClockTower();
-
     // Emit event
     eventBus.emit(Events.WINDOW_MAXIMIZED, { windowId });
 
     console.log('[WindowManager] Window maximized:', windowId);
-  }
-}
-
-/**
- * Hide clock tower HUD
- */
-function hideClockTower() {
-  const clockTower = document.getElementById('clock-tower');
-  if (clockTower) {
-    clockTower.classList.add('hidden-for-maximized');
-  }
-}
-
-/**
- * Show clock tower HUD
- */
-function showClockTower() {
-  const clockTower = document.getElementById('clock-tower');
-  if (clockTower) {
-    clockTower.classList.remove('hidden-for-maximized');
-  }
-}
-
-/**
- * Update clock tower visibility based on maximized windows
- */
-function updateClockTowerVisibility() {
-  const state = getState();
-  const hasMaximizedWindow = state.windows.some(w => {
-    const el = getWindowElement(w.id);
-    return el && isWindowMaximized(el);
-  });
-
-  if (hasMaximizedWindow) {
-    hideClockTower();
-  } else {
-    showClockTower();
   }
 }
 
@@ -597,6 +557,10 @@ export function setWindowPosition(windowId, x, y, persist = true) {
   if (!window) {
     throw new Error('Window not found');
   }
+
+  // Ensure x and y are valid numbers
+  x = (typeof x === 'number' && !isNaN(x)) ? x : 50;
+  y = (typeof y === 'number' && !isNaN(y)) ? y : 50;
 
   // Constrain position - use numeric values or defaults for 'auto'
   const constrainWidth = typeof window.width === 'number' ? window.width : 600;

@@ -316,7 +316,20 @@ function renderCalendarEvents() {
 
   // Sort events by date
   const sortedEvents = events.sort((a, b) => {
-    return new Date(a.event_date) - new Date(b.event_date);
+    const dateCompare = new Date(a.event_date) - new Date(b.event_date);
+    
+    // If dates are the same, sort by time
+    if (dateCompare === 0) {
+      // Events without time go to the end of the day
+      if (!a.event_time && !b.event_time) return 0;
+      if (!a.event_time) return 1;
+      if (!b.event_time) return -1;
+      
+      // Compare times
+      return a.event_time.localeCompare(b.event_time);
+    }
+    
+    return dateCompare;
   });
 
   // Render each event
@@ -350,10 +363,13 @@ function createEventElement(event) {
     year: 'numeric'
   });
 
+  // Add time if present
+  const timeDisplay = event.event_time ? ` at ${event.event_time}` : '';
+
   div.innerHTML = `
     <div class="event-moon">${moonPhase}</div>
     <div class="event-title">${escapeHtml(event.title)}</div>
-    <div class="event-date">${formattedDate}</div>
+    <div class="event-date">${formattedDate}${timeDisplay}</div>
     ${event.description ? `<div class="event-description">${escapeHtml(event.description)}</div>` : ''}
   `;
 
@@ -427,12 +443,15 @@ async function showAddEventDialog() {
   const dateStr = await showPrompt('Event Date (YYYY-MM-DD):', new Date().toISOString().split('T')[0], '📆 Event Date');
   if (!dateStr) return;
 
+  const timeStr = await showPrompt('Event Time (HH:MM, optional):', '', '🕐 Event Time');
+
   const description = await showPrompt('Description (optional):', '', '📝 Description');
 
   // Add event
   const event = addCalendarEvent({
     title,
     event_date: dateStr,
+    event_time: timeStr || null,
     description: description || '',
     event_type: 'custom'
   });
@@ -474,11 +493,14 @@ async function showEditEventDialog(event) {
     const newDateStr = await showPrompt('Event Date (YYYY-MM-DD):', event.event_date, '📅 Event Date');
     if (!newDateStr) return;
 
+    const newTimeStr = await showPrompt('Event Time (HH:MM, optional):', event.event_time || '', '🕐 Event Time');
+
     const newDescription = await showPrompt('Description:', event.description, '📝 Description');
 
     updateCalendarEvent(event.id, {
       title: newTitle,
       event_date: newDateStr,
+      event_time: newTimeStr || null,
       description: newDescription || ''
     });
 

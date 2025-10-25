@@ -40,13 +40,12 @@
     /* Subtle outer glow */
     0 -10px 30px rgba(212, 175, 55, 0.15);
   
-  /* Auto-hide: slide down by default, keeping only 4px visible */
-  transform: translateY(calc(100% - 4px));
+  /* Auto-hide: slide down by default, keeping only hidden */
+  transform: translateY(100%);
   transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* Show taskbar when hovering near bottom */
-#taskbar:hover,
+/* Show taskbar when toggled */
 #taskbar.show {
   transform: translateY(0);
 }
@@ -429,4 +428,91 @@
 
 #taskbar {
   animation: taskbarSlideIn 0.5s ease-out;
+}
+
+/* Taskbar Toggle Button */
+.taskbar-toggle {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: calc(var(--z-sidebar) - 50);
+  width: 60px;
+  height: 24px;
+  background: linear-gradient(
+    180deg,
+    var(--color-parchment-light) 0%,
+    var(--color-parchment) 100%
+  );
+  border: 2px solid var(--color-bronze-dark);
+  border-bottom: none;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--transition-fast);
+  box-shadow: 
+    0 -4px 10px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(139, 90, 43, 0.3) inset;
+}
+
+.taskbar-toggle:hover {
+  height: 28px;
+  border-color: var(--color-gold-dark);
+  background: linear-gradient(
+    180deg,
+    var(--color-parchment) 0%,
+    var(--color-parchment-dark) 100%
+  );
+  box-shadow: 
+    0 -6px 15px rgba(0, 0, 0, 0.4),
+    0 0 0 1px var(--color-gold-dark) inset,
+    0 0 10px rgba(212, 175, 55, 0.2);
+}
+
+.taskbar-toggle-arrow {
+  font-size: 12px;
+  color: var(--color-bronze-dark);
+  transition: all var(--transition-fast);
+  position: absolute;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.taskbar-toggle-arrow.up {
+  opacity: 1;
+}
+
+.taskbar-toggle-arrow.down {
+  opacity: 0;
+}
+
+/* When taskbar is open, show down arrow */
+.taskbar-toggle.taskbar-open .taskbar-toggle-arrow.up {
+  opacity: 0;
+}
+
+.taskbar-toggle.taskbar-open .taskbar-toggle-arrow.down {
+  opacity: 1;
+}
+
+/* When taskbar is open, move toggle button up */
+.taskbar-toggle.taskbar-open {
+  bottom: 64px;
+  transition: bottom 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (max-width: 768px) {
+  .taskbar-toggle.taskbar-open {
+    bottom: 56px;
+  }
+  
+  .taskbar-toggle {
+    width: 50px;
+    height: 20px;
+  }
+  
+  .taskbar-toggle-arrow {
+    font-size: 10px;
+  }
 }

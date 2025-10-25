@@ -70,7 +70,6 @@ export const questLogRune = (color = '#FFD700', size = 64) => `
         <stop offset="100%" style="stop-color:${color};stop-opacity:0.3" />
       </radialGradient>
     </defs>
-    <circle cx="50" cy="50" r="45" fill="url(#glow-quest)" opacity="0.6"/>
     <!-- Scroll -->
     <rect x="30" y="20" width="40" height="60" fill="none" stroke="${color}" stroke-width="3" rx="2"/>
     <!-- Scroll curls -->

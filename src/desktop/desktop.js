@@ -65,6 +65,9 @@ export function initDesktop() {
   // Initialize bardic lute player click handler
   initBardicLutePlayer();
 
+  // Initialize hex canvas studio click handler
+  initHexCanvasStudio();
+
   console.log('[Desktop] Initialized');
 }
 
@@ -274,16 +277,54 @@ function initManaCalculatorOrb() {
       });
       
       // Visual feedback
-      orbElement.style.transform = 'scale(0.95) translateY(-2px)';
+      luteElement.style.transform = 'scale(0.95) translateY(-2px)';
       setTimeout(() => {
-        orbElement.style.transform = '';
+        luteElement.style.transform = '';
       }, 150);
     } catch (error) {
-      console.error('[Desktop] Failed to open mana calculator:', error);
+      console.error('[Desktop] Failed to open bardic lute player:', error);
     }
   });
 
-  console.log('[Desktop] Mana calculator orb initialized');
+  console.log('[Desktop] Bardic lute player initialized');
+}
+
+/**
+ * Initialize Hex Canvas Studio desktop icon
+ */
+function initHexCanvasStudio() {
+  const canvasElement = document.getElementById('hex-canvas-studio');
+  
+  if (!canvasElement) {
+    console.warn('[Desktop] Hex canvas studio element not found');
+    return;
+  }
+
+  canvasElement.addEventListener('click', () => {
+    console.log('[Desktop] Opening hex canvas studio...');
+    
+    // Create window for hex canvas app
+    try {
+      createWindow('hex-canvas');
+      
+      // Emit app launch event
+      eventBus.emit(Events.APP_LAUNCHED, {
+        appId: 'hex-canvas',
+        appName: 'Hex Canvas Studio',
+        timestamp: Date.now()
+      });
+      
+      // Visual feedback
+      canvasElement.style.transform = 'scale(0.95) translateY(-2px)';
+      setTimeout(() => {
+        canvasElement.style.transform = '';
+      }, 150);
+    } catch (error) {
+      console.error('[Desktop] Failed to open hex canvas studio:', error);
+    }
+  });
+
+  console.log('[Desktop] Hex canvas studio initialized');
 }
 
 /**

@@ -49,7 +49,6 @@ export function createWindowElement(window) {
   // Create window structure
   windowEl.innerHTML = `
     <div class="window-titlebar" data-drag-handle>
-      <div class="window-icon">${window.icon || ''}</div>
       <div class="window-title" id="window-title-${window.id}">${escapeHtml(window.title)}</div>
       <div class="window-controls">
         <button class="window-btn window-btn-minimize" aria-label="Minimize window" title="Minimize"></button>

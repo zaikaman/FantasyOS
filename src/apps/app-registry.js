@@ -19,6 +19,7 @@ import { createEchoChamberApp } from './echo-chamber/echo-chamber.js';
 import { createGamesArcadeApp } from './games-arcade/games-arcade.js';
 import { createSpellTomeLibraryApp } from './spell-tome-library/spell-tome-library.js';
 import { createBardicLutePlayerApp } from './bardic-lute-player/bardic-lute-player.js';
+import { createHexCanvasApp } from './hex-canvas/hex-canvas.js';
 
 /**
  * Application registry
@@ -142,6 +143,17 @@ const hiddenApps = [
     defaultWidth: 900,
     defaultHeight: 700,
     singleton: false // Multiple instances allowed
+  },
+  {
+    id: 'hex-canvas',
+    name: 'Hex Canvas Studio',
+    icon: '<img src="/src/assets/draw.png" alt="Hex Canvas Studio" style="width: 100%; height: 100%; object-fit: contain;" />',
+    runeColor: '#FF6B9D',
+    description: 'A mystical pixel art and drawing studio with professional tools, layers, and palettes',
+    component: createHexCanvasApp,
+    defaultWidth: 1400,
+    defaultHeight: 850,
+    singleton: false // Multiple canvases allowed
   }
 ];
 

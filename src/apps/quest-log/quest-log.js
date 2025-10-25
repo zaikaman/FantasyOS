@@ -389,7 +389,7 @@ function createQuestFormModal(quest = null) {
         </div>
 
         <div class="form-actions">
-          <button type="button" class="modal-close quest-btn-secondary">Cancel</button>
+          <button type="button" class="quest-btn-secondary">Cancel</button>
           <button type="submit" class="quest-btn-primary">${isEdit ? '💾 Save' : '✨ Create Quest'}</button>
         </div>
       </form>

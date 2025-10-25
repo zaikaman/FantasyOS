@@ -64,7 +64,8 @@ html, body {
 .echo-chamber-terminal,
 .games-arcade-icon,
 .spell-tome-reader,
-.bardic-lute-player {
+.bardic-lute-player,
+.hex-canvas-studio {
   position: absolute;
   width: 150px;
   height: auto;
@@ -87,7 +88,8 @@ html, body {
 .echo-chamber-terminal img,
 .games-arcade-icon img,
 .spell-tome-reader img,
-.bardic-lute-player img {
+.bardic-lute-player img,
+.hex-canvas-studio img {
   width: 100%;
   height: auto;
   display: block;
@@ -127,7 +129,8 @@ html, body {
 .echo-chamber-terminal:hover .app-icon-label,
 .games-arcade-icon:hover .app-icon-label,
 .spell-tome-reader:hover .app-icon-label,
-.bardic-lute-player:hover .app-icon-label {
+.bardic-lute-player:hover .app-icon-label,
+.hex-canvas-studio:hover .app-icon-label {
   color: #FFF;
   border-color: rgba(255, 215, 0, 0.6);
   text-shadow: 
@@ -318,6 +321,24 @@ html, body {
 }
 
 .bardic-lute-player:active {
+  transform: scale(0.95) translateY(-2px);
+}
+
+/* Hex Canvas Studio - Column 4, Row 2 */
+.hex-canvas-studio {
+  bottom: calc(80px + 230px * 1); /* 80px base + 1 row */
+  left: calc(50px + 250px * 3); /* Column 4 */
+  animation: float 4.5s ease-in-out infinite;
+  animation-delay: 0.7s;
+}
+
+.hex-canvas-studio:hover {
+  transform: scale(1.08) translateY(-5px);
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.7))
+          drop-shadow(0 0 30px rgba(255, 107, 157, 0.6));
+}
+
+.hex-canvas-studio:active {
   transform: scale(0.95) translateY(-2px);
 }
 
