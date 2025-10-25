@@ -43,10 +43,10 @@ export function createLayerManager(container, layers, currentIndex, onChange) {
         <button class="btn-layer-action" id="btn-duplicate-layer" title="Duplicate Layer">
           📋
         </button>
-        <button class="btn-layer-action" id="btn-merge-down" title="Merge Down">
+        <button class="btn-layer-action" id="btn-merge-down" title="Merge Down" ${currentIndex === 0 ? 'disabled' : ''}>
           ⬇️
         </button>
-        <button class="btn-layer-action" id="btn-delete-layer" title="Delete Layer">
+        <button class="btn-layer-action" id="btn-delete-layer" title="Delete Layer" ${layers.length === 1 ? 'disabled' : ''}>
           🗑️
         </button>
       </div>
@@ -213,13 +213,21 @@ function setupLayerListeners(container, layers, currentIndex, onChange) {
   
   const mergeBtn = container.querySelector('#btn-merge-down');
   mergeBtn.addEventListener('click', () => {
-    if (currentIndex > 0) {
+    if (currentIndex > 0 && layers[currentIndex] && layers[currentIndex - 1]) {
       // Merge current layer with layer below
       const currentLayer = layers[currentIndex];
       const belowLayer = layers[currentIndex - 1];
       
+      // Safety checks
+      if (!currentLayer.pixels || !belowLayer.pixels) {
+        console.error('Layer pixels are undefined');
+        return;
+      }
+      
       // Combine pixels
       for (let y = 0; y < currentLayer.pixels.length; y++) {
+        if (!currentLayer.pixels[y] || !belowLayer.pixels[y]) continue;
+        
         for (let x = 0; x < currentLayer.pixels[y].length; x++) {
           if (currentLayer.pixels[y][x]) {
             belowLayer.pixels[y][x] = currentLayer.pixels[y][x];
