@@ -26,7 +26,7 @@ import '../styles/meditation-chamber.css';
 import '../styles/rune-wizz.css';
 
 import { initDatabase, saveToIndexedDB } from './storage/database.js';
-import { getAllWindows, getAllFiles, getAllNotifications, getAllSettings, deleteAllWindows, getCalendarEvents } from './storage/queries.js';
+import { getAllWindows, getAllFiles, getAllNotifications, getAllSettings, deleteAllWindows, getCalendarEvents, getUnreadNotifications } from './storage/queries.js';
 import { restoreWindowSession, setupAutoSnapshot } from './storage/restore-session.js';
 import { initializeState, subscribe } from './core/state.js';
 import { eventBus, Events } from './core/event-bus.js';
@@ -369,3 +369,14 @@ if (import.meta.env.DEV) {
 
   console.log('[Dev] Debug helpers available at window.__DEBUG__');
 }
+
+// Expose storage queries for apps like RuneWizz
+window.fantasyOS = window.fantasyOS || {};
+window.fantasyOS.storage = {
+  getAllFiles,
+  getAllCalendarEvents: getCalendarEvents,
+  getAllSettings,
+  getUnreadNotifications
+};
+
+console.log('[Main] Storage API exposed at window.fantasyOS.storage');

@@ -212,6 +212,16 @@ export async function closeWindow(windowId) {
     }
   }
 
+  // Call cleanup function if app has one
+  const winEl = getWindowElement(windowId);
+  if (winEl) {
+    const contentEl = winEl.querySelector('.window-content');
+    if (contentEl && contentEl.firstChild && typeof contentEl.firstChild.cleanup === 'function') {
+      console.log('[WindowManager] Calling app cleanup for:', windowId);
+      contentEl.firstChild.cleanup();
+    }
+  }
+
   // Remove from state
   const newWindows = state.windows.filter(w => w.id !== windowId);
   

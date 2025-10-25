@@ -35,8 +35,8 @@ export const appRegistry = [
     runeColor: '#FFD700',
     description: 'Voice-powered AI assistant for complete OS control',
     component: createRuneWizzApp,
-    defaultWidth: 800,
-    defaultHeight: 900,
+    defaultWidth: 500,
+    defaultHeight: 650,
     singleton: true // Only one voice agent at a time
   }
 ];
