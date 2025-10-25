@@ -3,12 +3,6 @@
  * Central registry for all applications in the Enchanted Realm
  */
 
-import {
-  calculatorRune,
-  treasureChestRune,
-  questLogRune,
-  weatherOracleRune
-} from '../assets/runes/app-icons.js';
 import { createTreasureChestApp } from './treasure-chest/treasure-chest.js';
 import { createManaCalculatorApp } from './mana-calculator/mana-calculator.js';
 import { createQuestLogApp } from './quest-log/quest-log.js';
@@ -31,7 +25,7 @@ export const appRegistry = [
   {
     id: 'rune-wizz',
     name: 'RuneWizz Voice Agent',
-    icon: '<img src="/src/assets/RuneWizz.png" alt="RuneWizz Voice Agent" style="width: 100%; height: 100%; object-fit: contain;" />',
+    icon: '🧙',
     runeColor: '#FFD700',
     description: 'Voice-powered AI assistant for complete OS control',
     component: createRuneWizzApp,
@@ -49,7 +43,7 @@ const hiddenApps = [
   {
     id: 'quest-log',
     name: 'Quest Log',
-    icon: questLogRune('#FFD700', 64),
+    icon: '📜',
     runeColor: '#FFD700',
     description: 'Track your adventures and tasks',
     component: createQuestLogApp,
@@ -62,7 +56,7 @@ const hiddenApps = [
   {
     id: 'treasure-chest',
     name: 'Treasure Chest Explorer',
-    icon: treasureChestRune('#FFD700', 64),
+    icon: '💰',
     runeColor: '#FFD700',
     description: 'Browse and manage your scrolls and artifacts',
     component: createTreasureChestApp,
@@ -73,7 +67,7 @@ const hiddenApps = [
   {
     id: 'mana-calculator',
     name: 'Mana Calculator',
-    icon: calculatorRune('#FFD700', 64),
+    icon: '🔢',
     runeColor: '#FFD700',
     description: 'Perform arcane calculations with mystical precision',
     component: createManaCalculatorApp,
@@ -84,7 +78,7 @@ const hiddenApps = [
   {
     id: 'weather-oracle',
     name: 'Wand Weather Oracle',
-    icon: weatherOracleRune('#9D7FF0', 64),
+    icon: '🌤️',
     runeColor: '#9D7FF0',
     description: 'Scry the meteorological fates with mystical prophecies',
     component: createWeatherOracleApp,
@@ -139,7 +133,7 @@ const hiddenApps = [
   {
     id: 'spell-tome-library',
     name: 'Spell Tome Library',
-    icon: '<img src="/src/assets/reader.png" alt="Spell Tome Library" style="width: 100%; height: 100%; object-fit: contain;" />',
+    icon: '📚',
     runeColor: '#FFD700',
     description: 'A mystical library for reading scrolls, grimoires, and ancient texts',
     component: createSpellTomeLibraryApp,
@@ -150,7 +144,7 @@ const hiddenApps = [
   {
     id: 'bardic-lute-player',
     name: 'Bardic Lute Player',
-    icon: '<img src="/src/assets/music.png" alt="Bardic Lute Player" style="width: 100%; height: 100%; object-fit: contain;" />',
+    icon: '🎵',
     runeColor: '#9D7FF0',
     description: 'A mystical music player that searches and plays melodies from across the realms',
     component: createBardicLutePlayerApp,
@@ -161,7 +155,7 @@ const hiddenApps = [
   {
     id: 'hex-canvas',
     name: 'Hex Canvas Studio',
-    icon: '<img src="/src/assets/draw.png" alt="Hex Canvas Studio" style="width: 100%; height: 100%; object-fit: contain;" />',
+    icon: '🎨',
     runeColor: '#FF6B9D',
     description: 'A mystical pixel art and drawing studio with professional tools, layers, and palettes',
     component: createHexCanvasApp,
@@ -172,7 +166,7 @@ const hiddenApps = [
   {
     id: 'meditation-chamber',
     name: 'Meditation Chamber',
-    icon: '<img src="/src/assets/timer.png" alt="Meditation Chamber" style="width: 100%; height: 100%; object-fit: contain;" />',
+    icon: '⏱️',
     runeColor: '#9D7FF0',
     description: 'A mystical Pomodoro timer and focus app with ambient sounds for deep concentration',
     component: createMeditationChamberApp,
