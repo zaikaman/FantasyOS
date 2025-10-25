@@ -62,7 +62,8 @@ html, body {
 .mana-orb,
 .realm-customizer-altar,
 .echo-chamber-terminal,
-.games-arcade-icon {
+.games-arcade-icon,
+.spell-tome-reader {
   position: absolute;
   width: 150px;
   height: auto;
@@ -70,6 +71,10 @@ html, body {
   cursor: pointer;
   transition: transform var(--transition-normal), filter var(--transition-normal);
   filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
 .quest-log-button img,
@@ -79,16 +84,64 @@ html, body {
 .mana-orb img,
 .realm-customizer-altar img,
 .echo-chamber-terminal img,
-.games-arcade-icon img {
+.games-arcade-icon img,
+.spell-tome-reader img {
   width: 100%;
   height: auto;
   display: block;
 }
 
-/* Icon 1: Quest Log - Column 1, Row 1 (Top) */
+/* App Icon Labels */
+.app-icon-label {
+  font-family: 'Cinzel', serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #FFD700;
+  text-align: center;
+  text-shadow: 
+    0 0 10px rgba(255, 215, 0, 0.8),
+    0 2px 4px rgba(0, 0, 0, 0.9),
+    0 0 20px rgba(255, 215, 0, 0.4);
+  letter-spacing: 0.5px;
+  padding: 4px 8px;
+  background: linear-gradient(135deg, rgba(26, 20, 16, 0.85), rgba(40, 30, 20, 0.85));
+  border-radius: 6px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+  transition: all var(--transition-normal);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.6),
+    inset 0 1px 2px rgba(255, 215, 0, 0.1);
+}
+
+/* Label hover effect - brighten on parent hover */
+.quest-log-button:hover .app-icon-label,
+.potion-mixer-notepad:hover .app-icon-label,
+.treasure-chest:hover .app-icon-label,
+.weather-orb:hover .app-icon-label,
+.mana-orb:hover .app-icon-label,
+.realm-customizer-altar:hover .app-icon-label,
+.echo-chamber-terminal:hover .app-icon-label,
+.games-arcade-icon:hover .app-icon-label,
+.spell-tome-reader:hover .app-icon-label {
+  color: #FFF;
+  border-color: rgba(255, 215, 0, 0.6);
+  text-shadow: 
+    0 0 15px rgba(255, 215, 0, 1),
+    0 2px 4px rgba(0, 0, 0, 0.9),
+    0 0 30px rgba(255, 215, 0, 0.6);
+  background: linear-gradient(135deg, rgba(40, 30, 20, 0.95), rgba(60, 45, 30, 0.95));
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.8),
+    inset 0 1px 2px rgba(255, 215, 0, 0.2),
+    0 0 20px rgba(255, 215, 0, 0.3);
+}
+
+/* Icon 1: Quest Log - Column 3, Row 2 (Middle - between Games and Terminal) */
 .quest-log-button {
-  bottom: calc(80px + 230px * 2); /* 80px base + 2 rows */
-  left: 50px;
+  bottom: calc(80px + 230px * 1); /* 80px base + 1 row */
+  left: calc(50px + 250px * 2); /* Column 3 */
   animation: float 3.8s ease-in-out infinite;
   animation-delay: 0.3s;
 }
@@ -226,6 +279,24 @@ html, body {
 }
 
 .games-arcade-icon:active {
+  transform: scale(0.95) translateY(-2px);
+}
+
+/* Spell Tome Library - Top Left */
+.spell-tome-reader {
+  bottom: calc(80px + 230px * 2); /* 80px base + 2 rows */
+  left: 50px; /* Column 1 */
+  animation: float 3.5s ease-in-out infinite;
+  animation-delay: 0.3s;
+}
+
+.spell-tome-reader:hover {
+  transform: scale(1.08) translateY(-5px);
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.7))
+          drop-shadow(0 0 30px rgba(255, 215, 0, 0.6));
+}
+
+.spell-tome-reader:active {
   transform: scale(0.95) translateY(-2px);
 }
 

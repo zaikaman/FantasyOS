@@ -59,6 +59,9 @@ export function initDesktop() {
   // Initialize games arcade icon click handler
   initGamesArcadeIcon();
 
+  // Initialize spell tome reader click handler
+  initSpellTomeReader();
+
   console.log('[Desktop] Initialized');
 }
 
@@ -468,4 +471,42 @@ function initGamesArcadeIcon() {
   });
 
   console.log('[Desktop] Games arcade icon initialized');
+}
+
+/**
+ * Initialize spell tome reader click handler
+ */
+function initSpellTomeReader() {
+  const readerElement = document.getElementById('spell-tome-reader');
+  
+  if (!readerElement) {
+    console.warn('[Desktop] Spell tome reader element not found');
+    return;
+  }
+
+  readerElement.addEventListener('click', () => {
+    console.log('[Desktop] Opening spell tome library...');
+    
+    // Create window for spell tome library app
+    try {
+      createWindow('spell-tome-library');
+      
+      // Emit app launch event
+      eventBus.emit(Events.APP_LAUNCHED, {
+        appId: 'spell-tome-library',
+        appName: 'Spell Tome Library',
+        timestamp: Date.now()
+      });
+      
+      // Visual feedback
+      readerElement.style.transform = 'scale(0.95) translateY(-2px)';
+      setTimeout(() => {
+        readerElement.style.transform = '';
+      }, 150);
+    } catch (error) {
+      console.error('[Desktop] Failed to open spell tome library:', error);
+    }
+  });
+
+  console.log('[Desktop] Spell tome reader initialized');
 }

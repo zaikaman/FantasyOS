@@ -313,7 +313,7 @@
   position: absolute;
   width: 8px;
   height: 8px;
-  background: radial-gradient(circle, #ffd700, #ff8c00);
+  background: radial-gradient(circle, var(--color-gold), #ff8c00);
   border-radius: 50%;
   animation: sparkle-burst 1s ease-out forwards;
   pointer-events: none;

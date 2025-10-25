@@ -19,6 +19,7 @@ import '../styles/clock-tower.css';
 import '../styles/modal.css';
 import '../styles/echo-chamber.css';
 import '../styles/games-arcade.css';
+import '../styles/spell-tome-library.css';
 
 import { initDatabase, saveToIndexedDB } from './storage/database.js';
 import { getAllWindows, getAllFiles, getAllNotifications, getAllSettings, deleteAllWindows, getCalendarEvents } from './storage/queries.js';

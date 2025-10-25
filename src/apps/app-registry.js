@@ -17,6 +17,7 @@ import { createPotionMixerApp } from './potion-mixer/potion-mixer.js';
 import { createRealmCustomizerApp } from './realm-customizer/realm-customizer.js';
 import { createEchoChamberApp } from './echo-chamber/echo-chamber.js';
 import { createGamesArcadeApp } from './games-arcade/games-arcade.js';
+import { createSpellTomeLibraryApp } from './spell-tome-library/spell-tome-library.js';
 
 /**
  * Application registry
@@ -118,6 +119,17 @@ const hiddenApps = [
     defaultWidth: 1000,
     defaultHeight: 700,
     singleton: true // Only one arcade at a time
+  },
+  {
+    id: 'spell-tome-library',
+    name: 'Spell Tome Library',
+    icon: '<img src="/src/assets/reader.png" alt="Spell Tome Library" style="width: 100%; height: 100%; object-fit: contain;" />',
+    runeColor: '#FFD700',
+    description: 'A mystical library for reading scrolls, grimoires, and ancient texts',
+    component: createSpellTomeLibraryApp,
+    defaultWidth: 1100,
+    defaultHeight: 750,
+    singleton: false // Multiple instances allowed
   }
 ];
 

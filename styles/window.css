@@ -539,7 +539,7 @@
 
 /* Resize handle hover feedback */
 .window-resize-handle:hover {
-  background: rgba(218, 165, 32, 0.2);
+  background: rgba(var(--color-gold-rgb), 0.2);
 }
 
 /* Window is being dragged */
@@ -611,7 +611,7 @@
 }
 
 .window:focus:not(.active) {
-  outline-color: rgba(218, 165, 32, 0.5);
+  outline-color: rgba(var(--color-gold-rgb), 0.5);
 }
 
 /* Responsive behavior for small screens */

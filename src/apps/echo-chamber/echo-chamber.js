@@ -32,10 +32,10 @@ export function createEchoChamberApp(windowEl) {
   // Create output pane
   const output = document.createElement('pre');
   output.className = 'echo-output';
-  output.innerHTML = `<span class="echo-welcome">╔═══════════════════════════════════════════════════════════╗
-║  🜏  THE ECHO CHAMBER OF RUNESHELL  🜏                      ║
-║  "Where words become spells and commands bend reality"    ║
-╚═══════════════════════════════════════════════════════════╝
+  output.innerHTML = `<div class="echo-banner">
+  <div class="echo-banner-title">🜏 THE ECHO CHAMBER OF RUNESHELL 🜏</div>
+  <div class="echo-banner-subtitle">"Where words become spells and commands bend reality"</div>
+</div>
 
 <span class="echo-info">⚡ AI POWERS AVAILABLE:</span>
 <span class="echo-dim">• Scry weather across realms (e.g. "weather in Tokyo")
@@ -51,8 +51,7 @@ export function createEchoChamberApp(windowEl) {
 • Try "speak goblin" for chaotic error messages
 • Ask "what can you do" for more guidance</span>
 
-Type thy will, seeker... or simply greet me! ✨
-</span>`;
+Type thy will, seeker... or simply greet me! ✨`;
   
   // Create input container with rune decoration
   const inputContainer = document.createElement('div');
@@ -423,16 +422,17 @@ async function handleWeather(location, output) {
   
   const data = await response.json();
   const forecast = `
-<span class="echo-success">╔════════════════════════════════════════════╗
-║  🌤️  METEOROLOGICAL PROPHECY           
-╠════════════════════════════════════════════╣
-║  Location: ${data.location.name}, ${data.location.country}
-║  The veil parts: ${data.current.condition.text}
-║  Temperature: ${data.current.temp_f}°F (${data.current.temp_c}°C)
-║  Humidity: ${data.current.humidity}% basilisk rain chance
-║  Wind: ${data.current.wind_mph} mph from ${data.current.wind_dir}
-║  Visibility: ${data.current.vis_miles} leagues
-╚════════════════════════════════════════════╝</span>`;
+<div class="echo-card">
+  <div class="echo-card-header">🌤️ METEOROLOGICAL PROPHECY</div>
+  <div class="echo-card-body">
+    <div><strong>Location:</strong> ${data.location.name}, ${data.location.country}</div>
+    <div><strong>The veil parts:</strong> ${data.current.condition.text}</div>
+    <div><strong>Temperature:</strong> ${data.current.temp_f}°F (${data.current.temp_c}°C)</div>
+    <div><strong>Humidity:</strong> ${data.current.humidity}% basilisk rain chance</div>
+    <div><strong>Wind:</strong> ${data.current.wind_mph} mph from ${data.current.wind_dir}</div>
+    <div><strong>Visibility:</strong> ${data.current.vis_miles} leagues</div>
+  </div>
+</div>`;
   
   appendOutput(output, forecast);
 }
@@ -591,29 +591,13 @@ async function handleWebSearch(query, output) {
     
     // Display the answer if available
     if (data.answer) {
-      // Split answer into lines that fit within the box (max 68 chars per line)
-      const answerLines = [];
-      const words = data.answer.split(' ');
-      let currentLine = '';
-      
-      words.forEach(word => {
-        if ((currentLine + ' ' + word).length <= 68) {
-          currentLine += (currentLine ? ' ' : '') + word;
-        } else {
-          if (currentLine) answerLines.push(currentLine);
-          currentLine = word;
-        }
-      });
-      if (currentLine) answerLines.push(currentLine);
-      
-      const formattedLines = answerLines.map(line => `║  ${line.padEnd(68)}`).join('\n');
-      
       const scrollHtml = `
-<span class="echo-scroll">╔════════════════════════════════════════════════════════════════════════╗
-║  📖 FORBIDDEN KNOWLEDGE FROM THE ETHER                                 ║
-╠════════════════════════════════════════════════════════════════════════╣
-${formattedLines}
-╚════════════════════════════════════════════════════════════════════════╝</span>`;
+<div class="echo-card">
+  <div class="echo-card-header">📖 FORBIDDEN KNOWLEDGE FROM THE ETHER</div>
+  <div class="echo-card-body">
+    ${data.answer}
+  </div>
+</div>`;
       appendOutput(output, scrollHtml);
     }
     
@@ -653,20 +637,21 @@ async function handleQuestLog(output) {
     'Forbidden text called'
   ];
   
-  let questList = '<span class="echo-success">╔════════════════════════════════════════════╗\n';
-  questList += '║  📖 QUEST LOG - THY SACRED SCROLLS        ║\n';
-  questList += '╠════════════════════════════════════════════╣\n';
+  let questList = '<div class="echo-card">\n';
+  questList += '  <div class="echo-card-header">📖 QUEST LOG - THY SACRED SCROLLS</div>\n';
+  questList += '  <div class="echo-card-body">\n';
   
   files.slice(0, 10).forEach((file, i) => {
     const prefix = lorePrefixes[Math.floor(Math.random() * lorePrefixes.length)];
-    questList += `║  ${i + 1}. ${prefix} "${file.name}"\n`;
+    questList += `    <div>${i + 1}. ${prefix} "${file.name}"</div>\n`;
   });
   
   if (files.length > 10) {
-    questList += `║  ... and ${files.length - 10} more hidden scrolls\n`;
+    questList += `    <div>... and ${files.length - 10} more hidden scrolls</div>\n`;
   }
   
-  questList += '╚════════════════════════════════════════════╝</span>';
+  questList += '  </div>\n';
+  questList += '</div>';
   appendOutput(output, questList);
 }
 
@@ -776,26 +761,26 @@ function showError(output, message) {
     ];
     const limerick = limericks[Math.floor(Math.random() * limericks.length)];
     
-    const goblinArt = `<span class="echo-error">
-    ⚠️  GOBLIN ERROR DETECTED  ⚠️
-    
-       /\\_/\\  
-      ( o.o ) 
-       > ^ <
-    
-${limerick}
-</span>`;
-    appendOutput(output, goblinArt);
+    const goblinHtml = `<div class="echo-card echo-card-error">
+  <div class="echo-card-header">⚠️ GOBLIN ERROR DETECTED ⚠️</div>
+  <div class="echo-card-body">
+    <pre style="margin: 0; font-size: 1.2em; text-align: center;">
+   /\\_/\\  
+  ( o.o ) 
+   > ^ <
+    </pre>
+    <div style="margin-top: 1rem; white-space: pre-line;">${limerick}</div>
+  </div>
+</div>`;
+    appendOutput(output, goblinHtml);
   } else {
-    const errorArt = `<span class="echo-error">
-╔═══════════════════════════════════════════════╗
-║     ⚠️     THERE'S BEEN A PROBLEM     ⚠️     ║
-╠═══════════════════════════════════════════════╣
-║  "${message}"                          ║
-║                                               ║
-║  Thy words twist like a troll's tongue!       ║
-╚═══════════════════════════════════════════════╝
-</span>`;
-    appendOutput(output, errorArt);
+    const errorHtml = `<div class="echo-card echo-card-error">
+  <div class="echo-card-header">⚠️ THERE'S BEEN A PROBLEM ⚠️</div>
+  <div class="echo-card-body">
+    <div style="margin-bottom: 0.5rem;">${message}</div>
+    <div style="font-style: italic; opacity: 0.8;">Thy words twist like a troll's tongue!</div>
+  </div>
+</div>`;
+    appendOutput(output, errorHtml);
   }
 }

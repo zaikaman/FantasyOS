@@ -164,7 +164,7 @@
 .display-value {
   font-size: 34px;
   font-weight: 700;
-  color: #ffd700;
+  color: var(--color-gold);
   font-family: 'Courier New', monospace;
   text-shadow: 
     0 0 20px rgba(255, 215, 0, 0.8),
@@ -236,7 +236,7 @@
     0 3px 10px rgba(0, 0, 0, 0.6),
     inset 0 1px 0 rgba(255, 215, 0, 0.3);
   transform: translateY(-2px);
-  color: #ffd700;
+  color: var(--color-gold);
 }
 
 .calc-btn:hover::before {
@@ -265,7 +265,7 @@
 /* Operator Buttons */
 .btn-operator {
   background: linear-gradient(135deg, #654321 0%, #4d3827 100%);
-  color: #ffd700;
+  color: var(--color-gold);
   font-size: 24px;
   font-weight: 700;
   border-color: #8b6f47;
@@ -289,7 +289,7 @@
 
 .btn-function:hover {
   background: linear-gradient(135deg, #5d4837 0%, #4d3827 100%);
-  color: #ffd700;
+  color: var(--color-gold);
 }
 
 /* Equals Button (Cast Spell) */
@@ -312,7 +312,7 @@
 
 .btn-equals:hover {
   background: linear-gradient(135deg, #9b7f57 0%, #755431 100%);
-  border-color: #ffd700;
+  border-color: var(--color-gold);
   box-shadow: 
     0 0 40px rgba(255, 215, 0, 0.8),
     0 0 60px rgba(212, 175, 55, 0.6),
