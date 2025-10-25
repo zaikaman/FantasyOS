@@ -1,6 +1,8 @@
 /**
- * Game Fonts
+ * Game Fonts - Fantasy Theme
  */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=MedievalSharp&family=Uncial+Antiqua&display=swap');
+
 @font-face {
     font-family: "Esteban";
     font-style: normal;
@@ -14,11 +16,11 @@
  * Properties
  */
 :root {
-    --main-color: #0588b2;
-    --dialog-color: rgba(21, 26, 33, 0.9);
+    --main-color: #ffd700;
+    --dialog-color: rgba(45, 80, 22, 0.95);
 
-    --main-font: "Helvetica Nueue", Helvetica, Arial, sans-serif;
-    --title-font: "Esteban", Georgia, serif;
+    --main-font: "Crimson Text", "Cinzel", "Helvetica Nueue", Helvetica, Arial, sans-serif;
+    --title-font: "Cinzel", "MedievalSharp", "Esteban", Georgia, serif;
 
     --border-radius: 12px;
 
@@ -49,15 +51,28 @@ button {
     padding: 0;
     display: block;
     padding: 4px 8px;
-    background-color: var(--main-color);
-    border: none;
-    box-shadow: 0 0 0 2px var(--main-color), inset 0 0 0 1px black;
+    background: linear-gradient(135deg, rgba(218, 165, 32, 0.8) 0%, rgba(184, 134, 11, 0.8) 100%);
+    border: 2px solid #d4af37;
+    box-shadow: 
+        0 0 0 2px rgba(139, 90, 43, 0.5), 
+        inset 0 0 0 1px rgba(255, 215, 0, 0.3),
+        0 4px 8px rgba(0, 0, 0, 0.5);
     border-radius: 8px;
-    color: black;
+    color: #1a1a2e;
     font-family: var(--main-font);
     font-size: 13px;
+    font-weight: bold;
     text-align: center;
+    text-shadow: 0 1px 2px rgba(255, 255, 255, 0.3);
     cursor: pointer;
+    transition: all 0.3s ease;
+}
+button:hover {
+    background: linear-gradient(135deg, rgba(255, 215, 0, 1) 0%, rgba(218, 165, 32, 1) 100%);
+    box-shadow: 
+        0 0 0 2px #d4af37, 
+        inset 0 0 0 1px rgba(255, 215, 0, 0.5),
+        0 0 15px rgba(255, 215, 0, 0.6);
 }
 
 
@@ -83,6 +98,10 @@ h1 {
     font-size: 48px;
     line-height: 1;
     color: var(--main-color);
+    text-shadow: 
+        0 0 20px rgba(255, 215, 0, 0.6),
+        0 0 40px rgba(157, 127, 240, 0.4),
+        0 4px 8px rgba(0, 0, 0, 0.7);
 }
 .menu,
 .score,

@@ -1,6 +1,8 @@
 /**
- * Game Fonts
+ * Game Fonts - Fantasy Theme
  */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=MedievalSharp&family=Uncial+Antiqua&display=swap');
+
 @font-face {
     font-family: "Gill Sans MT Ext Condensed Bold";
     font-style: normal;
@@ -24,26 +26,32 @@ html, body {
     font-size: 15px;
 }
 html, body, input {
-    color: black;
-    font-family: "Gill Sans MT Ext Condensed Bold";
-    text-shadow: #333 0.1em 0.1em 0.1em;
+    color: #f5e6d3;
+    font-family: "Cinzel", "MedievalSharp", "Gill Sans MT Ext Condensed Bold", serif;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.9);
 }
 
 a {
-    color: #333;
-    text-shadow: #666 0.05em 0.05em 0.05em;
+    color: #ffd700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.6), 0 2px 4px rgba(0, 0, 0, 0.9);
     text-decoration: none;
     outline: none;
-    font-size: 3em
+    font-size: 3em;
+    transition: all 0.3s ease;
 }
 a:hover {
-    color: black;
-    text-shadow: #333 0.05em 0.05em 0.05em;
+    color: #fff8dc;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.9), 0 2px 6px rgba(0, 0, 0, 1);
+    transform: scale(1.05);
 }
 
 input {
-    color: #333;
-    text-shadow: #666 0.05em 0.05em 0.05em;
+    color: #f5e6d3;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+    background: rgba(45, 80, 22, 0.5);
+    border: 2px solid #d4af37;
+    padding: 0.5em;
+    border-radius: 0.3em;
 }
 
 
@@ -88,10 +96,16 @@ input {
     height: 36em;
     margin-top: -18.2em;
     margin-left: -12.7em;
-    border: 0.2em solid #121212;
-    box-shadow: inset 1em 0 #272727, inset -1em 0 #272727,
-                inset 0 1em #272727, inset 0 -1em #BEBEBE;
-    background-color: white;
+    border: 0.3em solid #d4af37;
+    box-shadow: 
+        inset 1em 0 rgba(139, 90, 43, 0.3), 
+        inset -1em 0 rgba(139, 90, 43, 0.3),
+        inset 0 1em rgba(139, 90, 43, 0.3), 
+        inset 0 -1em rgba(157, 127, 240, 0.2),
+        0 0 0 0.2em #8b5a2b,
+        0 10px 30px rgba(0, 0, 0, 0.7),
+        0 0 20px rgba(212, 175, 55, 0.3);
+    background: linear-gradient(180deg, #2d5016 0%, #1a3a0f 100%);
     z-index: 3;
 }
 

@@ -37,9 +37,21 @@ export function createEchoChamberApp(windowEl) {
 ║  "Where words become spells and commands bend reality"    ║
 ╚═══════════════════════════════════════════════════════════╝
 
-Type thy will, seeker... (e.g. "Scry weather in London")
-<span class="echo-dim">💭 I remember our conversations during this session
-   Type "recall" to view memory, "forget" to clear it</span>
+<span class="echo-info">⚡ AI POWERS AVAILABLE:</span>
+<span class="echo-dim">• Scry weather across realms (e.g. "weather in Tokyo")
+• Summon YouTube visions (e.g. "video epic fails")
+• Research arcane knowledge (e.g. "search quantum physics")
+• Generate mystical images (e.g. "generate dragon castle")
+• Compute mana calculations (e.g. "calculate 42 * 137")
+• View thy quest scrolls (e.g. "show my files")</span>
+
+<span class="echo-info">💭 MYSTICAL FEATURES:</span>
+<span class="echo-dim">• I remember our conversations this session
+• Type "recall" to view memory, "forget" to clear it
+• Try "speak goblin" for chaotic error messages
+• Ask "what can you do" for more guidance</span>
+
+Type thy will, seeker... or simply greet me! ✨
 </span>`;
   
   // Create input container with rune decoration
@@ -219,24 +231,57 @@ async function parseCommandIntent(cmd) {
         role: 'system',
         content: `You are a JSON-only API. Parse user commands into JSON objects. ONLY return valid JSON, no other text.
 
-Types: 
-- greeting (no params) - for hi, hello, how are you, casual chat, time/date queries, general questions
-- weather (location) - for weather queries
-- video (query) - for YouTube video searches
-- search (query) - for web searches about complex topics/information that need research
-- quest_log (no params) - for showing files
-- calculation (expression) - for math
-- image (query) - for finding existing images
-- generate_image (prompt) - for AI image generation
+SYSTEM CONTEXT - You are the Echo Chamber Terminal (RuneShell) in FantasyOS, a mystical fantasy desktop environment with the following capabilities:
 
-Use "greeting" for anything that can be answered conversationally (time, date, simple questions).
-Use "search" only for topics that genuinely need web research.
+AVAILABLE APPLICATIONS:
+- Quest Log: Task/file manager for tracking quests and adventures
+- Treasure Chest Explorer: File browser for managing scrolls and artifacts (supports folders)
+- Mana Calculator: Arcane calculator with mystical precision
+- Weather Oracle: Weather forecasting with fantasy-themed prophecies
+- Potion Mixer Notepad: Rich text editor with alchemical animations
+- Realm Customizer Altar: Settings/theme customizer for the desktop
+- Echo Chamber Terminal (you): AI-powered command terminal
+
+DATA STORAGE SYSTEM:
+- Files: User-created documents stored in SQLite database (name, type, content, thumbnail, folder_id, size_bytes)
+- Folders: Hierarchical folder structure with parent_id relationships
+- Notifications: System notifications with read/dismissed states
+- Calendar Events: Event tracking with event_date, event_time, event_type, linked_quest_id
+- Settings: User preferences (particle_density, particle_enabled, theme_color)
+- Windows: Active application windows with position, size, z_index, minimized state
+
+SYSTEM CAPABILITIES:
+- Event Bus: Cross-module communication system (file:created, window:opened, notification:created, etc.)
+- Window Manager: Creates, focuses, minimizes, maximizes, closes application windows
+- Reactive State: Global state management with subscriptions
+- Desktop: Particle effects, customizable backgrounds (mossy_green theme)
+- Database: SQLite in browser via sql.js with full CRUD operations
+
+COMMAND TYPES: 
+- greeting (no params) - for hi, hello, how are you, casual chat, time/date queries, general questions about the system
+- weather (location) - for weather queries using WeatherAPI
+- video (query) - for YouTube video searches and embedding
+- search (query) - for web searches about complex topics using Tavily AI
+- quest_log (no params) - for showing files from database
+- calculation (expression) - for math calculations
+- image (query) - for finding existing images via Unsplash
+- generate_image (prompt) - for AI image generation using Runware API
+
+COMMAND INTERPRETATION GUIDELINES:
+- Use "greeting" for: time/date, how are you, what can you do, system capabilities, asking about apps/features
+- Use "quest_log" when users want to see their files, quests, or documents
+- Use "search" only for topics needing external web research (news, facts, complex info)
+- When users mention apps, explain them conversationally via "greeting"
+- For questions about FantasyOS features, use "greeting" and explain the mystical environment
 
 Examples:
 "hi" -> {"type":"greeting"}
 "what time is it" -> {"type":"greeting"}
-"what's the date" -> {"type":"greeting"}
-"how are you" -> {"type":"greeting"}
+"what can you do" -> {"type":"greeting"}
+"tell me about the apps" -> {"type":"greeting"}
+"how does this system work" -> {"type":"greeting"}
+"what is the quest log" -> {"type":"greeting"}
+"show my files" -> {"type":"quest_log"}
 "Scry weather in London" -> {"type":"weather","location":"London"}
 "Summon cat fails" -> {"type":"video","query":"cat fails"}
 "Research latest AI developments" -> {"type":"search","query":"latest AI developments"}
@@ -274,17 +319,54 @@ async function handleGreeting(userMessage, output) {
     const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     
+    // Get system context
+    const files = getAllFiles();
+    const fileCount = files.length;
+    
     // Build messages array with conversation history
     const messages = [
       {
         role: 'system',
-        content: `You are a mystical fantasy terminal assistant in the Echo Chamber of RuneShell. Respond to greetings and questions in a whimsical, medieval fantasy style. Keep responses brief (1-3 sentences) and use fantasy/magic themed language.
+        content: `You are a mystical fantasy terminal assistant in the Echo Chamber of RuneShell within FantasyOS. Respond to greetings and questions in a whimsical, medieval fantasy style. Keep responses brief (2-4 sentences) and use fantasy/magic themed language.
+
+SYSTEM ENVIRONMENT - FantasyOS (Enchanted Realm Shell):
+You are running inside a magical desktop environment with these mystical applications:
+
+📜 Quest Log - Task manager for tracking quests and adventures
+💎 Treasure Chest Explorer - File browser with ${fileCount} scrolls/artifacts stored
+🔮 Mana Calculator - Arcane calculator for mystical computations  
+🌤️ Weather Oracle - Scries meteorological fates across the realms
+🧪 Potion Mixer Notepad - Rich text editor with alchemical animations
+⚗️ Realm Customizer Altar - Customizes desktop themes and particle effects
+⚡ Echo Chamber Terminal (you) - AI-powered RuneShell with these powers:
+  • Weather scrying (WeatherAPI integration)
+  • Video summoning (YouTube search & embed)
+  • Web research (Tavily AI search for knowledge)
+  • Image conjuring (Unsplash + Runware AI generation)
+  • Mana calculations (mathematical sorcery)
+  • Quest log access (view files in database)
+  • Conversational magic (remember session context)
+
+DATA REALMS:
+- SQLite database storing files, folders, notifications, calendar events, settings
+- Reactive state management tracking windows, apps, and desktop environment
+- Event bus for mystical cross-module communication
+
+SPECIAL ABILITIES:
+- Conversation memory during this session ("recall" to view, "forget" to clear)
+- Goblin mode for humorous error messages ("speak goblin")
+- Shadow revelation for debug info ("reveal shadows")
 
 Current date: ${dateStr}
 Current time: ${timeStr}
 
-You have memory of this conversation session. Reference previous exchanges naturally when relevant.
-If asked about time/date, provide it in a fantasy-themed way. For general questions, answer directly and helpfully.`
+When asked about capabilities or features:
+- Explain the magical apps available
+- Mention your AI powers (weather, images, search, videos, calculations)
+- Reference the fantasy theme (scrolls, quests, mana, spells)
+- Keep it mystical but informative
+
+You have memory of this conversation session. Reference previous exchanges naturally when relevant.`
       },
       ...conversationHistory, // Include previous conversation
       {

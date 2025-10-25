@@ -1,6 +1,8 @@
 /**
- * Game Fonts
+ * Game Fonts - Fantasy Theme
  */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=MedievalSharp&family=Uncial+Antiqua&display=swap');
+
 @font-face {
     font-family: "Whimsy TT";
     font-style: normal;
@@ -24,33 +26,42 @@ html, body {
     backface-visibility: hidden;
 }
 html, body, input {
-    font-family: "Whimsy TT";
+    font-family: "Cinzel", "MedievalSharp", "Whimsy TT", serif;
     font-size: 18px;
     line-height: 1.5em;
-    color: white;
+    color: #f5e6d3;
 }
 
 h1 {
     font-size: 6em;
     font-weight: normal;
     text-align: center;
+    color: #ffd700;
+    text-shadow: 
+        0 0 20px rgba(255, 215, 0, 0.8),
+        0 0 40px rgba(157, 127, 240, 0.6),
+        0 4px 8px rgba(0, 0, 0, 0.9);
 }
 h2 {
     font-size: 4.5em;
     text-align: center;
+    color: #ffd700;
+    text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
 }
 
 a {
-    color: rgb(204, 204, 204);
+    color: #d4af37;
     text-decoration: none;
     font-size: 2em;
     line-height: 3rem;
-    transition: all 0.2s;
+    transition: all 0.3s;
     outline: none;
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.5);
 }
     a:hover {
-        color: white;
+        color: #ffd700;
         font-size: 2.5em;
+        text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
     }
 
 
@@ -64,8 +75,15 @@ a {
     margin-left: -16em;
     width: 30em;
     height: 35em;
-    box-shadow: inset 0 0 0 999px rgb(0, 0, 0);
-    border: 1em solid rgba(0, 0, 0, 0.4);
+    background: linear-gradient(135deg, #2d5016 0%, #1a3a0f 100%);
+    box-shadow: 
+        inset 0 0 50px rgba(0, 0, 0, 0.7),
+        0 0 0 4px #8b5a2b,
+        0 0 0 6px #d4af37,
+        0 0 0 8px #8b5a2b,
+        0 10px 30px rgba(0, 0, 0, 0.7);
+    border: 1em solid rgba(139, 90, 43, 0.4);
+    border-radius: 0.5em;
 }
 
 

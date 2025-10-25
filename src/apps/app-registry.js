@@ -16,6 +16,7 @@ import { createWeatherOracleApp } from './weather-oracle/weather-oracle.js';
 import { createPotionMixerApp } from './potion-mixer/potion-mixer.js';
 import { createRealmCustomizerApp } from './realm-customizer/realm-customizer.js';
 import { createEchoChamberApp } from './echo-chamber/echo-chamber.js';
+import { createGamesArcadeApp } from './games-arcade/games-arcade.js';
 
 /**
  * Application registry
@@ -106,6 +107,17 @@ const hiddenApps = [
     defaultWidth: 900,
     defaultHeight: 650,
     singleton: false // Multiple terminals allowed
+  },
+  {
+    id: 'games-arcade',
+    name: 'Mystical Games Arcade',
+    icon: '🎮',
+    runeColor: '#9D7FF0',
+    description: 'Portal to the realm\'s finest collection of mystical games',
+    component: createGamesArcadeApp,
+    defaultWidth: 1000,
+    defaultHeight: 700,
+    singleton: true // Only one arcade at a time
   }
 ];
 

@@ -56,6 +56,9 @@ export function initDesktop() {
   // Initialize echo chamber terminal click handler
   initEchoChamberTerminal();
 
+  // Initialize games arcade icon click handler
+  initGamesArcadeIcon();
+
   console.log('[Desktop] Initialized');
 }
 
@@ -427,4 +430,42 @@ function initEchoChamberTerminal() {
   });
 
   console.log('[Desktop] Echo chamber terminal initialized');
+}
+
+/**
+ * Initialize games arcade icon click handler
+ */
+function initGamesArcadeIcon() {
+  const arcadeElement = document.getElementById('games-arcade-icon');
+  
+  if (!arcadeElement) {
+    console.warn('[Desktop] Games arcade icon element not found');
+    return;
+  }
+
+  arcadeElement.addEventListener('click', () => {
+    console.log('[Desktop] Opening games arcade...');
+    
+    // Create window for games arcade app
+    try {
+      createWindow('games-arcade');
+      
+      // Emit app launch event
+      eventBus.emit(Events.APP_LAUNCHED, {
+        appId: 'games-arcade',
+        appName: 'Mystical Games Arcade',
+        timestamp: Date.now()
+      });
+      
+      // Visual feedback
+      arcadeElement.style.transform = 'scale(0.95) translateY(-2px)';
+      setTimeout(() => {
+        arcadeElement.style.transform = '';
+      }, 150);
+    } catch (error) {
+      console.error('[Desktop] Failed to open games arcade:', error);
+    }
+  });
+
+  console.log('[Desktop] Games arcade icon initialized');
 }

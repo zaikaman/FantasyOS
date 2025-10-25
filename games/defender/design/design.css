@@ -1,6 +1,8 @@
 /**
- * Game Fonts
+ * Game Fonts - Fantasy Theme
  */
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=MedievalSharp&family=Uncial+Antiqua&display=swap');
+
 @font-face {
     font-family: "Battle Beasts";
     font-style: normal;
@@ -27,26 +29,41 @@ html, body {
     color: white;
 }
 html, body, button {
-    font-family: Verdana, Arial, Helvetica, sans-serif;
+    font-family: "Cinzel", "MedievalSharp", Verdana, Arial, Helvetica, sans-serif;
 }
 
 
 a {
-    color: black;
+    color: #ffd700;
     text-decoration: none;
     outline: none;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+    transition: all 0.3s ease;
+}
+a:hover {
+    color: #fff8dc;
+    text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
 }
 
 button {
     padding: 0;
     display: block;
-    border: 1px solid black;
-    color: black;
+    border: 2px solid #d4af37;
+    background: linear-gradient(135deg, rgba(45, 80, 22, 0.8) 0%, rgba(26, 58, 15, 0.8) 100%);
+    color: #f5e6d3;
     font-weight: bold;
     font-size: 12px;
     text-align: center;
     border-radius: 6px;
     cursor: pointer;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+    transition: all 0.3s ease;
+}
+button:hover {
+    background: linear-gradient(135deg, rgba(218, 165, 32, 0.8) 0%, rgba(184, 134, 11, 0.8) 100%);
+    color: #1a1a2e;
+    border-color: #ffd700;
+    box-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
 }
 
 dl {
@@ -74,9 +91,13 @@ h1 {
     right: 0;
     top: -4.2rem;
     margin: 0;
-    font: 85px "Battle Beasts";
+    font: 85px "Battle Beasts", "Cinzel", serif;
     line-height: 1;
-    color: white;
+    color: #ffd700;
+    text-shadow: 
+        0 0 20px rgba(255, 215, 0, 0.8),
+        0 0 40px rgba(157, 127, 240, 0.6),
+        0 4px 8px rgba(0, 0, 0, 0.9);
     z-index: 1001;
 }
 

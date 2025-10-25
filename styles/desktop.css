@@ -61,7 +61,8 @@ html, body {
 .weather-orb,
 .mana-orb,
 .realm-customizer-altar,
-.echo-chamber-terminal {
+.echo-chamber-terminal,
+.games-arcade-icon {
   position: absolute;
   width: 150px;
   height: auto;
@@ -77,7 +78,8 @@ html, body {
 .weather-orb img,
 .mana-orb img,
 .realm-customizer-altar img,
-.echo-chamber-terminal img {
+.echo-chamber-terminal img,
+.games-arcade-icon img {
   width: 100%;
   height: auto;
   display: block;
@@ -209,10 +211,27 @@ html, body {
   transform: scale(0.95) translateY(-2px);
 }
 
+/* Icon 8: Games Arcade - Column 3, Row 1 (Top) */
+.games-arcade-icon {
+  bottom: calc(80px + 230px * 2); /* 80px base + 2 rows */
+  left: calc(50px + 250px * 2); /* Column 3 */
+  animation: float 4.0s ease-in-out infinite;
+  animation-delay: 0.9s;
+}
+
+.games-arcade-icon:hover {
+  transform: scale(1.08) translateY(-5px);
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.7))
+          drop-shadow(0 0 30px rgba(157, 127, 240, 0.6));
+}
+
+.games-arcade-icon:active {
+  transform: scale(0.95) translateY(-2px);
+}
+
 /* Future Icon Positioning Guide:
- * Icon 7 would be: bottom: calc(80px + 230px * 2); left: calc(50px + 250px * 2); (Column 3, Row 1)
- * Icon 8 would be: bottom: calc(80px + 230px * 1); left: calc(50px + 250px * 2); (Column 3, Row 2)
- * Icon 9 would be: bottom: 80px; left: calc(50px + 250px * 2); (Column 3, Row 3)
+ * Icon 9 would be: bottom: calc(80px + 230px * 1); left: calc(50px + 250px * 2); (Column 3, Row 2)
+ * Icon 10 would be: bottom: calc(80px + 230px * 2); left: calc(50px + 250px * 3); (Column 4, Row 1)
  * And so on...
  */
 
