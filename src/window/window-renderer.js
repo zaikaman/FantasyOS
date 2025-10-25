@@ -44,6 +44,8 @@ export function createWindowElement(window) {
     windowEl.classList.add('minimized');
   }
 
+  console.log('[WindowRenderer] Created window with z-index:', window.z_index);
+
   // Create window structure
   windowEl.innerHTML = `
     <div class="window-titlebar" data-drag-handle>

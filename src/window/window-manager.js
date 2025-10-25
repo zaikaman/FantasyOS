@@ -232,6 +232,9 @@ export async function closeWindow(windowId) {
     await removeWindow(windowEl);
   }
 
+  // Update clock tower visibility after closing
+  updateClockTowerVisibility();
+
   // Focus next window
   if (newActiveWindowId) {
     const nextWindowEl = getWindowElement(newActiveWindowId);
@@ -494,6 +497,9 @@ export function toggleMaximizeWindow(windowId) {
       height: restoreData.height
     });
 
+    // Show clock tower if no other windows are maximized
+    updateClockTowerVisibility();
+
     // Emit event
     eventBus.emit(Events.WINDOW_RESTORED, { windowId });
 
@@ -523,10 +529,50 @@ export function toggleMaximizeWindow(windowId) {
 
     setState({ windows: newWindows });
 
+    // Hide clock tower when maximized
+    hideClockTower();
+
     // Emit event
     eventBus.emit(Events.WINDOW_MAXIMIZED, { windowId });
 
     console.log('[WindowManager] Window maximized:', windowId);
+  }
+}
+
+/**
+ * Hide clock tower HUD
+ */
+function hideClockTower() {
+  const clockTower = document.getElementById('clock-tower');
+  if (clockTower) {
+    clockTower.classList.add('hidden-for-maximized');
+  }
+}
+
+/**
+ * Show clock tower HUD
+ */
+function showClockTower() {
+  const clockTower = document.getElementById('clock-tower');
+  if (clockTower) {
+    clockTower.classList.remove('hidden-for-maximized');
+  }
+}
+
+/**
+ * Update clock tower visibility based on maximized windows
+ */
+function updateClockTowerVisibility() {
+  const state = getState();
+  const hasMaximizedWindow = state.windows.some(w => {
+    const el = getWindowElement(w.id);
+    return el && isWindowMaximized(el);
+  });
+
+  if (hasMaximizedWindow) {
+    hideClockTower();
+  } else {
+    showClockTower();
   }
 }
 

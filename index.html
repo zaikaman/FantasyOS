@@ -87,54 +87,54 @@
 
       <!-- Desktop workspace (windows render here) -->
       <div id="desktop" class="desktop-workspace"></div>
-    </div>
 
-    <!-- Arcane Clock Tower HUD - Top Right Corner -->
-    <div id="clock-tower" class="clock-tower">
-      <div class="tower-structure">
-        <div class="tower-top"></div>
-        <div class="tower-body">
-          <div class="clock-face">
-            <svg class="clock-dial" viewBox="0 0 100 100">
-              <!-- Clock markings -->
-              <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(218, 165, 32, 0.3)" stroke-width="0.5"/>
-              <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(218, 165, 32, 0.5)" stroke-width="1"/>
-              <!-- Hour markers -->
-              <line x1="50" y1="8" x2="50" y2="15" stroke="var(--color-accent)" stroke-width="2"/>
-              <line x1="85" y1="25" x2="80" y2="30" stroke="var(--color-accent)" stroke-width="1.5"/>
-              <line x1="92" y1="50" x2="85" y2="50" stroke="var(--color-accent)" stroke-width="2"/>
-              <line x1="85" y1="75" x2="80" y2="70" stroke="var(--color-accent)" stroke-width="1.5"/>
-              <line x1="50" y1="92" x2="50" y2="85" stroke="var(--color-accent)" stroke-width="2"/>
-              <line x1="15" y1="75" x2="20" y2="70" stroke="var(--color-accent)" stroke-width="1.5"/>
-              <line x1="8" y1="50" x2="15" y2="50" stroke="var(--color-accent)" stroke-width="2"/>
-              <line x1="15" y1="25" x2="20" y2="30" stroke="var(--color-accent)" stroke-width="1.5"/>
-              <!-- Center point -->
-              <circle cx="50" cy="50" r="3" fill="var(--color-accent)"/>
-            </svg>
-            <!-- Clock hands -->
-            <div class="clock-hand hour-hand" id="hour-hand"></div>
-            <div class="clock-hand minute-hand" id="minute-hand"></div>
-            <div class="clock-hand second-hand" id="second-hand"></div>
+      <!-- Arcane Clock Tower HUD - Top Right Corner -->
+      <div id="clock-tower" class="clock-tower">
+        <div class="tower-structure">
+          <div class="tower-top"></div>
+          <div class="tower-body">
+            <div class="clock-face">
+              <svg class="clock-dial" viewBox="0 0 100 100">
+                <!-- Clock markings -->
+                <circle cx="50" cy="50" r="48" fill="none" stroke="rgba(218, 165, 32, 0.3)" stroke-width="0.5"/>
+                <circle cx="50" cy="50" r="45" fill="none" stroke="rgba(218, 165, 32, 0.5)" stroke-width="1"/>
+                <!-- Hour markers -->
+                <line x1="50" y1="8" x2="50" y2="15" stroke="var(--color-accent)" stroke-width="2"/>
+                <line x1="85" y1="25" x2="80" y2="30" stroke="var(--color-accent)" stroke-width="1.5"/>
+                <line x1="92" y1="50" x2="85" y2="50" stroke="var(--color-accent)" stroke-width="2"/>
+                <line x1="85" y1="75" x2="80" y2="70" stroke="var(--color-accent)" stroke-width="1.5"/>
+                <line x1="50" y1="92" x2="50" y2="85" stroke="var(--color-accent)" stroke-width="2"/>
+                <line x1="15" y1="75" x2="20" y2="70" stroke="var(--color-accent)" stroke-width="1.5"/>
+                <line x1="8" y1="50" x2="15" y2="50" stroke="var(--color-accent)" stroke-width="2"/>
+                <line x1="15" y1="25" x2="20" y2="30" stroke="var(--color-accent)" stroke-width="1.5"/>
+                <!-- Center point -->
+                <circle cx="50" cy="50" r="3" fill="var(--color-accent)"/>
+              </svg>
+              <!-- Clock hands -->
+              <div class="clock-hand hour-hand" id="hour-hand"></div>
+              <div class="clock-hand minute-hand" id="minute-hand"></div>
+              <div class="clock-hand second-hand" id="second-hand"></div>
+            </div>
+            <div class="tower-runes">
+              <div class="rune">◈</div>
+              <div class="rune">◆</div>
+              <div class="rune">◈</div>
+            </div>
           </div>
-          <div class="tower-runes">
-            <div class="rune">◈</div>
-            <div class="rune">◆</div>
-            <div class="rune">◈</div>
-          </div>
+          <div class="tower-base"></div>
         </div>
-        <div class="tower-base"></div>
+        
+        <!-- Time Display -->
+        <div class="time-display" id="time-display">
+          <div class="time-text">00:00</div>
+          <div class="date-text">Loading...</div>
+        </div>
+        
+        <!-- Calendar Toggle -->
+        <button class="calendar-toggle" id="calendar-toggle" title="View Calendar of Moons">
+          🌙
+        </button>
       </div>
-      
-      <!-- Time Display -->
-      <div class="time-display" id="time-display">
-        <div class="time-text">00:00</div>
-        <div class="date-text">Loading...</div>
-      </div>
-      
-      <!-- Calendar Toggle -->
-      <button class="calendar-toggle" id="calendar-toggle" title="View Calendar of Moons">
-        🌙
-      </button>
     </div>
 
     <!-- Calendar Modal (Hidden by default) -->

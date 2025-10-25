@@ -143,7 +143,7 @@
     /* Strong gold glow */
     0 0 40px rgba(212, 175, 55, 0.5),
     0 0 60px rgba(212, 175, 55, 0.3);
-  z-index: var(--z-window-active);
+  /* z-index is managed by JavaScript inline styles */
 }
 
 /* Title Bar - Ornate carved wood header */
