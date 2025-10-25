@@ -19,10 +19,10 @@ import { eventBus, Events } from '../../core/event-bus.js';
 
 // Available backgrounds
 const BACKGROUNDS = [
-  { id: 'background', name: 'Enchanted Forest', path: '../src/assets/background.png' },
-  { id: 'background2', name: 'Mystical Mountains', path: '../src/assets/background2.png' },
-  { id: 'background3', name: 'Arcane Depths', path: '../src/assets/background3.png' },
-  { id: 'background4', name: 'Celestial Heights', path: '../src/assets/background4.png' }
+  { id: 'background', name: 'Enchanted Forest', path: '/src/assets/background.png' },
+  { id: 'background2', name: 'Mystical Mountains', path: '/src/assets/background2.png' },
+  { id: 'background3', name: 'Arcane Depths', path: '/src/assets/background3.png' },
+  { id: 'background4', name: 'Celestial Heights', path: '/src/assets/background4.png' }
 ];
 
 // Theme configurations
@@ -73,7 +73,10 @@ export function createRealmCustomizerApp(windowEl) {
   // Load current settings
   const currentBackground = getSetting('realm_background') || 'background';
   const currentTheme = getSetting('realm_theme') || 'mossy';
-  const currentParticleDensity = getSetting('particle_density') !== null ? getSetting('particle_density') : 2;
+  const particleDensitySetting = getSetting('particle_density');
+  const currentParticleDensity = particleDensitySetting !== null && particleDensitySetting !== undefined 
+    ? parseInt(particleDensitySetting, 10) 
+    : 2;
 
   // Create altar frame
   const altarFrame = document.createElement('div');

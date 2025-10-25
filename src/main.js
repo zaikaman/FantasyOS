@@ -123,10 +123,14 @@ async function init() {
     if (canvas) {
       initParticles(canvas);
 
-      // Apply particle settings
-      const particleDensity = settings.particle_density !== undefined ? settings.particle_density : 2;
+      // Apply particle settings - ensure density is a number
+      const particleDensitySetting = settings.particle_density;
+      const particleDensity = particleDensitySetting !== undefined && particleDensitySetting !== null
+        ? parseInt(particleDensitySetting, 10)
+        : 2;
       const particlesEnabled = settings.particle_enabled !== false;
 
+      console.log('[Main] Particle density:', particleDensity, 'Enabled:', particlesEnabled);
       setParticleDensity(particleDensity);
 
       if (particlesEnabled) {
@@ -211,7 +215,7 @@ function applyRealmSettings(settings) {
   const background = settings.realm_background || 'background';
   const desktopBg = document.querySelector('.desktop-background');
   if (desktopBg) {
-    desktopBg.style.backgroundImage = `url('../src/assets/${background}.png')`;
+    desktopBg.style.backgroundImage = `url('/src/assets/${background}.png')`;
   }
 
   // Apply theme
