@@ -68,7 +68,7 @@ async function generateOptimizedQueries(query) {
         messages: [
           {
             role: 'system',
-            content: 'You are a music search expert. Given a music search query, generate 2-3 optimized YouTube search queries that will find the best official music videos. Focus on official uploads, popular versions, and correct artist/song names. Return ONLY a JSON array of strings, nothing else.'
+            content: 'You are a music search expert. Given a music search query, generate 2-3 optimized YouTube search queries that will find the best official music videos on youtube.com (NOT music.youtube.com). Focus on official uploads, popular versions, and correct artist/song names. Return ONLY a JSON array of strings, nothing else.'
           },
           {
             role: 'user',
@@ -130,12 +130,15 @@ async function searchWithTavily(query) {
       return [];
     }
 
-    // Extract ONLY YouTube links
+    // Extract ONLY YouTube links (exclude YouTube Music)
     const musicResults = data.results
       .filter(result => {
         if (!result.url) return false;
         const url = result.url.toLowerCase();
-        return url.includes('youtube.com') || url.includes('youtu.be');
+        // Include youtube.com and youtu.be, but exclude music.youtube.com
+        const isYouTube = url.includes('youtube.com') || url.includes('youtu.be');
+        const isYouTubeMusic = url.includes('music.youtube.com');
+        return isYouTube && !isYouTubeMusic;
       })
       .map(result => ({
         title: cleanTitle(result.title || 'Unknown'),
@@ -171,7 +174,7 @@ async function searchWithAI(query) {
         messages: [
           {
             role: 'system',
-            content: 'You are a music database expert with knowledge of YouTube music videos. Given a song/artist query, provide realistic YouTube video data. Return ONLY a valid JSON array of objects with "title" (Full song name - Artist name), "videoId" (11-character YouTube video ID), and "description" (brief description). Return 5-8 results. Make the video IDs realistic and plausible. IMPORTANT: Return ONLY valid JSON, no other text.'
+            content: 'You are a music database expert with knowledge of YouTube music videos. Given a song/artist query, provide realistic YouTube video data from youtube.com (NOT music.youtube.com). Return ONLY a valid JSON array of objects with "title" (Full song name - Artist name), "videoId" (11-character YouTube video ID), and "description" (brief description). Return 5-8 results. Make the video IDs realistic and plausible. IMPORTANT: Return ONLY valid JSON, no other text.'
           },
           {
             role: 'user',
