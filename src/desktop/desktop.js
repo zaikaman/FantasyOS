@@ -35,6 +35,9 @@ export function initDesktop() {
   // Initialize mana calculator orb click handler
   initManaCalculatorOrb();
 
+  // Initialize weather oracle orb click handler
+  initWeatherOracleOrb();
+
   console.log('[Desktop] Initialized');
 }
 
@@ -254,4 +257,42 @@ function initManaCalculatorOrb() {
   });
 
   console.log('[Desktop] Mana calculator orb initialized');
+}
+
+/**
+ * Initialize weather oracle orb click handler
+ */
+function initWeatherOracleOrb() {
+  const orbElement = document.getElementById('weather-oracle-orb');
+  
+  if (!orbElement) {
+    console.warn('[Desktop] Weather oracle orb element not found');
+    return;
+  }
+
+  orbElement.addEventListener('click', () => {
+    console.log('[Desktop] Opening weather oracle...');
+    
+    // Create window for weather oracle app
+    try {
+      createWindow('weather-oracle');
+      
+      // Emit app launch event
+      eventBus.emit(Events.APP_LAUNCHED, {
+        appId: 'weather-oracle',
+        appName: 'Wand Weather Oracle',
+        timestamp: Date.now()
+      });
+      
+      // Visual feedback
+      orbElement.style.transform = 'scale(0.95) translateY(-2px)';
+      setTimeout(() => {
+        orbElement.style.transform = '';
+      }, 150);
+    } catch (error) {
+      console.error('[Desktop] Failed to open weather oracle:', error);
+    }
+  });
+
+  console.log('[Desktop] Weather oracle orb initialized');
 }

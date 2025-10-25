@@ -6,11 +6,13 @@
 import {
   calculatorRune,
   treasureChestRune,
-  questLogRune
+  questLogRune,
+  weatherOracleRune
 } from '../assets/runes/app-icons.js';
 import { createTreasureChestApp } from './treasure-chest/treasure-chest.js';
 import { createManaCalculatorApp } from './mana-calculator/mana-calculator.js';
 import { createQuestLogApp } from './quest-log/quest-log.js';
+import { createWeatherOracleApp } from './weather-oracle/weather-oracle.js';
 
 /**
  * Application registry
@@ -56,6 +58,17 @@ const hiddenApps = [
     component: createManaCalculatorApp,
     defaultWidth: 480,
     defaultHeight: 720,
+    singleton: true // Only one instance allowed
+  },
+  {
+    id: 'weather-oracle',
+    name: 'Wand Weather Oracle',
+    icon: weatherOracleRune('#9D7FF0', 64),
+    runeColor: '#9D7FF0',
+    description: 'Scry the meteorological fates with mystical prophecies',
+    component: createWeatherOracleApp,
+    defaultWidth: 700,
+    defaultHeight: 800,
     singleton: true // Only one instance allowed
   }
 ];

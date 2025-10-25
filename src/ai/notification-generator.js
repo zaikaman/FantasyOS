@@ -95,8 +95,7 @@ async function callOpenAI(prompt) {
           content: prompt
         }
       ],
-      temperature: 0.9,
-      max_tokens: 150
+      temperature: 0.9
     })
   });
 

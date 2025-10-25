@@ -10,6 +10,7 @@ import '../styles/window.css';
 import '../styles/treasure-chest.css';
 import '../styles/mana-calculator.css';
 import '../styles/quest-log.css';
+import '../styles/weather-oracle.css';
 import '../styles/popup-notifications.css';
 import '../styles/taskbar.css';
 
