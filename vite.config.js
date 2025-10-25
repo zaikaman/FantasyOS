@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import { visualizer } from 'rollup-plugin-visualizer';
+import { tavilyProxyPlugin } from './vite-plugins/tavily-proxy.js';
 
 export default defineConfig(({ mode }) => ({
   // Base URL for deployment
@@ -48,6 +49,7 @@ export default defineConfig(({ mode }) => ({
 
   // Plugins
   plugins: [
+    tavilyProxyPlugin(),
     mode === 'analyze' &&
       visualizer({
         open: true,

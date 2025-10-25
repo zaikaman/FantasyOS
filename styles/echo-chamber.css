@@ -1,0 +1,315 @@
+/**
+ * Echo Chamber Terminal Styles
+ * CRT scanlines, obsidian background, emerald/red glows
+ */
+
+.echo-chamber-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  background-color: #0a0a0a; /* Obsidian black */
+  font-family: var(--font-family-mono);
+  font-size: 14px;
+  line-height: 1.5;
+  color: #00ff88; /* Emerald green */
+  position: relative;
+  overflow: hidden;
+  border: 2px solid rgba(0, 255, 136, 0.3);
+  border-radius: var(--radius-md);
+}
+
+/* CRT Scanline Animation */
+.echo-chamber-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 50%,
+    rgba(0, 255, 136, 0.02) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 2;
+  animation: scanlines 8s linear infinite;
+}
+
+/* Flickering CRT effect */
+.echo-chamber-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 255, 136, 0.03);
+  pointer-events: none;
+  z-index: 1;
+  animation: flicker 0.15s infinite;
+}
+
+@keyframes scanlines {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 0 100%;
+  }
+}
+
+@keyframes flicker {
+  0% {
+    opacity: 0.97;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.96;
+  }
+}
+
+/* Output pane */
+.echo-output {
+  flex: 1;
+  padding: 1.5rem;
+  margin: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background: rgba(0, 0, 0, 0.5);
+  color: #00ff88;
+  font-family: var(--font-family-mono);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  text-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
+  z-index: 3;
+  position: relative;
+}
+
+/* Scrollbar styling */
+.echo-output::-webkit-scrollbar {
+  width: 10px;
+}
+
+.echo-output::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.5);
+  border-left: 1px solid rgba(0, 255, 136, 0.2);
+}
+
+.echo-output::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 136, 0.4);
+  border-radius: 5px;
+}
+
+.echo-output::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 136, 0.6);
+}
+
+/* Input container */
+.echo-input-container {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: rgba(0, 0, 0, 0.8);
+  border-top: 2px solid rgba(0, 255, 136, 0.3);
+  z-index: 3;
+  position: relative;
+}
+
+/* Etched rune */
+.echo-rune {
+  font-size: 1.5rem;
+  color: #00ff88;
+  margin-right: 0.75rem;
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
+  animation: pulse-rune 2s ease-in-out infinite;
+}
+
+@keyframes pulse-rune {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.8);
+    transform: scale(1);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(0, 255, 136, 1);
+    transform: scale(1.1);
+  }
+}
+
+/* Input field */
+.echo-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: #00ff88;
+  font-family: var(--font-family-mono);
+  font-size: 14px;
+  text-shadow: 0 0 5px rgba(0, 255, 136, 0.5);
+  caret-color: #00ff88;
+}
+
+.echo-input::placeholder {
+  color: rgba(0, 255, 136, 0.4);
+  font-style: italic;
+}
+
+/* Output text styles */
+.echo-welcome {
+  color: #5dd8ed;
+  text-shadow: 0 0 8px rgba(93, 216, 237, 0.6);
+  font-weight: bold;
+}
+
+.echo-prompt {
+  color: #ffaa00;
+  text-shadow: 0 0 5px rgba(255, 170, 0, 0.6);
+}
+
+.echo-success {
+  color: #00ff88;
+  text-shadow: 0 0 8px rgba(0, 255, 136, 0.7);
+}
+
+.echo-error {
+  color: #ff4444;
+  text-shadow: 0 0 10px rgba(255, 68, 68, 0.8);
+  font-weight: bold;
+}
+
+.echo-loading {
+  color: #9d7ff0;
+  animation: pulse 1.5s ease-in-out infinite;
+}
+
+.echo-info {
+  color: #5dd8ed;
+}
+
+.echo-scroll {
+  color: #d4af37;
+  text-shadow: 0 0 5px rgba(212, 175, 55, 0.5);
+  font-style: italic;
+  background: rgba(212, 175, 55, 0.05);
+  padding: 0.5rem;
+  border-left: 3px solid rgba(212, 175, 55, 0.3);
+  display: block;
+  margin: 0.5rem 0;
+}
+
+.echo-whisper {
+  color: #b19cd9;
+  font-style: italic;
+  opacity: 0.8;
+}
+
+/* Links */
+.echo-output a {
+  color: #5dd8ed;
+  text-decoration: underline;
+  transition: all 0.2s;
+}
+
+.echo-output a:hover {
+  color: #8ef0ff;
+  text-shadow: 0 0 10px rgba(142, 240, 255, 0.8);
+}
+
+/* Embeds */
+.echo-embed {
+  margin: 1rem 0;
+  padding: 0.5rem;
+  background: rgba(0, 0, 0, 0.7);
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  border-radius: var(--radius-sm);
+}
+
+.echo-embed iframe {
+  border-radius: var(--radius-sm);
+  box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+/* Images */
+.echo-image {
+  margin: 1rem 0;
+  text-align: center;
+}
+
+.echo-image img {
+  max-width: 100%;
+  height: auto;
+  border: 2px solid rgba(0, 255, 136, 0.3);
+  border-radius: var(--radius-sm);
+  opacity: 0;
+  transition: opacity 0.5s ease-in;
+  box-shadow: 0 0 30px rgba(0, 255, 136, 0.4);
+}
+
+.echo-image.echo-generated img {
+  border-color: rgba(157, 127, 240, 0.5);
+  box-shadow: 0 0 40px rgba(157, 127, 240, 0.6),
+              0 0 60px rgba(157, 127, 240, 0.3);
+}
+
+.echo-image img.loaded {
+  opacity: 1;
+  animation: materialize 0.8s ease-out;
+}
+
+@keyframes materialize {
+  0% {
+    transform: scale(0.8) rotateY(90deg);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1) rotateY(0deg);
+    opacity: 1;
+  }
+}
+
+.echo-caption {
+  color: #5dd8ed;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+/* Hover effects for container */
+.echo-chamber-container:hover {
+  border-color: rgba(0, 255, 136, 0.5);
+}
+
+/* Screen glow effect */
+@keyframes screen-glow {
+  0%, 100% {
+    box-shadow: inset 0 0 50px rgba(0, 255, 136, 0.1),
+                0 0 20px rgba(0, 255, 136, 0.2);
+  }
+  50% {
+    box-shadow: inset 0 0 70px rgba(0, 255, 136, 0.15),
+                0 0 30px rgba(0, 255, 136, 0.3);
+  }
+}
+
+.echo-chamber-container {
+  animation: screen-glow 4s ease-in-out infinite;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .echo-chamber-container {
+    font-size: 12px;
+  }
+  
+  .echo-output {
+    padding: 1rem;
+  }
+  
+  .echo-input-container {
+    padding: 0.75rem 1rem;
+  }
+}

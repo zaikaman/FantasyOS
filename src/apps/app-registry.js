@@ -15,6 +15,7 @@ import { createQuestLogApp } from './quest-log/quest-log.js';
 import { createWeatherOracleApp } from './weather-oracle/weather-oracle.js';
 import { createPotionMixerApp } from './potion-mixer/potion-mixer.js';
 import { createRealmCustomizerApp } from './realm-customizer/realm-customizer.js';
+import { createEchoChamberApp } from './echo-chamber/echo-chamber.js';
 
 /**
  * Application registry
@@ -94,6 +95,17 @@ const hiddenApps = [
     defaultWidth: 750,
     defaultHeight: 800,
     singleton: true // Only one instance allowed
+  },
+  {
+    id: 'echo-chamber',
+    name: 'Echo Chamber Terminal',
+    icon: '⚡',
+    runeColor: '#00ff88',
+    description: 'RuneShell - AI-powered command terminal with mystical outputs',
+    component: createEchoChamberApp,
+    defaultWidth: 900,
+    defaultHeight: 650,
+    singleton: false // Multiple terminals allowed
   }
 ];
 

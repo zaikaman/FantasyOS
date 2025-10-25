@@ -53,6 +53,9 @@ export function initDesktop() {
   // Initialize realm customizer altar click handler
   initRealmCustomizerAltar();
 
+  // Initialize echo chamber terminal click handler
+  initEchoChamberTerminal();
+
   console.log('[Desktop] Initialized');
 }
 
@@ -386,4 +389,42 @@ function initRealmCustomizerAltar() {
   });
 
   console.log('[Desktop] Realm customizer altar initialized');
+}
+
+/**
+ * Initialize echo chamber terminal click handler
+ */
+function initEchoChamberTerminal() {
+  const terminalElement = document.getElementById('echo-chamber-terminal');
+  
+  if (!terminalElement) {
+    console.warn('[Desktop] Echo chamber terminal element not found');
+    return;
+  }
+
+  terminalElement.addEventListener('click', () => {
+    console.log('[Desktop] Opening echo chamber terminal...');
+    
+    // Create window for echo chamber app
+    try {
+      createWindow('echo-chamber');
+      
+      // Emit app launch event
+      eventBus.emit(Events.APP_LAUNCHED, {
+        appId: 'echo-chamber',
+        appName: 'Echo Chamber Terminal',
+        timestamp: Date.now()
+      });
+      
+      // Visual feedback
+      terminalElement.style.transform = 'scale(0.95) translateY(-2px)';
+      setTimeout(() => {
+        terminalElement.style.transform = '';
+      }, 150);
+    } catch (error) {
+      console.error('[Desktop] Failed to open echo chamber terminal:', error);
+    }
+  });
+
+  console.log('[Desktop] Echo chamber terminal initialized');
 }

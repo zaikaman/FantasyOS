@@ -111,8 +111,15 @@ export function createWindow(appId, options = {}) {
     y = constrainedPos.y;
     width = constrainedSize.width;
     height = constrainedSize.height;
+  } else {
+    // For auto-sized windows, just constrain position with estimated size
+    const estimatedWidth = 600;
+    const estimatedHeight = 400;
+    const constrainedPos = constrainWindowPosition(x, y, estimatedWidth, estimatedHeight);
+    x = constrainedPos.x;
+    y = constrainedPos.y;
+    // width and height stay as 'auto'
   }
-  // For auto-sized windows, width and height stay as 'auto'
 
   // Calculate z-index
   const maxZ = state.windows.reduce((max, w) => Math.max(max, w.z_index), BASE_Z_INDEX - 1);
@@ -591,8 +598,10 @@ export function setWindowPosition(windowId, x, y, persist = true) {
     throw new Error('Window not found');
   }
 
-  // Constrain position
-  const constrained = constrainWindowPosition(x, y, window.width, window.height);
+  // Constrain position - use numeric values or defaults for 'auto'
+  const constrainWidth = typeof window.width === 'number' ? window.width : 600;
+  const constrainHeight = typeof window.height === 'number' ? window.height : 400;
+  const constrained = constrainWindowPosition(x, y, constrainWidth, constrainHeight);
   x = constrained.x;
   y = constrained.y;
 

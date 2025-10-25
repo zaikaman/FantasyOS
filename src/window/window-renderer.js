@@ -286,13 +286,16 @@ function escapeHtml(str) {
  * @returns {{x: number, y: number}} Position coordinates
  */
 export function calculateCascadePosition(windowCount) {
-  const offset = 20; // Pixels to offset each new window
-  const baseX = Math.floor((window.innerWidth - 600) / 2); // Center horizontally (assuming 600px width)
-  const baseY = Math.floor((window.innerHeight - 400) / 2); // Center vertically (assuming 400px height)
+  const offset = 30; // Pixels to offset each new window
+  const baseX = Math.floor((window.innerWidth - 800) / 2); // Center horizontally (assuming ~800px avg width)
+  const baseY = Math.floor((window.innerHeight - 600) / 2); // Center vertically (assuming ~600px avg height)
+  
+  // Keep cascade offset reasonable to prevent going off-screen
+  const maxOffset = Math.min(windowCount * offset, 200); // Cap at 200px total offset
 
   return {
-    x: baseX + (windowCount * offset),
-    y: baseY + (windowCount * offset),
+    x: Math.max(50, baseX + maxOffset), // Ensure at least 50px from left
+    y: Math.max(50, baseY + maxOffset), // Ensure at least 50px from top
   };
 }
 
@@ -307,8 +310,8 @@ export function calculateCascadePosition(windowCount) {
 export function constrainWindowPosition(x, y, width, height) {
   const minX = 0;
   const minY = 0;
-  const maxX = window.innerWidth - 100; // Ensure title bar is visible
-  const maxY = window.innerHeight - 100;
+  const maxX = window.innerWidth - Math.max(width || 300, 200); // Keep window visible
+  const maxY = window.innerHeight - Math.max(height || 200, 100); // Keep window visible
 
   return {
     x: Math.max(minX, Math.min(maxX, x)),

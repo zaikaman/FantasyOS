@@ -15,6 +15,15 @@
   padding-bottom: 0; /* No padding needed - taskbar auto-hides */
 }
 
+/* Prevent any scrolling on body/html */
+html, body {
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+}
+
 /* Particles Layer - Canvas background */
 .particles-layer {
   position: absolute;
@@ -51,7 +60,8 @@
 .treasure-chest,
 .weather-orb,
 .mana-orb,
-.realm-customizer-altar {
+.realm-customizer-altar,
+.echo-chamber-terminal {
   position: absolute;
   width: 150px;
   height: auto;
@@ -66,7 +76,8 @@
 .treasure-chest img,
 .weather-orb img,
 .mana-orb img,
-.realm-customizer-altar img {
+.realm-customizer-altar img,
+.echo-chamber-terminal img {
   width: 100%;
   height: auto;
   display: block;
@@ -180,6 +191,24 @@
   transform: scale(0.95) translateY(-2px);
 }
 
+/* Icon 7: Echo Chamber Terminal - Column 3, Row 3 (Bottom Center) */
+.echo-chamber-terminal {
+  bottom: 80px;
+  left: calc(50px + 250px * 2); /* Column 3 */
+  animation: float 3.9s ease-in-out infinite;
+  animation-delay: 0.7s;
+}
+
+.echo-chamber-terminal:hover {
+  transform: scale(1.08) translateY(-5px);
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.7))
+          drop-shadow(0 0 30px rgba(0, 255, 136, 0.6));
+}
+
+.echo-chamber-terminal:active {
+  transform: scale(0.95) translateY(-2px);
+}
+
 /* Future Icon Positioning Guide:
  * Icon 7 would be: bottom: calc(80px + 230px * 2); left: calc(50px + 250px * 2); (Column 3, Row 1)
  * Icon 8 would be: bottom: calc(80px + 230px * 1); left: calc(50px + 250px * 2); (Column 3, Row 2)
@@ -276,6 +305,7 @@
   height: 100%;
   /* No z-index - let child windows manage their own stacking */
   pointer-events: none;
+  overflow: hidden; /* Prevent windows from causing scrollbars */
 }
 
 .desktop-workspace > * {
