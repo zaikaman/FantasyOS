@@ -164,8 +164,8 @@ export function getFileById(id) {
 export function insertFile(file) {
   const db = getDatabase();
   const stmt = db.prepare(`
-    INSERT INTO files (id, name, type, content, thumbnail, created_at, modified_at, size_bytes)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO files (id, name, type, content, thumbnail, folder_id, created_at, modified_at, size_bytes)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
   `);
 
   stmt.run([
@@ -174,6 +174,7 @@ export function insertFile(file) {
     file.type,
     file.content,
     file.thumbnail || null,
+    file.folder_id || null,
     file.created_at,
     file.modified_at,
     file.size_bytes
@@ -209,6 +210,123 @@ export function getTotalFileSize() {
   }
 
   return 0;
+}
+
+// ============================================================================
+// Folder Queries
+// ============================================================================
+
+export function getAllFolders() {
+  const db = getDatabase();
+  const result = db.exec('SELECT * FROM folders ORDER BY name ASC');
+
+  if (result.length === 0) {
+    return [];
+  }
+
+  const columns = result[0].columns;
+  const rows = result[0].values;
+
+  return rows.map(row => {
+    const folder = {};
+    columns.forEach((col, i) => {
+      folder[col] = row[i];
+    });
+    return folder;
+  });
+}
+
+export function getFoldersByParent(parentId = null) {
+  const db = getDatabase();
+  const stmt = db.prepare(`
+    SELECT * FROM folders 
+    WHERE parent_id ${parentId === null ? 'IS NULL' : '= ?'}
+    ORDER BY name ASC
+  `);
+  
+  if (parentId !== null) {
+    stmt.bind([parentId]);
+  }
+
+  const folders = [];
+  while (stmt.step()) {
+    folders.push(stmt.getAsObject());
+  }
+
+  stmt.free();
+  return folders;
+}
+
+export function getFolderById(id) {
+  const db = getDatabase();
+  const stmt = db.prepare('SELECT * FROM folders WHERE id = ?');
+  stmt.bind([id]);
+
+  if (stmt.step()) {
+    const folder = stmt.getAsObject();
+    stmt.free();
+    return folder;
+  }
+
+  stmt.free();
+  return null;
+}
+
+export function insertFolder(folder) {
+  const db = getDatabase();
+  const stmt = db.prepare(`
+    INSERT INTO folders (id, name, parent_id, created_at, modified_at)
+    VALUES (?, ?, ?, ?, ?)
+  `);
+
+  stmt.run([
+    folder.id,
+    folder.name,
+    folder.parent_id || null,
+    folder.created_at,
+    folder.modified_at
+  ]);
+
+  stmt.free();
+}
+
+export function updateFolder(id, updates) {
+  const db = getDatabase();
+  const fields = Object.keys(updates)
+    .map(key => `${key} = ?`)
+    .join(', ');
+
+  const stmt = db.prepare(`UPDATE folders SET ${fields} WHERE id = ?`);
+  stmt.run([...Object.values(updates), id]);
+  stmt.free();
+}
+
+export function deleteFolder(id) {
+  const db = getDatabase();
+  const stmt = db.prepare('DELETE FROM folders WHERE id = ?');
+  stmt.run([id]);
+  stmt.free();
+}
+
+export function getFilesByFolder(folderId = null) {
+  const db = getDatabase();
+  const stmt = db.prepare(`
+    SELECT * FROM files 
+    WHERE folder_id ${folderId === null ? 'IS NULL' : '= ?'}
+    ORDER BY name ASC
+  `);
+  
+  if (folderId !== null) {
+    stmt.bind([folderId]);
+  }
+
+  const files = [];
+  while (stmt.step()) {
+    files.push(stmt.getAsObject());
+  }
+
+  stmt.free();
+  return files;
 }
 
 // ============================================================================

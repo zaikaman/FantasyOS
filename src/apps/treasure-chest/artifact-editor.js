@@ -13,9 +13,10 @@ const MAX_CONTENT_SIZE = 10 * 1024 * 1024; // 10 MB
 /**
  * Open artifact editor modal
  * @param {Object|null} file - Existing file to edit, or null for new
+ * @param {string|null} folderId - Current folder ID to save file in
  * @param {Function} onSave - Callback after save
  */
-export function openArtifactEditor(file, onSave) {
+export function openArtifactEditor(file, folderId = null, onSave = null) {
   const isNewFile = !file;
   const fileName = file ? file.name : 'Untitled Artifact';
 
@@ -195,7 +196,7 @@ export function openArtifactEditor(file, onSave) {
 
   // Save handler
   saveBtn.addEventListener('click', () => {
-    handleSave(file, nameInput.value.trim(), canvas, onSave, closeModal);
+    handleSave(file, folderId, nameInput.value.trim(), canvas, onSave, closeModal);
   });
 
   // Keyboard shortcuts
@@ -213,7 +214,7 @@ export function openArtifactEditor(file, onSave) {
 /**
  * Handle save
  */
-function handleSave(file, name, canvas, onSave, closeModal) {
+function handleSave(file, folderId, name, canvas, onSave, closeModal) {
   if (!name || name.trim() === '') {
     alert('Please enter an artifact name.');
     return;
@@ -259,6 +260,7 @@ function handleSave(file, name, canvas, onSave, closeModal) {
         type: 'artifact',
         content: dataURL,
         thumbnail,
+        folder_id: folderId,
         created_at: timestamp,
         modified_at: timestamp,
         size_bytes: sizeBytes,

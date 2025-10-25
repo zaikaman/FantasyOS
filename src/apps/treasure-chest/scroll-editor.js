@@ -13,9 +13,10 @@ const MAX_CONTENT_SIZE = 100 * 1024; // 100 KB
 /**
  * Open scroll editor modal
  * @param {Object|null} file - Existing file to edit, or null for new
+ * @param {string|null} folderId - Current folder ID to save file in
  * @param {Function} onSave - Callback after save
  */
-export function openScrollEditor(file, onSave) {
+export function openScrollEditor(file, folderId = null, onSave = null) {
   const isNewFile = !file;
   const fileName = file ? file.name : 'Untitled Scroll';
   const fileContent = file ? file.content : '';
@@ -128,7 +129,7 @@ export function openScrollEditor(file, onSave) {
 
   // Save handler
   saveBtn.addEventListener('click', () => {
-    handleSave(file, nameInput.value.trim(), contentTextarea.value, onSave, closeModal);
+    handleSave(file, folderId, nameInput.value.trim(), contentTextarea.value, onSave, closeModal);
   });
 
   // Keyboard shortcuts
@@ -148,12 +149,13 @@ export function openScrollEditor(file, onSave) {
 /**
  * Handle save
  * @param {Object|null} file - Existing file or null
+ * @param {string|null} folderId - Folder ID to save file in
  * @param {string} name - File name
  * @param {string} content - File content
  * @param {Function} onSave - Callback after save
  * @param {Function} closeModal - Close modal function
  */
-function handleSave(file, name, content, onSave, closeModal) {
+function handleSave(file, folderId, name, content, onSave, closeModal) {
   // Validate name
   if (!name || name.trim() === '') {
     alert('Please enter a scroll name.');
@@ -196,6 +198,7 @@ function handleSave(file, name, content, onSave, closeModal) {
         type: 'scroll',
         content: content,
         thumbnail: null,
+        folder_id: folderId,
         created_at: timestamp,
         modified_at: timestamp,
         size_bytes: sizeBytes,

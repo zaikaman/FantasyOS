@@ -1,71 +1,88 @@
 /**
- * Treasure Chest - File Explorer
- * Browse, create, edit, and delete files (scrolls and artifacts)
+ * Treasure Chest - Full File System Explorer
+ * Browse, create, edit, organize files and folders
  */
 
-import { subscribe } from '../../core/state.js';
-import { eventBus, Events } from '../../core/event-bus.js';
-import { getAllFiles, insertFile, updateFile, deleteFile } from '../../storage/queries.js';
-import { getStorageQuota } from '../../storage/database.js';
-import { renderFileList } from './file-list.js';
-import { openScrollEditor } from './scroll-editor.js';
-import { openArtifactEditor } from './artifact-editor.js';
+import { eventBus, Events } from "../../core/event-bus.js";
+import { getStorageQuota } from "../../storage/database.js";
+import { openScrollEditor } from "./scroll-editor.js";
+import { openArtifactEditor } from "./artifact-editor.js";
+import {
+  getFolderContents,
+  getFolderPath,
+  createFolder,
+  renameFolder,
+  deleteFolder,
+  moveFile,
+  moveFolder,
+  copyFile,
+  search,
+  getFolderStats
+} from "./file-system.js";
+import { deleteFile, updateFile } from "../../storage/queries.js";
+import { formatTimestamp } from "../../utils/date.js";
 
 let containerEl = null;
-let files = [];
+let currentFolderId = null;
+let clipboard = null;
+let viewMode = "list";
 
-/**
- * Create Treasure Chest app component
- * @returns {HTMLElement} App container
- */
 export function createTreasureChestApp() {
-  console.log('[TreasureChest] Initializing...');
-
-  // Create main container
-  containerEl = document.createElement('div');
-  containerEl.className = 'treasure-chest-container';
-
-  // Load files from database
-  loadFiles();
-
-  // Render UI
+  console.log("[TreasureChest] Initializing file system...");
+  containerEl = document.createElement("div");
+  containerEl.className = "treasure-chest-container";
   render();
-
-  // Check storage quota
   checkAndDisplayQuota();
-
-  // Subscribe to file changes
-  eventBus.on(Events.FILE_CREATED, handleFileChange);
-  eventBus.on(Events.FILE_UPDATED, handleFileChange);
-  eventBus.on(Events.FILE_DELETED, handleFileChange);
-
-  console.log('[TreasureChest] Initialized');
-
+  eventBus.on(Events.FILE_CREATED, handleContentChange);
+  eventBus.on(Events.FILE_UPDATED, handleContentChange);
+  eventBus.on(Events.FILE_DELETED, handleContentChange);
+  eventBus.on(Events.FILE_MOVED, handleContentChange);
+  eventBus.on(Events.FOLDER_CREATED, handleContentChange);
+  eventBus.on(Events.FOLDER_UPDATED, handleContentChange);
+  eventBus.on(Events.FOLDER_DELETED, handleContentChange);
+  eventBus.on(Events.FOLDER_MOVED, handleContentChange);
+  console.log("[TreasureChest] File system initialized");
   return containerEl;
 }
 
-/**
- * Load files from database
- */
-function loadFiles() {
-  files = getAllFiles();
-  console.log(`[TreasureChest] Loaded ${files.length} files`);
-}
-
-/**
- * Render the Treasure Chest UI
- */
 function render() {
+  const path = getFolderPath(currentFolderId);
+  const contents = getFolderContents(currentFolderId);
+  const stats = getFolderStats(currentFolderId);
+
   containerEl.innerHTML = `
     <div class="treasure-chest-header">
-      <h2 class="chest-title">Treasure Chest</h2>
+      <h2 class="chest-title">⚱ Treasure Vault</h2>
       <div class="chest-actions">
-        <button class="btn-create-scroll" id="btn-create-scroll">
-          Create Scroll
+        <button class="btn-new-folder" id="btn-new-folder" title="New Folder">
+          📁 New Folder
         </button>
-        <button class="btn-create-artifact" id="btn-create-artifact">
-          Create Artifact
+        <button class="btn-create-scroll" id="btn-create-scroll" title="New Scroll">
+          📜 New Scroll
         </button>
+        <button class="btn-create-artifact" id="btn-create-artifact" title="New Artifact">
+          🎨 New Artifact
+        </button>
+      </div>
+    </div>
+
+    <div class="chest-breadcrumb" id="breadcrumb"></div>
+
+    <div class="chest-toolbar">
+      <div class="chest-filters">
+        <input 
+          type="text" 
+          class="search-input" 
+          id="file-search" 
+          placeholder="⚔ Search..."
+        />
+      </div>
+      <div class="chest-view-controls">
+        <span class="folder-stats" id="folder-stats">
+          ${stats.folderCount} folders, ${stats.fileCount} files
+        </span>
+        <button class="btn-view-mode ${viewMode === 'list' ? 'active' : ''}" data-mode="list" title="List View">☰</button>
+        <button class="btn-view-mode ${viewMode === 'grid' ? 'active' : ''}" data-mode="grid" title="Grid View">▦</button>
       </div>
     </div>
 
@@ -76,254 +93,442 @@ function render() {
       <div class="storage-text" id="storage-text">Loading vault capacity...</div>
     </div>
 
-    <div class="chest-filters">
-      <input 
-        type="text" 
-        class="search-input" 
-        id="file-search" 
-        placeholder="⚔ Search your treasures..."
-      />
-      <select class="filter-type" id="filter-type">
-        <option value="all">✦ All Treasures</option>
-        <option value="scroll">📜 Scrolls</option>
-        <option value="artifact">🎨 Artifacts</option>
-      </select>
-      <select class="sort-by" id="sort-by">
-        <option value="modified_desc">⏱ Recently Modified</option>
-        <option value="modified_asc">⌛ Oldest Modified</option>
-        <option value="created_desc">✨ Recently Created</option>
-        <option value="created_asc">🕰 Oldest Created</option>
-        <option value="name_asc">📝 Name (A-Z)</option>
-        <option value="name_desc">📝 Name (Z-A)</option>
-        <option value="size_desc">📊 Largest First</option>
-        <option value="size_asc">📊 Smallest First</option>
-      </select>
-    </div>
-
-    <div class="chest-content" id="chest-content">
-      <!-- File list will be rendered here -->
-    </div>
+    <div class="chest-content" id="chest-content"></div>
+    <div class="context-menu hidden" id="context-menu"></div>
   `;
 
-  // Attach event listeners
+  renderBreadcrumb(path);
+  renderContent(contents);
   attachEventListeners();
-
-  // Render file list
-  renderFiles();
 }
 
-/**
- * Attach event listeners
- */
-function attachEventListeners() {
-  // Create scroll button
-  const createScrollBtn = containerEl.querySelector('#btn-create-scroll');
-  if (createScrollBtn) {
-    createScrollBtn.addEventListener('click', handleCreateScroll);
-  }
+function renderBreadcrumb(path) {
+  const breadcrumbEl = containerEl.querySelector('#breadcrumb');
+  if (!breadcrumbEl) return;
 
-  // Create artifact button
-  const createArtifactBtn = containerEl.querySelector('#btn-create-artifact');
-  if (createArtifactBtn) {
-    createArtifactBtn.addEventListener('click', handleCreateArtifact);
-  }
+  breadcrumbEl.innerHTML = path.map((folder, index) => {
+    const isLast = index === path.length - 1;
+    const icon = folder.id === null ? '🏠' : '📁';
+    return `
+      <span class="breadcrumb-item ${isLast ? 'active' : ''}" data-folder-id="${folder.id}">
+        ${icon} ${escapeHtml(folder.name)}
+      </span>
+      ${!isLast ? '<span class="breadcrumb-separator">›</span>' : ''}
+    `;
+  }).join('');
 
-  // Search input
-  const searchInput = containerEl.querySelector('#file-search');
-  if (searchInput) {
-    searchInput.addEventListener('input', handleSearchInput);
-  }
-
-  // Filter type
-  const filterType = containerEl.querySelector('#filter-type');
-  if (filterType) {
-    filterType.addEventListener('change', handleFilterChange);
-  }
-
-  // Sort by
-  const sortBy = containerEl.querySelector('#sort-by');
-  if (sortBy) {
-    sortBy.addEventListener('change', handleSortChange);
-  }
+  breadcrumbEl.querySelectorAll('.breadcrumb-item:not(.active)').forEach(item => {
+    item.addEventListener('click', () => {
+      const folderId = item.dataset.folderId === 'null' ? null : item.dataset.folderId;
+      navigateToFolder(folderId);
+    });
+  });
 }
 
-/**
- * Render file list
- */
-function renderFiles() {
+function renderContent(contents) {
   const contentEl = containerEl.querySelector('#chest-content');
   if (!contentEl) return;
 
-  // Get current filters
-  const searchQuery = containerEl.querySelector('#file-search')?.value.toLowerCase() || '';
-  const filterType = containerEl.querySelector('#filter-type')?.value || 'all';
-  const sortBy = containerEl.querySelector('#sort-by')?.value || 'modified_desc';
-
-  // Filter files
-  let filteredFiles = files.filter(file => {
-    // Type filter
-    if (filterType !== 'all' && file.type !== filterType) {
-      return false;
-    }
-
-    // Search filter
-    if (searchQuery && !file.name.toLowerCase().includes(searchQuery)) {
-      return false;
-    }
-
-    return true;
-  });
-
-  // Sort files
-  filteredFiles = sortFiles(filteredFiles, sortBy);
-
-  // Render
-  renderFileList(contentEl, filteredFiles, {
-    onEdit: handleEditFile,
-    onDelete: handleDeleteFile,
-    onRename: handleRenameFile,
-  });
-}
-
-/**
- * Sort files by criteria
- * @param {Array} files - Files to sort
- * @param {string} sortBy - Sort criteria
- * @returns {Array} Sorted files
- */
-function sortFiles(files, sortBy) {
-  const sorted = [...files];
-
-  switch (sortBy) {
-    case 'modified_desc':
-      sorted.sort((a, b) => b.modified_at - a.modified_at);
-      break;
-    case 'modified_asc':
-      sorted.sort((a, b) => a.modified_at - b.modified_at);
-      break;
-    case 'created_desc':
-      sorted.sort((a, b) => b.created_at - a.created_at);
-      break;
-    case 'created_asc':
-      sorted.sort((a, b) => a.created_at - b.created_at);
-      break;
-    case 'name_asc':
-      sorted.sort((a, b) => a.name.localeCompare(b.name));
-      break;
-    case 'name_desc':
-      sorted.sort((a, b) => b.name.localeCompare(a.name));
-      break;
-    case 'size_desc':
-      sorted.sort((a, b) => b.size_bytes - a.size_bytes);
-      break;
-    case 'size_asc':
-      sorted.sort((a, b) => a.size_bytes - b.size_bytes);
-      break;
+  if (contents.folders.length === 0 && contents.files.length === 0) {
+    contentEl.innerHTML = `
+      <div class="file-list-empty">
+        <div class="empty-icon">⚱</div>
+        <p class="empty-text">This folder is empty</p>
+        <p class="empty-subtext">Create files or folders to get started</p>
+      </div>
+    `;
+    return;
   }
 
-  return sorted;
+  const listEl = document.createElement('div');
+  listEl.className = `file-list ${viewMode}-view`;
+
+  contents.folders.forEach(folder => {
+    listEl.appendChild(createFolderItem(folder));
+  });
+
+  contents.files.forEach(file => {
+    listEl.appendChild(createFileItem(file));
+  });
+
+  contentEl.innerHTML = '';
+  contentEl.appendChild(listEl);
 }
 
-/**
- * Handle create scroll button click
- */
+function createFolderItem(folder) {
+  const itemEl = document.createElement('div');
+  itemEl.className = 'file-item folder-item';
+  itemEl.dataset.itemType = 'folder';
+  itemEl.dataset.itemId = folder.id;
+  itemEl.draggable = true;
+
+  const createdDate = formatTimestamp(folder.created_at);
+
+  itemEl.innerHTML = `
+    <div class="file-icon">📁</div>
+    <div class="file-info">
+      <div class="file-name" title="${escapeHtml(folder.name)}">${escapeHtml(folder.name)}</div>
+      <div class="file-meta">
+        <span class="file-type">Folder</span>
+        <span class="file-date" title="Created: ${createdDate}">📅 ${createdDate}</span>
+      </div>
+    </div>
+    <div class="file-actions">
+      <button class="btn-file-action" title="Open">📂</button>
+    </div>
+  `;
+
+  itemEl.addEventListener('click', () => navigateToFolder(folder.id));
+  itemEl.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    showContextMenu(e, 'folder', folder);
+  });
+
+  setupDragAndDrop(itemEl, 'folder', folder);
+  return itemEl;
+}
+
+function createFileItem(file) {
+  const itemEl = document.createElement('div');
+  itemEl.className = 'file-item';
+  itemEl.dataset.itemType = 'file';
+  itemEl.dataset.itemId = file.id;
+  itemEl.draggable = true;
+
+  const icon = file.type === 'scroll' ? '📜' : '🎨';
+  const typeLabel = file.type === 'scroll' ? 'Scroll' : 'Artifact';
+  const sizeKB = (file.size_bytes / 1024).toFixed(2);
+  const modifiedDate = formatTimestamp(file.modified_at);
+
+  itemEl.innerHTML = `
+    <div class="file-icon">${icon}</div>
+    <div class="file-info">
+      <div class="file-name" title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</div>
+      <div class="file-meta">
+        <span class="file-type">${typeLabel}</span>
+        <span class="file-size">📊 ${sizeKB} KB</span>
+        <span class="file-date" title="Modified: ${modifiedDate}">⏱ ${modifiedDate}</span>
+      </div>
+    </div>
+    <div class="file-actions">
+      <button class="btn-file-action" title="Edit">✏️</button>
+    </div>
+  `;
+
+  itemEl.addEventListener('dblclick', () => handleEditFile(file));
+  itemEl.addEventListener('contextmenu', (e) => {
+    e.preventDefault();
+    showContextMenu(e, 'file', file);
+  });
+
+  setupDragAndDrop(itemEl, 'file', file);
+  return itemEl;
+}
+
+function setupDragAndDrop(element, type, data) {
+  element.addEventListener('dragstart', (e) => {
+    e.dataTransfer.effectAllowed = 'move';
+    e.dataTransfer.setData('application/json', JSON.stringify({ type, id: data.id }));
+    element.classList.add('dragging');
+  });
+
+  element.addEventListener('dragend', () => {
+    element.classList.remove('dragging');
+  });
+
+  if (type === 'folder') {
+    element.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      element.classList.add('drag-over');
+    });
+
+    element.addEventListener('dragleave', () => {
+      element.classList.remove('drag-over');
+    });
+
+    element.addEventListener('drop', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      element.classList.remove('drag-over');
+
+      try {
+        const dragData = JSON.parse(e.dataTransfer.getData('application/json'));
+        handleDrop(dragData, data.id);
+      } catch (error) {
+        console.error('[TreasureChest] Drop error:', error);
+      }
+    });
+  }
+}
+
+function handleDrop(dragData, targetFolderId) {
+  if (dragData.type === 'file') {
+    moveFile(dragData.id, targetFolderId);
+  } else if (dragData.type === 'folder') {
+    try {
+      moveFolder(dragData.id, targetFolderId);
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+}
+
+function showContextMenu(e, itemType, item) {
+  const menuEl = containerEl.querySelector('#context-menu');
+  if (!menuEl) return;
+
+  const menuItems = itemType === 'folder' ? [
+    { icon: '📂', label: 'Open', action: () => navigateToFolder(item.id) },
+    { icon: '🏷️', label: 'Rename', action: () => handleRenameFolder(item) },
+    { divider: true },
+    { icon: '✂️', label: 'Cut', action: () => handleCut(itemType, item) },
+    { divider: true },
+    { icon: '🗑️', label: 'Delete', action: () => handleDeleteFolder(item), class: 'danger' }
+  ] : [
+    { icon: '✏️', label: 'Edit', action: () => handleEditFile(item) },
+    { icon: '🏷️', label: 'Rename', action: () => handleRenameFile(item) },
+    { divider: true },
+    { icon: '📋', label: 'Copy', action: () => handleCopy(itemType, item) },
+    { icon: '✂️', label: 'Cut', action: () => handleCut(itemType, item) },
+    { divider: true },
+    { icon: '🗑️', label: 'Delete', action: () => handleDeleteFile(item), class: 'danger' }
+  ];
+
+  menuEl.innerHTML = menuItems.map(item => {
+    if (item.divider) return '<div class="context-menu-divider"></div>';
+    return `
+      <div class="context-menu-item ${item.class || ''}" data-action="${item.label}">
+        <span class="menu-icon">${item.icon}</span>
+        <span class="menu-label">${item.label}</span>
+      </div>
+    `;
+  }).join('');
+
+  menuEl.style.left = `${e.clientX}px`;
+  menuEl.style.top = `${e.clientY}px`;
+  menuEl.classList.remove('hidden');
+
+  menuEl.querySelectorAll('.context-menu-item').forEach((el, index) => {
+    const menuItem = menuItems.filter(item => !item.divider)[index];
+    if (menuItem) {
+      el.addEventListener('click', () => {
+        menuItem.action();
+        hideContextMenu();
+      });
+    }
+  });
+
+  setTimeout(() => {
+    document.addEventListener('click', hideContextMenu, { once: true });
+  }, 0);
+}
+
+function hideContextMenu() {
+  const menuEl = containerEl.querySelector('#context-menu');
+  if (menuEl) menuEl.classList.add('hidden');
+}
+
+function navigateToFolder(folderId) {
+  currentFolderId = folderId;
+  render();
+  checkAndDisplayQuota();
+}
+
+function attachEventListeners() {
+  containerEl.querySelector('#btn-new-folder')?.addEventListener('click', handleCreateFolder);
+  containerEl.querySelector('#btn-create-scroll')?.addEventListener('click', handleCreateScroll);
+  containerEl.querySelector('#btn-create-artifact')?.addEventListener('click', handleCreateArtifact);
+  containerEl.querySelector('#file-search')?.addEventListener('input', handleSearch);
+
+  containerEl.querySelectorAll('.btn-view-mode').forEach(btn => {
+    btn.addEventListener('click', () => {
+      viewMode = btn.dataset.mode;
+      render();
+      checkAndDisplayQuota();
+    });
+  });
+
+  containerEl.addEventListener('keydown', handleKeyboardShortcuts);
+
+  const contentEl = containerEl.querySelector('#chest-content');
+  if (contentEl) {
+    contentEl.addEventListener('dragover', (e) => {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+    });
+
+    contentEl.addEventListener('drop', (e) => {
+      e.preventDefault();
+      try {
+        const dragData = JSON.parse(e.dataTransfer.getData('application/json'));
+        handleDrop(dragData, currentFolderId);
+      } catch (error) {
+        console.error('[TreasureChest] Drop error:', error);
+      }
+    });
+  }
+}
+
+function handleKeyboardShortcuts(e) {
+  if ((e.ctrlKey || e.metaKey) && e.key === 'v') {
+    handlePaste();
+  }
+
+  if (e.key === 'Backspace' && currentFolderId !== null) {
+    e.preventDefault();
+    const path = getFolderPath(currentFolderId);
+    if (path.length > 1) {
+      navigateToFolder(path[path.length - 2].id);
+    }
+  }
+}
+
+function handleSearch(e) {
+  const query = e.target.value.trim();
+  
+  if (query === '') {
+    render();
+    checkAndDisplayQuota();
+    return;
+  }
+
+  const results = search(query, currentFolderId);
+  renderContent(results);
+}
+
+function handleCreateFolder() {
+  const name = prompt('Enter folder name:');
+  if (!name || name.trim() === '') return;
+
+  try {
+    createFolder(name.trim(), currentFolderId);
+  } catch (error) {
+    console.error('[TreasureChest] Failed to create folder:', error);
+    alert('Failed to create folder. Please try again.');
+  }
+}
+
+function handleRenameFolder(folder) {
+  const newName = prompt('Enter new folder name:', folder.name);
+  if (!newName || newName.trim() === '' || newName === folder.name) return;
+
+  try {
+    renameFolder(folder.id, newName.trim());
+  } catch (error) {
+    console.error('[TreasureChest] Failed to rename folder:', error);
+    alert('Failed to rename folder. Please try again.');
+  }
+}
+
+function handleDeleteFolder(folder) {
+  const confirmed = confirm(
+    `Are you sure you want to delete the folder "${folder.name}" and all its contents?\n\nThis action cannot be undone.`
+  );
+
+  if (!confirmed) return;
+
+  try {
+    deleteFolder(folder.id);
+  } catch (error) {
+    console.error('[TreasureChest] Failed to delete folder:', error);
+    alert('Failed to delete folder. Please try again.');
+  }
+}
+
 function handleCreateScroll() {
-  console.log('[TreasureChest] Creating new scroll...');
-  openScrollEditor(null, () => {
-    loadFiles();
-    renderFiles();
-    checkAndDisplayQuota();
-  });
+  openScrollEditor(null, currentFolderId);
 }
 
-/**
- * Handle create artifact button click
- */
 function handleCreateArtifact() {
-  console.log('[TreasureChest] Creating new artifact...');
-  openArtifactEditor(null, () => {
-    loadFiles();
-    renderFiles();
-    checkAndDisplayQuota();
-  });
+  openArtifactEditor(null, currentFolderId);
 }
 
-/**
- * Handle search input
- */
-function handleSearchInput() {
-  renderFiles();
-}
-
-/**
- * Handle filter type change
- */
-function handleFilterChange() {
-  renderFiles();
-}
-
-/**
- * Handle sort change
- */
-function handleSortChange() {
-  renderFiles();
-}
-
-/**
- * Handle edit file
- * @param {Object} file - File to edit
- */
 function handleEditFile(file) {
-  console.log('[TreasureChest] Editing file:', file.name);
-
   if (file.type === 'scroll') {
-    openScrollEditor(file, () => {
-      loadFiles();
-      renderFiles();
-      checkAndDisplayQuota();
-    });
+    openScrollEditor(file, currentFolderId);
   } else if (file.type === 'artifact') {
-    openArtifactEditor(file, () => {
-      loadFiles();
-      renderFiles();
-      checkAndDisplayQuota();
-    });
+    openArtifactEditor(file, currentFolderId);
   }
 }
 
-/**
- * Handle delete file
- * @param {Object} file - File to delete
- */
-function handleDeleteFile(file) {
-  // Implemented in file-list.js
-  loadFiles();
-  renderFiles();
-  checkAndDisplayQuota();
-}
-
-/**
- * Handle rename file
- * @param {Object} file - File to rename
- */
 function handleRenameFile(file) {
-  // Implemented in file-list.js
-  loadFiles();
-  renderFiles();
+  const newName = prompt('Enter new file name:', file.name);
+  if (!newName || newName.trim() === '' || newName === file.name) return;
+
+  try {
+    updateFile(file.id, { name: newName.trim() });
+    eventBus.emit(Events.FILE_UPDATED, {
+      fileId: file.id,
+      fileName: newName.trim(),
+      timestamp: Date.now()
+    });
+  } catch (error) {
+    console.error('[TreasureChest] Failed to rename file:', error);
+    alert('Failed to rename file. Please try again.');
+  }
 }
 
-/**
- * Handle file change event
- */
-function handleFileChange() {
-  loadFiles();
-  renderFiles();
+function handleDeleteFile(file) {
+  const confirmed = confirm(
+    `Are you sure you want to delete "${file.name}"?\n\nThis action cannot be undone.`
+  );
+
+  if (!confirmed) return;
+
+  try {
+    deleteFile(file.id);
+    eventBus.emit(Events.FILE_DELETED, {
+      fileId: file.id,
+      fileName: file.name,
+      timestamp: Date.now()
+    });
+  } catch (error) {
+    console.error('[TreasureChest] Failed to delete file:', error);
+    alert('Failed to delete file. Please try again.');
+  }
+}
+
+function handleCopy(type, item) {
+  clipboard = { type, id: item.id, operation: 'copy' };
+  console.log('[TreasureChest] Copied to clipboard:', item.name);
+}
+
+function handleCut(type, item) {
+  clipboard = { type, id: item.id, operation: 'cut' };
+  console.log('[TreasureChest] Cut to clipboard:', item.name);
+}
+
+function handlePaste() {
+  if (!clipboard) return;
+
+  try {
+    if (clipboard.type === 'file') {
+      if (clipboard.operation === 'copy') {
+        copyFile(clipboard.id, currentFolderId);
+      } else if (clipboard.operation === 'cut') {
+        moveFile(clipboard.id, currentFolderId);
+        clipboard = null;
+      }
+    } else if (clipboard.type === 'folder') {
+      if (clipboard.operation === 'cut') {
+        moveFolder(clipboard.id, currentFolderId);
+        clipboard = null;
+      } else {
+        alert('Copying folders is not yet supported');
+      }
+    }
+  } catch (error) {
+    console.error('[TreasureChest] Paste failed:', error);
+    alert(error.message || 'Failed to paste. Please try again.');
+  }
+}
+
+function handleContentChange() {
+  render();
   checkAndDisplayQuota();
 }
 
-/**
- * Check and display storage quota
- */
 async function checkAndDisplayQuota() {
   try {
     const quota = await getStorageQuota();
@@ -331,21 +536,15 @@ async function checkAndDisplayQuota() {
     const storageBarFillEl = containerEl.querySelector('#storage-bar-fill');
     const storageTextEl = containerEl.querySelector('#storage-text');
 
-    if (!storageInfoEl || !storageBarFillEl || !storageTextEl) {
-      return;
-    }
+    if (!storageInfoEl || !storageBarFillEl || !storageTextEl) return;
 
     const usedMB = (quota.used / (1024 * 1024)).toFixed(2);
     const totalMB = (quota.quota / (1024 * 1024)).toFixed(2);
     const percentUsed = (quota.used / quota.quota) * 100;
 
-    // Update bar
     storageBarFillEl.style.width = `${percentUsed}%`;
-
-    // Update text
     storageTextEl.textContent = `Vault Capacity: ${usedMB} MB / ${totalMB} MB (${percentUsed.toFixed(1)}%)`;
 
-    // Warning at 40MB (80% of 50MB)
     if (quota.used > 40 * 1024 * 1024) {
       storageInfoEl.classList.add('storage-warning');
       storageBarFillEl.classList.add('storage-warning');
@@ -354,7 +553,6 @@ async function checkAndDisplayQuota() {
       storageBarFillEl.classList.remove('storage-warning');
     }
 
-    // Error near quota
     if (percentUsed > 90) {
       storageInfoEl.classList.add('storage-error');
       storageBarFillEl.classList.add('storage-error');
@@ -367,11 +565,19 @@ async function checkAndDisplayQuota() {
   }
 }
 
-/**
- * Cleanup function
- */
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
 export function destroyTreasureChestApp() {
-  eventBus.off(Events.FILE_CREATED, handleFileChange);
-  eventBus.off(Events.FILE_UPDATED, handleFileChange);
-  eventBus.off(Events.FILE_DELETED, handleFileChange);
+  eventBus.off(Events.FILE_CREATED, handleContentChange);
+  eventBus.off(Events.FILE_UPDATED, handleContentChange);
+  eventBus.off(Events.FILE_DELETED, handleContentChange);
+  eventBus.off(Events.FILE_MOVED, handleContentChange);
+  eventBus.off(Events.FOLDER_CREATED, handleContentChange);
+  eventBus.off(Events.FOLDER_UPDATED, handleContentChange);
+  eventBus.off(Events.FOLDER_DELETED, handleContentChange);
+  eventBus.off(Events.FOLDER_MOVED, handleContentChange);
 }
