@@ -1,5 +1,4 @@
 import Data         from "./Data.js";
-import { getCardImageUrl } from "./ImageLoader.js";
 
 // Utils
 import Utils        from "../../utils/Utils.js";
@@ -95,7 +94,7 @@ export default class Stock {
      */
     add() {
         const img = document.createElement("img");
-        img.src = getCardImageUrl("2B");
+        img.src = "images/2B.svg";
         img.alt = `Stock ${this.children.length + 1}`;
         img.dataset.action = "deal";
         this.container.appendChild(img);

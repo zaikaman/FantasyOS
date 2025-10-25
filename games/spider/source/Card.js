@@ -1,5 +1,4 @@
 import Data         from "./Data.js";
-import { getCardImageUrl } from "./ImageLoader.js";
 
 // Utils
 import Utils        from "../../utils/Utils.js";
@@ -30,27 +29,20 @@ export default class Card {
 
         this.element = document.createElement("div");
         this.element.className = "card card-show-front";
-        
-        const frontImg = document.createElement("img");
-        frontImg.src = getCardImageUrl(this.file);
-        frontImg.alt = this.name;
-        
-        const backImg = document.createElement("img");
-        backImg.src = getCardImageUrl("2B");
-        backImg.alt = this.name;
-        
         this.element.innerHTML = `
             <div class="card-inner">
-                <div class="card-front"></div>
-                <div class="card-back"></div>
+                <div class="card-front">
+                    <img src="images/${this.file}.svg" alt="${this.name}" />
+                </div>
+                <div class="card-back">
+                    <img src="images/2B.svg" alt="${this.name}" />
+                </div>
             </div>
         `;
-        this.element.querySelector(".card-front").appendChild(frontImg);
-        this.element.querySelector(".card-back").appendChild(backImg);
         this.element.dataset.action = "card";
         this.element.dataset.id     = this.id;
 
-        this.image = frontImg;
+        this.image = this.element.querySelector("img");
     }
 
     /**

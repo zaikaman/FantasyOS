@@ -1,6 +1,5 @@
 import Card         from "./Card.js";
 import Data         from "./Data.js";
-import { getCardImageUrl } from "./ImageLoader.js";
 
 
 
@@ -101,11 +100,7 @@ export default class Foundations {
      */
     push(cards) {
         const suit = cards[0].suit;
-        const img = document.createElement("img");
-        img.src = getCardImageUrl(`A${suit[0]}`);
-        img.alt = suit;
-        this.children[this.index].innerHTML = "";
-        this.children[this.index].appendChild(img);
+        this.children[this.index].innerHTML = `<img src="images/A${suit[0]}.svg" alt="${suit}" />`;
         this.columns[this.index] = cards;
         this.amount += 1;
     }

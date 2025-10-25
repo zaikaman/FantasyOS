@@ -90,7 +90,7 @@ export function createGamesArcadeApp() {
         <button class="btn-fullscreen" id="btn-fullscreen">⛶ Fullscreen</button>
       </div>
       <div class="game-frame-container">
-        <iframe class="game-frame" id="game-frame" allowfullscreen sandbox="allow-scripts allow-same-origin allow-pointer-lock allow-forms"></iframe>
+        <iframe class="game-frame" id="game-frame" allowfullscreen sandbox="allow-scripts allow-pointer-lock allow-forms"></iframe>
       </div>
     </div>
   `;

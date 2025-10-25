@@ -5,7 +5,6 @@ import Metrics      from "./Metrics.js";
 import Piece        from "./Piece.js";
 import Set          from "./Set.js";
 import Table        from "./Table.js";
-import { getPuzzleImageUrl } from "./ImageLoader.js";
 
 // Utils
 import Sounds       from "../../utils/Sounds.js";
@@ -57,8 +56,9 @@ export default class Puzzle {
         this.#pauseElem        = document.querySelector(".pause");
         this.#previewElem      = document.querySelector(".preview");
 
+        const imageUrl         = imageName.match(/([0-9]+)|([a-zA-Z]+)/g).join("/");
         this.#imageElem        = this.#previewElem.querySelector("img");
-        this.#imageElem.src    = getPuzzleImageUrl(imageName);
+        this.#imageElem.src    = `images/${imageUrl}.jpg`;
         this.#imageElem.alt    = imageName;
         this.#imageElem.onload = () => this.build(pieceCount);
     }
