@@ -16,7 +16,13 @@ import { createQuestLogApp } from './quest-log/quest-log.js';
  * Application registry
  * Each app definition includes metadata and factory function
  */
-export const appRegistry = [
+export const appRegistry = [];
+
+/**
+ * Hidden apps registry
+ * Apps that can be launched but don't appear in the launcher
+ */
+const hiddenApps = [
   {
     id: 'quest-log',
     name: 'Quest Log',
@@ -29,14 +35,7 @@ export const appRegistry = [
       height: 'auto'
     },
     singleton: true
-  }
-];
-
-/**
- * Hidden apps registry
- * Apps that can be launched but don't appear in the launcher
- */
-const hiddenApps = [
+  },
   {
     id: 'treasure-chest',
     name: 'Treasure Chest Explorer',

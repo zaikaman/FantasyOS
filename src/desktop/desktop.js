@@ -26,6 +26,9 @@ export function initDesktop() {
   // Render rune launcher
   renderRuneLauncher();
 
+  // Initialize quest log button click handler
+  initQuestLogButton();
+
   // Initialize treasure chest click handler
   initTreasureChest();
 
@@ -137,6 +140,44 @@ export function hideDesktop() {
   if (desktopElement) {
     desktopElement.style.opacity = '0';
   }
+}
+
+/**
+ * Initialize quest log button click handler
+ */
+function initQuestLogButton() {
+  const questLogElement = document.getElementById('quest-log-button');
+  
+  if (!questLogElement) {
+    console.warn('[Desktop] Quest log button element not found');
+    return;
+  }
+
+  questLogElement.addEventListener('click', () => {
+    console.log('[Desktop] Opening quest log...');
+    
+    // Create window for quest log app
+    try {
+      createWindow('quest-log');
+      
+      // Emit app launch event
+      eventBus.emit(Events.APP_LAUNCHED, {
+        appId: 'quest-log',
+        appName: 'Quest Log',
+        timestamp: Date.now()
+      });
+      
+      // Visual feedback
+      questLogElement.style.transform = 'scale(0.95) translateY(-2px)';
+      setTimeout(() => {
+        questLogElement.style.transform = '';
+      }, 150);
+    } catch (error) {
+      console.error('[Desktop] Failed to open quest log:', error);
+    }
+  });
+
+  console.log('[Desktop] Quest log button initialized');
 }
 
 /**
