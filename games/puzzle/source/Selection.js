@@ -1,6 +1,7 @@
 import Data         from "./Data.js";
 import Storage      from "../../utils/Storage.js";
 import Utils        from "../../utils/Utils.js";
+import { getPuzzleImageUrl } from "./ImageLoader.js";
 
 
 
@@ -104,16 +105,21 @@ export default class Selection {
 
             const li     = document.createElement("li");
             li.className = "slider-slide";
+            
+            const imgElement = document.createElement("img");
+            imgElement.src = getPuzzleImageUrl(`${this.#tab}${i}`);
+            
             li.innerHTML = `
                 <div class="slider-image">
                     <h3>${i}</h3>
-                    <img src="./images/${this.#tab}/${i}.jpg" />
+                    <div class="img-wrapper"></div>
                     ${completed > 0 ? `<h4 ${(completed === Data.pieces.length) ? "class='done'" : ""}>
                         ${completed}/${Data.pieces.length}
                     </h4>` : ""}
                 </div>
                 <ul data-image="${this.#tab}${i}">${selects}</ul>
             `;
+            li.querySelector('.img-wrapper').appendChild(imgElement);
             this.#listElem.appendChild(li);
         }
 

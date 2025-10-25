@@ -1,4 +1,5 @@
 import Storage from "./Storage.js";
+import { getAudioUrl } from "./AudioLoader.js";
 
 
 
@@ -35,7 +36,7 @@ export default class Sounds {
      */
     play(sound) {
         if (!this.mute) {
-            const audio = new Audio(`./audio/${sound}.mp3`);
+            const audio = new Audio(getAudioUrl(sound));
             audio.play();
         }
     }
