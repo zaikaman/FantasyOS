@@ -25,8 +25,9 @@ function copyDir(src, dest) {
 }
 
 // Copy games folder to dist
-const gamesSource = join(__dirname, 'games');
-const gamesDest = join(__dirname, 'dist', 'games');
+const projectRoot = join(__dirname, '..');
+const gamesSource = join(projectRoot, 'games');
+const gamesDest = join(projectRoot, 'dist', 'games');
 
 console.log('📦 Copying games folder to dist...');
 copyDir(gamesSource, gamesDest);
