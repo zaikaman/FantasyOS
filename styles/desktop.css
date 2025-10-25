@@ -12,7 +12,7 @@
   height: 100vh;
   overflow: hidden;
   background: var(--color-bg-dark);
-  padding-bottom: 64px; /* Make room for taskbar */
+  padding-bottom: 0; /* No padding needed - taskbar auto-hides */
 }
 
 /* Particles Layer - Canvas background */
@@ -50,7 +50,8 @@
 .potion-mixer-notepad,
 .treasure-chest,
 .weather-orb,
-.mana-orb {
+.mana-orb,
+.realm-customizer-altar {
   position: absolute;
   width: 150px;
   height: auto;
@@ -64,7 +65,8 @@
 .potion-mixer-notepad img,
 .treasure-chest img,
 .weather-orb img,
-.mana-orb img {
+.mana-orb img,
+.realm-customizer-altar img {
   width: 100%;
   height: auto;
   display: block;
@@ -160,8 +162,25 @@
   transform: scale(0.95) translateY(-2px);
 }
 
+/* Icon 6: Realm Customizer Altar - Column 2, Row 3 (Bottom) */
+.realm-customizer-altar {
+  bottom: 80px; /* Base position */
+  left: calc(50px + 250px * 1); /* 50px base + 1 column width */
+  animation: float 3.9s ease-in-out infinite;
+  animation-delay: 0.4s;
+}
+
+.realm-customizer-altar:hover {
+  transform: scale(1.08) translateY(-5px);
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.7))
+          drop-shadow(0 0 30px rgba(157, 127, 240, 0.6));
+}
+
+.realm-customizer-altar:active {
+  transform: scale(0.95) translateY(-2px);
+}
+
 /* Future Icon Positioning Guide:
- * Icon 6 would be: bottom: 80px; left: calc(50px + 250px * 1); (Column 2, Row 3)
  * Icon 7 would be: bottom: calc(80px + 230px * 2); left: calc(50px + 250px * 2); (Column 3, Row 1)
  * Icon 8 would be: bottom: calc(80px + 230px * 1); left: calc(50px + 250px * 2); (Column 3, Row 2)
  * Icon 9 would be: bottom: 80px; left: calc(50px + 250px * 2); (Column 3, Row 3)

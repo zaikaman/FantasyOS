@@ -40,7 +40,15 @@
     /* Subtle outer glow */
     0 -10px 30px rgba(212, 175, 55, 0.15);
   
-  transition: transform var(--transition-normal);
+  /* Auto-hide: slide down by default, keeping only 4px visible */
+  transform: translateY(calc(100% - 4px));
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Show taskbar when hovering near bottom */
+#taskbar:hover,
+#taskbar.show {
+  transform: translateY(0);
 }
 
 #taskbar.hidden {

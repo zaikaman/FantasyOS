@@ -41,6 +41,9 @@ export function initDesktop() {
   // Initialize potion mixer notepad click handler
   initPotionMixerNotepad();
 
+  // Initialize realm customizer altar click handler
+  initRealmCustomizerAltar();
+
   console.log('[Desktop] Initialized');
 }
 
@@ -336,4 +339,42 @@ function initPotionMixerNotepad() {
   });
 
   console.log('[Desktop] Potion mixer notepad initialized');
+}
+
+/**
+ * Initialize realm customizer altar click handler
+ */
+function initRealmCustomizerAltar() {
+  const altarElement = document.getElementById('realm-customizer-altar');
+  
+  if (!altarElement) {
+    console.warn('[Desktop] Realm customizer altar element not found');
+    return;
+  }
+
+  altarElement.addEventListener('click', () => {
+    console.log('[Desktop] Opening realm customizer altar...');
+    
+    // Create window for realm customizer app
+    try {
+      createWindow('realm-customizer');
+      
+      // Emit app launch event
+      eventBus.emit(Events.APP_LAUNCHED, {
+        appId: 'realm-customizer',
+        appName: 'Realm Customizer Altar',
+        timestamp: Date.now()
+      });
+      
+      // Visual feedback
+      altarElement.style.transform = 'scale(0.95) translateY(-2px)';
+      setTimeout(() => {
+        altarElement.style.transform = '';
+      }, 150);
+    } catch (error) {
+      console.error('[Desktop] Failed to open realm customizer altar:', error);
+    }
+  });
+
+  console.log('[Desktop] Realm customizer altar initialized');
 }

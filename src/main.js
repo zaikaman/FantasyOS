@@ -12,6 +12,7 @@ import '../styles/mana-calculator.css';
 import '../styles/quest-log.css';
 import '../styles/weather-oracle.css';
 import '../styles/potion-mixer.css';
+import '../styles/realm-customizer.css';
 import '../styles/popup-notifications.css';
 import '../styles/taskbar.css';
 import '../styles/clock-tower.css';
@@ -123,7 +124,7 @@ async function init() {
       initParticles(canvas);
 
       // Apply particle settings
-      const particleDensity = settings.particle_density || 100;
+      const particleDensity = settings.particle_density !== undefined ? settings.particle_density : 2;
       const particlesEnabled = settings.particle_enabled !== false;
 
       setParticleDensity(particleDensity);
@@ -132,6 +133,10 @@ async function init() {
         startParticles();
       }
     }
+
+    // Step 6.5: Apply saved realm customization settings
+    console.log('[Main] Step 6.5: Applying realm customization...');
+    applyRealmSettings(settings);
 
     // Step 7: Setup auto-save on state changes
     setupAutoSave();
@@ -193,6 +198,65 @@ function setupAutoSave() {
   subscribe('notifications', debouncedSave);
   subscribe('settings', debouncedSave);
   subscribe('calendar_events', debouncedSave);
+}
+
+/**
+ * Apply saved realm customization settings
+ * @param {Object} settings - Settings object
+ */
+function applyRealmSettings(settings) {
+  const root = document.documentElement;
+  
+  // Apply background
+  const background = settings.realm_background || 'background';
+  const desktopBg = document.querySelector('.desktop-background');
+  if (desktopBg) {
+    desktopBg.style.backgroundImage = `url('../src/assets/${background}.png')`;
+  }
+
+  // Apply theme
+  const theme = settings.realm_theme;
+  if (theme) {
+    const themes = {
+      mossy: { primary: '#2d5016', secondary: '#6b4e8c', accent: '#5dd8ed', gold: '#d4af37' },
+      volcanic: { primary: '#8b1a1a', secondary: '#d97706', accent: '#f59e0b', gold: '#ea580c' },
+      arctic: { primary: '#1e3a8a', secondary: '#3b82f6', accent: '#60a5fa', gold: '#93c5fd' },
+      twilight: { primary: '#4c1d95', secondary: '#7c3aed', accent: '#a78bfa', gold: '#c4b5fd' }
+    };
+
+    const selectedTheme = themes[theme];
+    if (selectedTheme) {
+      root.style.setProperty('--color-primary', selectedTheme.primary);
+      root.style.setProperty('--color-secondary', selectedTheme.secondary);
+      root.style.setProperty('--color-accent', selectedTheme.accent);
+      root.style.setProperty('--color-gold', selectedTheme.gold);
+
+      // Update light/dark variants
+      root.style.setProperty('--color-primary-light', adjustBrightness(selectedTheme.primary, 20));
+      root.style.setProperty('--color-primary-dark', adjustBrightness(selectedTheme.primary, -20));
+      root.style.setProperty('--color-gold-light', adjustBrightness(selectedTheme.gold, 30));
+      root.style.setProperty('--color-gold-dark', adjustBrightness(selectedTheme.gold, -30));
+    }
+  }
+}
+
+/**
+ * Adjust color brightness
+ */
+function adjustBrightness(hex, percent) {
+  hex = hex.replace('#', '');
+  let r = parseInt(hex.substring(0, 2), 16);
+  let g = parseInt(hex.substring(2, 4), 16);
+  let b = parseInt(hex.substring(4, 6), 16);
+  
+  r = Math.max(0, Math.min(255, r + (r * percent / 100)));
+  g = Math.max(0, Math.min(255, g + (g * percent / 100)));
+  b = Math.max(0, Math.min(255, b + (b * percent / 100)));
+  
+  return '#' + 
+    Math.round(r).toString(16).padStart(2, '0') + 
+    Math.round(g).toString(16).padStart(2, '0') + 
+    Math.round(b).toString(16).padStart(2, '0');
 }
 
 /**

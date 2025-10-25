@@ -14,6 +14,7 @@ import { createManaCalculatorApp } from './mana-calculator/mana-calculator.js';
 import { createQuestLogApp } from './quest-log/quest-log.js';
 import { createWeatherOracleApp } from './weather-oracle/weather-oracle.js';
 import { createPotionMixerApp } from './potion-mixer/potion-mixer.js';
+import { createRealmCustomizerApp } from './realm-customizer/realm-customizer.js';
 
 /**
  * Application registry
@@ -82,6 +83,17 @@ const hiddenApps = [
     defaultWidth: 1200,
     defaultHeight: 700,
     singleton: false // Multiple instances allowed
+  },
+  {
+    id: 'realm-customizer',
+    name: 'Realm Customizer Altar',
+    icon: '⚗️',
+    runeColor: '#9D7FF0',
+    description: 'Customize your enchanted realm appearance and settings',
+    component: createRealmCustomizerApp,
+    defaultWidth: 750,
+    defaultHeight: 800,
+    singleton: true // Only one instance allowed
   }
 ];
 

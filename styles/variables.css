@@ -117,9 +117,9 @@
      Z-Index Layers
      ======================================== */
 
-  --z-particles: 0;
   --z-background: 1;
-  --z-desktop: 2;
+  --z-particles: 2;
+  --z-desktop: 3;
   --z-windows-base: 1000;
   --z-sidebar: 5000;
   --z-modal: 10000;

@@ -45,7 +45,40 @@ export function initTaskbar() {
   // Initial render
   renderTaskbarWindows();
 
+  // Setup auto-hide behavior
+  setupAutoHide();
+
   console.log('[Taskbar] Initialized successfully');
+}
+
+/**
+ * Setup auto-hide behavior for taskbar
+ */
+function setupAutoHide() {
+  const TRIGGER_ZONE_HEIGHT = 50; // pixels from bottom to trigger show
+  
+  let isTaskbarShown = false;
+  
+  // Track mouse movement
+  document.addEventListener('mousemove', (e) => {
+    const distanceFromBottom = window.innerHeight - e.clientY;
+    
+    if (distanceFromBottom <= TRIGGER_ZONE_HEIGHT) {
+      // Mouse is near bottom, show taskbar
+      if (!isTaskbarShown) {
+        taskbarElement.classList.add('show');
+        isTaskbarShown = true;
+      }
+    } else {
+      // Mouse is away from bottom, hide taskbar
+      if (isTaskbarShown) {
+        taskbarElement.classList.remove('show');
+        isTaskbarShown = false;
+      }
+    }
+  });
+  
+  console.log('[Taskbar] Auto-hide enabled');
 }
 
 /**

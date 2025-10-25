@@ -4,6 +4,7 @@
  */
 
 import { startFPSMonitoring, updateFPS, logFPSSummary } from '../utils/performance.js';
+import { eventBus } from '../core/event-bus.js';
 
 const PARTICLE_COUNT = 100;
 const PARTICLE_SPAWN_RATE = 2; // particles per second
@@ -20,6 +21,7 @@ let particles = [];
 let animationFrameId = null;
 let lastSpawnTime = 0;
 let isRunning = false;
+let maxActiveParticles = 100; // Track maximum allowed active particles
 
 /**
  * Particle class
@@ -35,8 +37,8 @@ class Particle {
     this.vx = (Math.random() - 0.5) * PARTICLE_SPEED_MAX;
     this.vy = (Math.random() - 0.5) * PARTICLE_SPEED_MAX;
     this.size = PARTICLE_SIZE_MIN + Math.random() * (PARTICLE_SIZE_MAX - PARTICLE_SIZE_MIN);
-    this.opacity = Math.random() * 0.5 + 0.3; // 0.3 - 0.8
-    this.glowIntensity = Math.random() * 0.5 + 0.5; // 0.5 - 1.0
+    this.opacity = Math.random() * 0.6 + 0.4; // 0.4 - 1.0 (increased visibility)
+    this.glowIntensity = Math.random() * 0.5 + 0.6; // 0.6 - 1.1 (brighter glow)
     this.birthTime = Date.now();
     this.lifetime = PARTICLE_LIFETIME;
     this.active = true;
@@ -87,19 +89,20 @@ class Particle {
       return;
     }
 
-    // Draw glow
+    // Draw glow with golden mystical color
     const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, PARTICLE_GLOW_RADIUS * this.glowIntensity);
-    gradient.addColorStop(0, `rgba(255, 215, 0, ${this.opacity})`);
-    gradient.addColorStop(0.5, `rgba(255, 215, 0, ${this.opacity * 0.3})`);
-    gradient.addColorStop(1, 'rgba(255, 215, 0, 0)');
+    gradient.addColorStop(0, `rgba(255, 215, 100, ${this.opacity})`);
+    gradient.addColorStop(0.3, `rgba(255, 215, 100, ${this.opacity * 0.5})`);
+    gradient.addColorStop(0.6, `rgba(93, 216, 237, ${this.opacity * 0.3})`);
+    gradient.addColorStop(1, 'rgba(93, 216, 237, 0)');
 
     ctx.fillStyle = gradient;
     ctx.beginPath();
     ctx.arc(this.x, this.y, PARTICLE_GLOW_RADIUS * this.glowIntensity, 0, Math.PI * 2);
     ctx.fill();
 
-    // Draw core
-    ctx.fillStyle = `rgba(255, 255, 200, ${this.opacity})`;
+    // Draw core with slight cyan tint
+    ctx.fillStyle = `rgba(255, 255, 220, ${this.opacity})`;
     ctx.beginPath();
     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
     ctx.fill();
@@ -129,6 +132,11 @@ export function initParticles(canvasElement) {
 
   // Handle window resize
   window.addEventListener('resize', resizeCanvas);
+
+  // Listen for particle density changes
+  eventBus.on('particles:density-changed', ({ density }) => {
+    setParticleDensity(density);
+  });
 
   console.log('[Particles] Initialized with', PARTICLE_COUNT, 'particles');
 }
@@ -228,14 +236,17 @@ function spawnParticles(currentTime) {
 
   if (particlesToSpawn > 0) {
     let spawned = 0;
+    let activeCount = particles.filter(p => p.active).length;
 
     for (const particle of particles) {
-      if (!particle.active && spawned < particlesToSpawn) {
+      // Only spawn if we haven't reached the max active particle count
+      if (!particle.active && spawned < particlesToSpawn && activeCount < maxActiveParticles) {
         particle.reset();
         spawned++;
+        activeCount++;
       }
 
-      if (spawned >= particlesToSpawn) {
+      if (spawned >= particlesToSpawn || activeCount >= maxActiveParticles) {
         break;
       }
     }
@@ -246,25 +257,49 @@ function spawnParticles(currentTime) {
 
 /**
  * Set particle density (update particle count)
- * @param {number} count - New particle count
+ * @param {number} density - Density percentage (0-100)
  */
-export function setParticleDensity(count) {
-  const newCount = Math.max(50, Math.min(200, count));
+export function setParticleDensity(density) {
+  // Convert percentage (0-100) to actual particle count
+  // 0% = 0 particles, 50% = 75 particles, 100% = 150 particles
+  const percentage = Math.max(0, Math.min(100, density));
+  const newCount = Math.floor((percentage / 100) * 150);
 
+  // Update max active particles
+  maxActiveParticles = newCount;
+
+  if (newCount === 0) {
+    // Deactivate all particles
+    particles.forEach(p => p.active = false);
+    console.log('[Particles] All particles deactivated (density: 0%)');
+    return;
+  }
+
+  // Count currently active particles
+  const activeCount = particles.filter(p => p.active).length;
+
+  if (activeCount > newCount) {
+    // Deactivate excess particles
+    let deactivated = 0;
+    for (const particle of particles) {
+      if (particle.active && deactivated < (activeCount - newCount)) {
+        particle.active = false;
+        deactivated++;
+      }
+    }
+  }
+
+  // Ensure we have enough particle objects in the pool
   if (newCount > particles.length) {
-    // Add more particles
     const toAdd = newCount - particles.length;
     for (let i = 0; i < toAdd; i++) {
       const particle = new Particle();
       particle.active = false;
       particles.push(particle);
     }
-  } else if (newCount < particles.length) {
-    // Remove particles
-    particles = particles.slice(0, newCount);
   }
 
-  console.log('[Particles] Density set to', newCount);
+  console.log(`[Particles] Density set to ${percentage}% (max ${newCount} particles, currently ${particles.filter(p => p.active).length} active)`);
 }
 
 /**
