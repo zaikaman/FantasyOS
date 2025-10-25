@@ -136,9 +136,6 @@ Built with modern web technologies including Vite, SQL.js, and the Vapi AI SDK, 
 14. **RuneWizz Voice Agent** - AI-powered voice assistant using Vapi SDK
     - Voice-to-voice conversations
     - Context-aware responses
-    - Tool calling for file management
-    - Calendar integration
-    - Weather queries
 
 ---
 
@@ -494,21 +491,16 @@ AI-powered voice assistant.
 **Features:**
 - Voice-to-voice conversations
 - Natural language understanding
-- File management commands
-- Calendar integration
-- Weather queries
 - Context-aware responses
 
 **Usage:**
 1. Open RuneWizz application
 2. Click microphone to start conversation
 3. Speak your request
-4. AI responds with voice and text
+4. AI responds with voice
 
 **Example Commands:**
-- "Create a new note called Meeting Notes"
 - "What events do I have tomorrow?"
-- "What's the weather in London?"
 - "Show me my files"
 
 ---
