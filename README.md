@@ -145,19 +145,11 @@ Built with modern web technologies including Vite, SQL.js, and the Vapi AI SDK, 
 ## 🎮 Demo
 
 ### Live Demo
-Visit the live deployment: [RuneShell on Vercel](#) *(Add your deployment URL)*
-
-### Screenshots
-
-*(Add screenshots of your application here)*
-
-```
-[Desktop Overview] [Window Management] [Treasure Chest] [Games Arcade]
-```
+Visit the live deployment: [RuneShell on Vercel](https://runeshell.vercel.app)
 
 ### Video Demo
 
-*(Optional: Link to a video demonstration)*
+Watch a walkthrough of RuneShell: [YouTube Demo](https://www.youtube.com/watch?v=S0iK8plonsI)
 
 ---
 
@@ -937,8 +929,9 @@ SOFTWARE.
 ### Getting Help
 
 - **Documentation**: Check this README and `/docs` folder
-- **Issues**: [GitHub Issues](https://github.com/zaikaman/FantasyOS/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/zaikaman/FantasyOS/discussions)
+- **Repository**: [GitHub Repository](https://github.com/zaikaman/RuneShell)
+- **Issues**: [GitHub Issues](https://github.com/zaikaman/RuneShell/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/zaikaman/RuneShell/discussions)
 
 ### Reporting Bugs
 
