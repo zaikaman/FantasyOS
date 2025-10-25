@@ -23,8 +23,20 @@ export function createWindowElement(window) {
   windowEl.style.left = '0';
   windowEl.style.top = '0';
   windowEl.style.transform = `translate(${window.x}px, ${window.y}px)`;
-  windowEl.style.width = `${window.width}px`;
-  windowEl.style.height = `${window.height}px`;
+  
+  // Handle auto sizing
+  if (window.width === 'auto' || window.width === null) {
+    windowEl.style.width = 'auto';
+  } else {
+    windowEl.style.width = `${window.width}px`;
+  }
+  
+  if (window.height === 'auto' || window.height === null) {
+    windowEl.style.height = 'auto';
+  } else {
+    windowEl.style.height = `${window.height}px`;
+  }
+  
   windowEl.style.zIndex = window.z_index;
 
   // Set minimized state
@@ -72,12 +84,21 @@ export function updateWindowPosition(windowEl, x, y) {
 /**
  * Update window DOM element size
  * @param {HTMLElement} windowEl - Window element
- * @param {number} width - Width in pixels
- * @param {number} height - Height in pixels
+ * @param {number|string} width - Width in pixels or 'auto'
+ * @param {number|string} height - Height in pixels or 'auto'
  */
 export function updateWindowSize(windowEl, width, height) {
-  windowEl.style.width = `${width}px`;
-  windowEl.style.height = `${height}px`;
+  if (width === 'auto' || width === null) {
+    windowEl.style.width = 'auto';
+  } else {
+    windowEl.style.width = `${width}px`;
+  }
+  
+  if (height === 'auto' || height === null) {
+    windowEl.style.height = 'auto';
+  } else {
+    windowEl.style.height = `${height}px`;
+  }
 }
 
 /**

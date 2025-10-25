@@ -10,6 +10,7 @@ import {
 } from '../assets/runes/app-icons.js';
 import { createTreasureChestApp } from './treasure-chest/treasure-chest.js';
 import { createManaCalculatorApp } from './mana-calculator/mana-calculator.js';
+import { createQuestLogApp } from './quest-log/quest-log.js';
 
 /**
  * Application registry
@@ -22,10 +23,10 @@ export const appRegistry = [
     icon: questLogRune('#FFD700', 64),
     runeColor: '#FFD700',
     description: 'Track your adventures and tasks',
-    component: () => createPlaceholderApp('Quest Log', '📜'),
+    component: createQuestLogApp,
     defaultWindow: {
-      width: 600,
-      height: 700
+      width: 'auto',
+      height: 'auto'
     },
     singleton: true
   }

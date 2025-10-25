@@ -90,17 +90,26 @@ export function createWindow(appId, options = {}) {
   
   let x = options.x !== undefined ? options.x : defaultPos.x;
   let y = options.y !== undefined ? options.y : defaultPos.y;
-  let width = options.width || app.defaultWidth || 600;
-  let height = options.height || app.defaultHeight || 400;
-
-  // Constrain to screen bounds
-  const constrainedPos = constrainWindowPosition(x, y, width, height);
-  const constrainedSize = constrainWindowSize(width, height);
   
-  x = constrainedPos.x;
-  y = constrainedPos.y;
-  width = constrainedSize.width;
-  height = constrainedSize.height;
+  // Support both old format (defaultWidth/defaultHeight) and new format (defaultWindow.width/height)
+  const defaultWidth = app.defaultWindow?.width || app.defaultWidth || 600;
+  const defaultHeight = app.defaultWindow?.height || app.defaultHeight || 400;
+  
+  let width = options.width || defaultWidth;
+  let height = options.height || defaultHeight;
+
+  // Only constrain if we have specific numeric dimensions
+  if (typeof width === 'number' && typeof height === 'number') {
+    // Constrain to screen bounds
+    const constrainedPos = constrainWindowPosition(x, y, width, height);
+    const constrainedSize = constrainWindowSize(width, height);
+    
+    x = constrainedPos.x;
+    y = constrainedPos.y;
+    width = constrainedSize.width;
+    height = constrainedSize.height;
+  }
+  // For auto-sized windows, width and height stay as 'auto'
 
   // Calculate z-index
   const maxZ = state.windows.reduce((max, w) => Math.max(max, w.z_index), BASE_Z_INDEX - 1);
