@@ -4,10 +4,11 @@
  */
 
 import Vapi from '@vapi-ai/web';
+import wizardImg from '@assets/wizard.png';
+import crystalBallImg from '@assets/crystal-ball-blue.png';
 
 let vapiInstance = null;
 let isCallActive = false;
-let isMuted = false;
 
 /**
  * Create RuneWizz voice agent app
@@ -63,7 +64,7 @@ export function createRuneWizzApp() {
   `;
   header.innerHTML = `
     <div style="font-size: 3rem; margin-bottom: 0.5rem; filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5)); display: flex; justify-content: center; align-items: center;">
-      <img src="/src/assets/wizard.png" alt="Wizard" style="width: 80px; height: 80px; object-fit: contain;">
+      <img src="${wizardImg}" alt="Wizard" style="width: 80px; height: 80px; object-fit: contain;">
     </div>
     <h1 style="font-size: 1.8rem; margin: 0; font-family: var(--font-family-fantasy); background: linear-gradient(45deg, #FFD700, #FFA500); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);">
       RuneWizz
@@ -108,7 +109,7 @@ export function createRuneWizzApp() {
     overflow: hidden;
     outline: none;
   `;
-  orb.innerHTML = '<img src="/src/assets/crystal-ball-blue.png" alt="Crystal Ball" style="width: 100%; height: 100%; object-fit: contain;">';
+  orb.innerHTML = `<img src="${crystalBallImg}" alt="Crystal Ball" style="width: 100%; height: 100%; object-fit: contain;">`;
 
   // Orb inner glow
   const orbGlow = document.createElement('div');
@@ -541,7 +542,7 @@ function initializeVapi(orbBtn, statusEl, hintEl) {
     statusEl.style.color = '#00ff88';
     hintEl.textContent = 'Click orb to end call';
     animateOrb(orbBtn, true);
-    orbBtn.innerHTML = '<img src="/src/assets/crystal-ball-blue.png" alt="Crystal Ball" style="width: 100%; height: 100%; object-fit: contain;">';
+    orbBtn.innerHTML = `<img src="${crystalBallImg}" alt="Crystal Ball" style="width: 100%; height: 100%; object-fit: contain;">`;
   });
 
   // Event: Call ended
@@ -553,7 +554,7 @@ function initializeVapi(orbBtn, statusEl, hintEl) {
     statusEl.style.color = 'var(--color-gold)';
     hintEl.textContent = 'Click the orb to begin';
     animateOrb(orbBtn, false);
-    orbBtn.innerHTML = '<img src="/src/assets/crystal-ball-blue.png" alt="Crystal Ball" style="width: 100%; height: 100%; object-fit: contain;">';
+    orbBtn.innerHTML = `<img src="${crystalBallImg}" alt="Crystal Ball" style="width: 100%; height: 100%; object-fit: contain;">`;
   });
 
   // Event: Speech start
