@@ -87,3 +87,7 @@ db-backups/*.db
 # Vercel Deployment
 # ============================================================================
 .vercel
+docs
+client-sdk-web
+server-sdk-typescript
+CodeForgeAI

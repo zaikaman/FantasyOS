@@ -349,8 +349,8 @@ html, body {
 .meditation-chamber {
   bottom: 80px; /* Base position for row 3 */
   left: calc(50px + 250px * 3); /* Column 4 */
-  animation: float 4.0s ease-in-out infinite;
-  animation-delay: 0.8s;
+  animation: float 4.7s ease-in-out infinite;
+  animation-delay: 0.9s;
 }
 
 .meditation-chamber:hover {
@@ -363,12 +363,58 @@ html, body {
   transform: scale(0.95) translateY(-2px);
 }
 
-/* Future Icon Positioning Guide:
- * Icon 9 would be: bottom: calc(80px + 230px * 1); left: calc(50px + 250px * 2); (Column 3, Row 2)
- * Icon 10 would be: bottom: calc(80px + 230px * 2); left: calc(50px + 250px * 3); (Column 4, Row 1)
- * And so on...
- */
+/* RuneWizz Voice Agent - Column 5, Row 3 (Bottom Right, same column as clock) */
+.rune-wizz-icon {
+  position: absolute;
+  bottom: 80px; /* Base position for row 3 */
+  left: calc(50px + 250px * 4); /* Column 5 - same column as the clock */
+  width: 180px;
+  height: 180px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 50;
+  animation: float 5s ease-in-out infinite;
+  animation-delay: 1.1s;
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5))
+          drop-shadow(0 0 20px rgba(255, 215, 0, 0.4));
+}
 
+.rune-wizz-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.rune-wizz-icon .app-icon-label {
+  position: absolute;
+  bottom: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.9rem;
+  color: var(--color-text-light);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 0 10px rgba(255, 215, 0, 0.5);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.rune-wizz-icon:hover .app-icon-label {
+  opacity: 1;
+}
+
+.rune-wizz-icon:hover {
+  transform: scale(1.08) translateY(-5px);
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.7))
+          drop-shadow(0 0 30px rgba(255, 215, 0, 0.8));
+}
+
+.rune-wizz-icon:active {
+  transform: scale(0.95) translateY(-2px);
+}
+
+/* App Icon Labels - General Style */
 /* App Launcher - Rune icons grid */
 .app-launcher {
   position: absolute;

@@ -71,6 +71,9 @@ export function initDesktop() {
   // Initialize meditation chamber click handler
   initMeditationChamber();
 
+  // Initialize RuneWizz voice agent click handler
+  initRuneWizzIcon();
+
   console.log('[Desktop] Initialized');
 }
 
@@ -290,6 +293,44 @@ function initManaCalculatorOrb() {
   });
 
   console.log('[Desktop] Bardic lute player initialized');
+}
+
+/**
+ * Initialize RuneWizz voice agent click handler
+ */
+function initRuneWizzIcon() {
+  const runeWizzElement = document.getElementById('rune-wizz-icon');
+  
+  if (!runeWizzElement) {
+    console.warn('[Desktop] RuneWizz icon element not found');
+    return;
+  }
+
+  runeWizzElement.addEventListener('click', () => {
+    console.log('[Desktop] Opening RuneWizz voice agent...');
+    
+    // Create window for RuneWizz app
+    try {
+      createWindow('rune-wizz');
+      
+      // Emit app launch event
+      eventBus.emit(Events.APP_LAUNCHED, {
+        appId: 'rune-wizz',
+        appName: 'RuneWizz Voice Agent',
+        timestamp: Date.now()
+      });
+      
+      // Visual feedback
+      runeWizzElement.style.transform = 'scale(0.95) translateY(-2px)';
+      setTimeout(() => {
+        runeWizzElement.style.transform = '';
+      }, 150);
+    } catch (error) {
+      console.error('[Desktop] Failed to open RuneWizz:', error);
+    }
+  });
+
+  console.log('[Desktop] RuneWizz icon initialized');
 }
 
 /**

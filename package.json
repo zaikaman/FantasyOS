@@ -48,6 +48,7 @@
     "Safari >= 14"
   ],
   "dependencies": {
+    "@vapi-ai/web": "^2.5.0",
     "sql.js": "^1.13.0"
   }
 }

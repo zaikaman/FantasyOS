@@ -1,0 +1,63 @@
+{
+  "type": "object",
+  "properties": {
+    "action": {
+      "type": "string",
+      "description": "The action to perform",
+      "enum": ["create_window", "close_window", "close_all_windows", "get_all_windows", "launch_app", "get_available_apps", "minimize_window", "get_system_time", "get_system_status", "change_theme", "toggle_particles", "create_notification", "read_notifications", "open_game", "create_task"]
+    },
+    "app_id": {
+      "type": "string",
+      "description": "Application ID (for create_window, launch_app): treasure-chest, mana-calculator, quest-log, weather-oracle, potion-mixer, realm-customizer, echo-chamber, games-arcade, spell-tome-library, bardic-lute-player, hex-canvas, meditation-chamber"
+    },
+    "window_id": {
+      "type": "string",
+      "description": "Window ID (for close_window, minimize_window)"
+    },
+    "title": {
+      "type": "string",
+      "description": "Custom window title (optional for create_window)"
+    },
+    "format": {
+      "type": "string",
+      "description": "Time format for get_system_time: 12h or 24h",
+      "enum": ["12h", "24h"]
+    },
+    "theme": {
+      "type": "string",
+      "description": "Theme name for change_theme",
+      "enum": ["mossy", "volcanic", "arctic", "twilight"]
+    },
+    "enabled": {
+      "type": "boolean",
+      "description": "Enable/disable particles for toggle_particles"
+    },
+    "text": {
+      "type": "string",
+      "description": "Notification text for create_notification"
+    },
+    "context": {
+      "type": "string",
+      "description": "Notification context (optional)"
+    },
+    "game_name": {
+      "type": "string",
+      "description": "Game name for open_game",
+      "enum": ["snake", "tetris", "pacman", "bounce", "defender", "puzzle", "spider"]
+    },
+    "task_title": {
+      "type": "string",
+      "description": "Task title for create_task"
+    },
+    "task_description": {
+      "type": "string",
+      "description": "Task description (optional for create_task)"
+    },
+    "task_priority": {
+      "type": "string",
+      "description": "Task priority for create_task",
+      "enum": ["low", "medium", "high"]
+    }
+  },
+  "required": ["action"]
+}

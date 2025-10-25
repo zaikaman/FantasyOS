@@ -21,12 +21,25 @@ import { createSpellTomeLibraryApp } from './spell-tome-library/spell-tome-libra
 import { createBardicLutePlayerApp } from './bardic-lute-player/bardic-lute-player.js';
 import { createHexCanvasApp } from './hex-canvas/hex-canvas.js';
 import { createMeditationChamberApp } from './meditation-chamber/meditation-chamber.js';
+import { createRuneWizzApp } from './rune-wizz/rune-wizz.js';
 
 /**
  * Application registry
  * Each app definition includes metadata and factory function
  */
-export const appRegistry = [];
+export const appRegistry = [
+  {
+    id: 'rune-wizz',
+    name: 'RuneWizz Voice Agent',
+    icon: '<img src="/src/assets/RuneWizz.png" alt="RuneWizz Voice Agent" style="width: 100%; height: 100%; object-fit: contain;" />',
+    runeColor: '#FFD700',
+    description: 'Voice-powered AI assistant for complete OS control',
+    component: createRuneWizzApp,
+    defaultWidth: 800,
+    defaultHeight: 900,
+    singleton: true // Only one voice agent at a time
+  }
+];
 
 /**
  * Hidden apps registry
