@@ -12,6 +12,7 @@
   height: 100vh;
   overflow: hidden;
   background: var(--color-bg-dark);
+  padding-bottom: 64px; /* Make room for taskbar */
 }
 
 /* Particles Layer - Canvas background */
@@ -42,7 +43,7 @@
 /* Treasure Chest - Bottom Left Corner */
 .treasure-chest {
   position: absolute;
-  bottom: 40px;
+  bottom: 80px; /* Moved up to avoid taskbar */
   left: 40px;
   width: 280px;
   height: auto;
@@ -73,7 +74,7 @@
 /* Mana Calculator Orb - Bottom Right Corner */
 .mana-orb {
   position: absolute;
-  bottom: 40px;
+  bottom: 80px; /* Moved up to avoid taskbar */
   right: 40px;
   width: 200px;
   height: auto;

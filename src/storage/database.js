@@ -207,6 +207,36 @@ export function getDatabaseSize() {
 }
 
 /**
+ * Get storage quota information from browser
+ * @returns {Promise<{used: number, quota: number}>} Storage info in bytes
+ */
+export async function getStorageQuota() {
+  try {
+    if (navigator.storage && navigator.storage.estimate) {
+      const estimate = await navigator.storage.estimate();
+      return {
+        used: estimate.usage || 0,
+        quota: estimate.quota || 50 * 1024 * 1024 // Default 50MB if not available
+      };
+    } else {
+      // Fallback for browsers that don't support the API
+      const dbSize = getDatabaseSize();
+      return {
+        used: dbSize * 1024 * 1024, // Convert MB to bytes
+        quota: 50 * 1024 * 1024 // 50MB default
+      };
+    }
+  } catch (error) {
+    console.error('[Database] Failed to get storage quota:', error);
+    const dbSize = getDatabaseSize();
+    return {
+      used: dbSize * 1024 * 1024,
+      quota: 50 * 1024 * 1024
+    };
+  }
+}
+
+/**
  * Start auto-save timer
  */
 function startAutoSave() {

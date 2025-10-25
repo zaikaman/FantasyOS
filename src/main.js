@@ -10,6 +10,7 @@ import '../styles/window.css';
 import '../styles/treasure-chest.css';
 import '../styles/mana-calculator.css';
 import '../styles/popup-notifications.css';
+import '../styles/taskbar.css';
 
 import { initDatabase, saveToIndexedDB } from './storage/database.js';
 import { getAllWindows, getAllFiles, getAllNotifications, getAllSettings, deleteAllWindows } from './storage/queries.js';
@@ -26,6 +27,7 @@ import { initKeyboardShortcuts } from './window/keyboard-shortcuts.js';
 import { initializeNotificationTriggers } from './core/notification-triggers.js';
 import { initializeCleanup } from './storage/cleanup.js';
 import { initializePopupNotifications } from './notifications/popup-notifications.js';
+import { initTaskbar } from './taskbar/taskbar.js';
 
 // Global error handling
 let errorBoundary = null;
@@ -93,6 +95,7 @@ async function init() {
     initDragHandler();
     initResizeHandler();
     initKeyboardShortcuts();
+    initTaskbar();
 
     // Step 5.5: Initialize notification system
     console.log('[Main] Step 5.5: Initializing notifications...');

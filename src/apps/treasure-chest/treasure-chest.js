@@ -3,12 +3,13 @@
  * Browse, create, edit, and delete files (scrolls and artifacts)
  */
 
-import { getAllFiles } from '../../storage/queries.js';
+import { subscribe } from '../../core/state.js';
 import { eventBus, Events } from '../../core/event-bus.js';
+import { getAllFiles, insertFile, updateFile, deleteFile } from '../../storage/queries.js';
+import { getStorageQuota } from '../../storage/database.js';
 import { renderFileList } from './file-list.js';
 import { openScrollEditor } from './scroll-editor.js';
 import { openArtifactEditor } from './artifact-editor.js';
-import { checkStorageQuota } from '../../storage/database.js';
 
 let containerEl = null;
 let files = [];
@@ -325,7 +326,7 @@ function handleFileChange() {
  */
 async function checkAndDisplayQuota() {
   try {
-    const quota = await checkStorageQuota();
+    const quota = await getStorageQuota();
     const storageInfoEl = containerEl.querySelector('#storage-info');
     const storageBarFillEl = containerEl.querySelector('#storage-bar-fill');
     const storageTextEl = containerEl.querySelector('#storage-text');

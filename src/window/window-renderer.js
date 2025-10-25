@@ -116,7 +116,7 @@ export function showWindow(windowEl) {
   // Remove animation class after animation completes
   setTimeout(() => {
     windowEl.classList.remove('restoring');
-  }, 300);
+  }, 200);
 }
 
 /**
@@ -130,7 +130,7 @@ export function hideWindow(windowEl) {
   setTimeout(() => {
     windowEl.classList.remove('minimizing');
     windowEl.classList.add('minimized');
-  }, 300);
+  }, 200);
 }
 
 /**

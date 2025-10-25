@@ -534,6 +534,16 @@
   display: none;
 }
 
+/* Restoring animation */
+.window.restoring {
+  animation: windowRestoreFade 0.2s ease-out;
+}
+
+/* Minimizing animation */
+.window.minimizing {
+  animation: windowMinimizeFade 0.2s ease-in forwards;
+}
+
 /* Window loading state */
 .window-loading {
   position: absolute;
@@ -598,5 +608,24 @@
 
   .window-content {
     padding: 12px;
+  }
+}
+
+/* Window animations - using opacity only to avoid transform conflicts */
+@keyframes windowRestoreFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes windowMinimizeFade {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
   }
 }

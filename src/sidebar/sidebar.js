@@ -35,7 +35,7 @@ export function initSidebar() {
   minimizedContainer = minimizedSection.querySelector('#minimized-list');
 
   // Subscribe to window state changes
-  subscribe(() => {
+  subscribe('windows', () => {
     renderMinimizedWindows();
   });
 
