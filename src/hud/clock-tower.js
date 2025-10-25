@@ -16,8 +16,10 @@ let secondHandElement = null;
 let timeDisplayElement = null;
 let dateDisplayElement = null;
 let calendarToggle = null;
+let calendarModal = null;
 let calendarPanel = null;
 let calendarEventsContainer = null;
+let calendarOverlay = null;
 let towerStructure = null;
 
 let lastChimeHour = -1;
@@ -39,8 +41,10 @@ export function initClockTower() {
   secondHandElement = document.getElementById('second-hand');
   timeDisplayElement = document.getElementById('time-display');
   calendarToggle = document.getElementById('calendar-toggle');
+  calendarModal = document.getElementById('calendar-modal');
   calendarPanel = document.getElementById('calendar-panel');
   calendarEventsContainer = document.getElementById('calendar-events');
+  calendarOverlay = document.getElementById('calendar-modal-overlay');
   towerStructure = clockTowerElement?.querySelector('.tower-structure');
 
   if (!clockTowerElement) {
@@ -218,7 +222,7 @@ function triggerChime(hours) {
  * Setup calendar toggle button
  */
 function setupCalendarToggle() {
-  if (!calendarToggle || !calendarPanel) {
+  if (!calendarToggle || !calendarModal) {
     return;
   }
 
@@ -234,9 +238,16 @@ function setupCalendarToggle() {
     });
   }
 
-  // Close calendar when clicking outside
-  document.addEventListener('click', (event) => {
-    if (!clockTowerElement?.contains(event.target)) {
+  // Close calendar when clicking overlay
+  if (calendarOverlay) {
+    calendarOverlay.addEventListener('click', () => {
+      hideCalendar();
+    });
+  }
+
+  // Close calendar on Escape key
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && !calendarModal?.classList.contains('hidden')) {
       hideCalendar();
     }
   });
@@ -246,7 +257,7 @@ function setupCalendarToggle() {
  * Toggle calendar panel visibility
  */
 function toggleCalendar() {
-  if (calendarPanel?.classList.contains('hidden')) {
+  if (calendarModal?.classList.contains('hidden')) {
     showCalendar();
   } else {
     hideCalendar();
@@ -257,7 +268,7 @@ function toggleCalendar() {
  * Show calendar panel
  */
 function showCalendar() {
-  calendarPanel?.classList.remove('hidden');
+  calendarModal?.classList.remove('hidden');
   renderCalendarEvents();
 }
 
@@ -265,7 +276,7 @@ function showCalendar() {
  * Hide calendar panel
  */
 function hideCalendar() {
-  calendarPanel?.classList.add('hidden');
+  calendarModal?.classList.add('hidden');
 }
 
 /**

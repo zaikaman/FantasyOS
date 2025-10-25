@@ -87,7 +87,7 @@ INSERT OR IGNORE INTO schema_version (version, applied_at) VALUES (1, strftime('
 -- ============================================================================
 INSERT OR IGNORE INTO settings (key, value, modified_at) VALUES
     ('theme_color', '"mossy_green"', strftime('%s', 'now') * 1000),
-    ('particle_density', '100', strftime('%s', 'now') * 1000),
+    ('particle_density', '2', strftime('%s', 'now') * 1000),
     ('particle_enabled', 'true', strftime('%s', 'now') * 1000),
     ('ai_notifications', 'true', strftime('%s', 'now') * 1000),
     ('notification_frequency', '"normal"', strftime('%s', 'now') * 1000),
