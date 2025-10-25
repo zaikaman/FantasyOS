@@ -1,5 +1,5 @@
 /**
- * RuneWizz - Voice Agent for FantasyOS
+ * RuneWizz - Voice Agent for RuneShell
  * Simple voice assistant with OS context awareness
  */
 
@@ -63,7 +63,7 @@ export function createRuneWizzApp() {
   `;
   header.innerHTML = `
     <div style="font-size: 3rem; margin-bottom: 0.5rem; filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.5)); display: flex; justify-content: center; align-items: center;">
-      <img src="src/assets/wizard.png" alt="Wizard" style="width: 80px; height: 80px; object-fit: contain;">
+      <img src="/src/assets/wizard.png" alt="Wizard" style="width: 80px; height: 80px; object-fit: contain;">
     </div>
     <h1 style="font-size: 1.8rem; margin: 0; font-family: var(--font-family-fantasy); background: linear-gradient(45deg, #FFD700, #FFA500); -webkit-background-clip: text; -webkit-text-fill-color: transparent; text-shadow: 0 0 30px rgba(255, 215, 0, 0.3);">
       RuneWizz
@@ -108,7 +108,7 @@ export function createRuneWizzApp() {
     overflow: hidden;
     outline: none;
   `;
-  orb.innerHTML = '<img src="src/assets/crystal-ball-blue.png" alt="Crystal Ball" style="width: 100%; height: 100%; object-fit: contain;">';
+  orb.innerHTML = '<img src="/src/assets/crystal-ball-blue.png" alt="Crystal Ball" style="width: 100%; height: 100%; object-fit: contain;">';
 
   // Orb inner glow
   const orbGlow = document.createElement('div');
@@ -198,7 +198,7 @@ export function createRuneWizzApp() {
  */
 function getOSContext() {
   // Import storage queries dynamically
-  const storage = window.fantasyOS?.storage;
+  const storage = window.RuneShell?.storage;
   
   if (!storage) {
     console.warn('[RuneWizz] Storage API not available yet');
@@ -359,7 +359,7 @@ function getAppGuide() {
     },
     'realm-customizer': {
       name: 'Realm Customizer',
-      purpose: 'Customize FantasyOS appearance with themes, backgrounds, particles, and settings',
+      purpose: 'Customize RuneShell appearance with themes, backgrounds, particles, and settings',
       howToUse: 'Choose from theme presets, select background images, adjust particle effects, toggle rune glow, enable background music, and position the clock.',
       features: ['8 fantasy themes', '10+ background options', 'Particle density control', 'Rune glow toggle', 'Background music with volume', 'Clock positioning', 'Notification sound toggle']
     },
@@ -401,7 +401,7 @@ function getAppGuide() {
     },
     'rune-wizz': {
       name: 'RuneWizz Voice Agent',
-      purpose: 'Voice-powered AI assistant with awareness of your FantasyOS data',
+      purpose: 'Voice-powered AI assistant with awareness of your RuneShell data',
       howToUse: 'Click Start Voice to begin. Speak naturally to ask about your files, events, settings, or time. Click Stop to end.',
       features: ['Voice interaction', 'Context awareness', 'File information', 'Event reminders', 'Settings info', 'Natural conversation']
     }
@@ -423,7 +423,7 @@ function createAssistantWithContext() {
       messages: [
         {
           role: "system",
-          content: `You are RuneWizz, a mystical voice assistant for FantasyOS - an enchanted desktop operating system with a fantasy theme.
+          content: `You are RuneWizz, a mystical voice assistant for RuneShell - an enchanted desktop operating system with a fantasy theme.
 
 PERSONALITY:
 - Speak in a mystical, wizard-like manner with fantasy references
@@ -449,7 +449,7 @@ WHAT YOU CAN HELP WITH:
 - Current realm customizer settings (theme, background, particles, music, clock, etc.)
 - Unread notifications and recent system messages
 - Current date and time
-- HOW TO USE any app in FantasyOS - explain features, controls, and purpose
+- HOW TO USE any app in RuneShell - explain features, controls, and purpose
 - Which app to use for specific tasks
 
 EXAMPLES:
@@ -541,7 +541,7 @@ function initializeVapi(orbBtn, statusEl, hintEl) {
     statusEl.style.color = '#00ff88';
     hintEl.textContent = 'Click orb to end call';
     animateOrb(orbBtn, true);
-    orbBtn.innerHTML = '<img src="src/assets/crystal-ball-blue.png" alt="Crystal Ball" style="width: 100%; height: 100%; object-fit: contain;">';
+    orbBtn.innerHTML = '<img src="/src/assets/crystal-ball-blue.png" alt="Crystal Ball" style="width: 100%; height: 100%; object-fit: contain;">';
   });
 
   // Event: Call ended
@@ -553,7 +553,7 @@ function initializeVapi(orbBtn, statusEl, hintEl) {
     statusEl.style.color = 'var(--color-gold)';
     hintEl.textContent = 'Click the orb to begin';
     animateOrb(orbBtn, false);
-    orbBtn.innerHTML = '<img src="src/assets/crystal-ball-blue.png" alt="Crystal Ball" style="width: 100%; height: 100%; object-fit: contain;">';
+    orbBtn.innerHTML = '<img src="/src/assets/crystal-ball-blue.png" alt="Crystal Ball" style="width: 100%; height: 100%; object-fit: contain;">';
   });
 
   // Event: Speech start

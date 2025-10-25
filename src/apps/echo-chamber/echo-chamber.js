@@ -230,7 +230,7 @@ async function parseCommandIntent(cmd) {
         role: 'system',
         content: `You are a JSON-only API. Parse user commands into JSON objects. ONLY return valid JSON, no other text.
 
-SYSTEM CONTEXT - You are the Echo Chamber Terminal (RuneShell) in FantasyOS, a mystical fantasy desktop environment with the following capabilities:
+SYSTEM CONTEXT - You are the Echo Chamber Terminal (RuneShell) in RuneShell, a mystical fantasy desktop environment with the following capabilities:
 
 AVAILABLE APPLICATIONS:
 - Quest Log: Task/file manager for tracking quests and adventures
@@ -271,7 +271,7 @@ COMMAND INTERPRETATION GUIDELINES:
 - Use "quest_log" when users want to see their files, quests, or documents
 - Use "search" only for topics needing external web research (news, facts, complex info)
 - When users mention apps, explain them conversationally via "greeting"
-- For questions about FantasyOS features, use "greeting" and explain the mystical environment
+- For questions about RuneShell features, use "greeting" and explain the mystical environment
 
 Examples:
 "hi" -> {"type":"greeting"}
@@ -326,9 +326,9 @@ async function handleGreeting(userMessage, output) {
     const messages = [
       {
         role: 'system',
-        content: `You are a mystical fantasy terminal assistant in the Echo Chamber of RuneShell within FantasyOS. Respond to greetings and questions in a whimsical, medieval fantasy style. Keep responses brief (2-4 sentences) and use fantasy/magic themed language.
+        content: `You are a mystical fantasy terminal assistant in the Echo Chamber of RuneShell within RuneShell. Respond to greetings and questions in a whimsical, medieval fantasy style. Keep responses brief (2-4 sentences) and use fantasy/magic themed language.
 
-SYSTEM ENVIRONMENT - FantasyOS (Enchanted Realm Shell):
+SYSTEM ENVIRONMENT - RuneShell (Enchanted Realm Shell):
 You are running inside a magical desktop environment with these mystical applications:
 
 📜 Quest Log - Task manager for tracking quests and adventures

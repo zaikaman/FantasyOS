@@ -371,12 +371,12 @@ if (import.meta.env.DEV) {
 }
 
 // Expose storage queries for apps like RuneWizz
-window.fantasyOS = window.fantasyOS || {};
-window.fantasyOS.storage = {
+window.RuneShell = window.RuneShell || {};
+window.RuneShell.storage = {
   getAllFiles,
   getAllCalendarEvents: getCalendarEvents,
   getAllSettings,
   getUnreadNotifications
 };
 
-console.log('[Main] Storage API exposed at window.fantasyOS.storage');
+console.log('[Main] Storage API exposed at window.RuneShell.storage');

@@ -104,7 +104,7 @@ export function saveWindowSnapshot() {
       })),
     };
 
-    localStorage.setItem('fantasyos_window_snapshot', JSON.stringify(snapshot));
+    localStorage.setItem('RuneShell_window_snapshot', JSON.stringify(snapshot));
     console.log('[SessionRestore] Window snapshot saved to localStorage');
   } catch (error) {
     console.warn('[SessionRestore] Failed to save snapshot:', error);
@@ -118,7 +118,7 @@ export function saveWindowSnapshot() {
  */
 export function loadWindowSnapshot() {
   try {
-    const snapshotJson = localStorage.getItem('fantasyos_window_snapshot');
+    const snapshotJson = localStorage.getItem('RuneShell_window_snapshot');
     
     if (!snapshotJson) {
       return null;
@@ -132,7 +132,7 @@ export function loadWindowSnapshot() {
     
     if (age > maxAge) {
       console.log('[SessionRestore] Snapshot too old, ignoring');
-      localStorage.removeItem('fantasyos_window_snapshot');
+      localStorage.removeItem('RuneShell_window_snapshot');
       return null;
     }
 

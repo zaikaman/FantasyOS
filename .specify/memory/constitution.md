@@ -27,7 +27,7 @@ Templates Status:
 Follow-up TODOs: None
 -->
 
-# FantasyOS Constitution
+# RuneShell Constitution
 
 ## Core Principles
 
