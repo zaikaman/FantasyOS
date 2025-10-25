@@ -33,8 +33,9 @@ export default defineConfig(({ mode }) => ({
     port: 5173,
     open: true,
     headers: {
-      'Cross-Origin-Embedder-Policy': 'require-corp',
-      'Cross-Origin-Opener-Policy': 'same-origin'
+      // Removed COEP/COOP headers to allow YouTube embeds
+      // 'Cross-Origin-Embedder-Policy': 'require-corp',
+      // 'Cross-Origin-Opener-Policy': 'same-origin'
     }
   },
 
@@ -42,8 +43,9 @@ export default defineConfig(({ mode }) => ({
   preview: {
     port: 5173,
     headers: {
-      'Cross-Origin-Embedder-Policy': 'require-corp',
-      'Cross-Origin-Opener-Policy': 'same-origin'
+      // Removed COEP/COOP headers to allow YouTube embeds
+      // 'Cross-Origin-Embedder-Policy': 'require-corp',
+      // 'Cross-Origin-Opener-Policy': 'same-origin'
     }
   },
 

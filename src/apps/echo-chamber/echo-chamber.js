@@ -5,6 +5,7 @@
 
 import { eventBus, Events } from '../../core/event-bus.js';
 import { getAllFiles } from '../../storage/queries.js';
+import { generateUUID } from '../../utils/uuid.js';
 
 const API_KEY = import.meta.env.VITE_OPENAI_API_KEY;
 const BASE_URL = import.meta.env.VITE_BASE_URL;
@@ -16,6 +17,10 @@ let commandHistory = [];
 let historyIndex = -1;
 let isGoblinMode = false;
 let shadowsRevealed = false;
+
+// AI Chat memory - persists only during current browser session
+let conversationHistory = [];
+const MAX_CONVERSATION_HISTORY = 20; // Keep last 20 messages to avoid token limits
 
 /**
  * Create Echo Chamber Terminal app
@@ -33,6 +38,8 @@ export function createEchoChamberApp(windowEl) {
 ╚═══════════════════════════════════════════════════════════╝
 
 Type thy will, seeker... (e.g. "Scry weather in London")
+<span class="echo-dim">💭 I remember our conversations during this session
+   Type "recall" to view memory, "forget" to clear it</span>
 </span>`;
   
   // Create input container with rune decoration
@@ -127,7 +134,7 @@ function appendOutput(output, html) {
 async function processCommand(cmd, output) {
   const cmdLower = cmd.toLowerCase();
   
-  // Easter eggs (non-AI)
+  // Easter eggs and special commands (non-AI)
   if (cmdLower.includes('speak goblin')) {
     isGoblinMode = !isGoblinMode;
     appendOutput(output, `<span class="echo-success">✨ Goblin mode ${isGoblinMode ? 'ENABLED' : 'DISABLED'}! Error messages shall now be ${isGoblinMode ? 'limericks' : 'normal'}.</span>`);
@@ -140,6 +147,29 @@ async function processCommand(cmd, output) {
     if (shadowsRevealed) {
       const state = { windows: window.__DEBUG__?.eventBus || 'N/A', files: getAllFiles().length };
       appendOutput(output, `<span class="echo-scroll">${JSON.stringify(state, null, 2)}</span>`);
+    }
+    return;
+  }
+  
+  // Clear conversation memory
+  if (cmdLower === 'forget' || cmdLower === 'clear memory' || cmdLower === 'forget all') {
+    conversationHistory = [];
+    appendOutput(output, `<span class="echo-success">🌫️ The spirits forget... Conversation memory has been cleared.</span>`);
+    return;
+  }
+  
+  // Show conversation history
+  if (cmdLower === 'recall' || cmdLower === 'show memory' || cmdLower === 'history') {
+    if (conversationHistory.length === 0) {
+      appendOutput(output, `<span class="echo-info">📜 The scrolls are empty... No conversation history yet.</span>`);
+    } else {
+      const historyCount = conversationHistory.length / 2; // Each exchange is 2 messages
+      appendOutput(output, `<span class="echo-info">📜 Conversation Memory (${historyCount} exchanges):</span>`);
+      conversationHistory.forEach((msg, i) => {
+        const prefix = msg.role === 'user' ? '⚡ You' : '✨ Spirit';
+        const content = msg.content.length > 100 ? msg.content.substring(0, 100) + '...' : msg.content;
+        appendOutput(output, `<span class="echo-dim">${prefix}: ${content}</span>`);
+      });
     }
     return;
   }
@@ -233,7 +263,7 @@ CRITICAL: Return ONLY valid JSON. No explanations, no markdown, no extra text.`
 }
 
 /**
- * Handle greetings (AI-generated response)
+ * Handle greetings (AI-generated response with conversation memory)
  */
 async function handleGreeting(userMessage, output) {
   appendOutput(output, '<span class="echo-loading">✨ The spirits whisper...</span>');
@@ -244,6 +274,25 @@ async function handleGreeting(userMessage, output) {
     const dateStr = now.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
     const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
     
+    // Build messages array with conversation history
+    const messages = [
+      {
+        role: 'system',
+        content: `You are a mystical fantasy terminal assistant in the Echo Chamber of RuneShell. Respond to greetings and questions in a whimsical, medieval fantasy style. Keep responses brief (1-3 sentences) and use fantasy/magic themed language.
+
+Current date: ${dateStr}
+Current time: ${timeStr}
+
+You have memory of this conversation session. Reference previous exchanges naturally when relevant.
+If asked about time/date, provide it in a fantasy-themed way. For general questions, answer directly and helpfully.`
+      },
+      ...conversationHistory, // Include previous conversation
+      {
+        role: 'user',
+        content: userMessage
+      }
+    ];
+    
     const response = await fetch(`${BASE_URL}/chat/completions`, {
       method: 'POST',
       headers: {
@@ -252,18 +301,7 @@ async function handleGreeting(userMessage, output) {
       },
       body: JSON.stringify({
         model: MODEL,
-        messages: [{
-          role: 'system',
-          content: `You are a mystical fantasy terminal assistant. Respond to greetings and questions in a whimsical, medieval fantasy style. Keep responses brief (1-3 sentences) and use fantasy/magic themed language.
-
-Current date: ${dateStr}
-Current time: ${timeStr}
-
-If asked about time/date, provide it in a fantasy-themed way. For general questions, answer directly and helpfully.`
-        }, {
-          role: 'user',
-          content: userMessage
-        }],
+        messages: messages,
         temperature: 0.8
       })
     });
@@ -272,6 +310,15 @@ If asked about time/date, provide it in a fantasy-themed way. For general questi
     
     const data = await response.json();
     const aiResponse = data.choices[0].message.content;
+    
+    // Add to conversation history
+    conversationHistory.push({ role: 'user', content: userMessage });
+    conversationHistory.push({ role: 'assistant', content: aiResponse });
+    
+    // Trim history if too long (keep last N messages)
+    if (conversationHistory.length > MAX_CONVERSATION_HISTORY) {
+      conversationHistory = conversationHistory.slice(-MAX_CONVERSATION_HISTORY);
+    }
     
     appendOutput(output, `<span class="echo-success">${aiResponse}</span>`);
   } catch (err) {
@@ -333,9 +380,9 @@ async function handleVideoSearch(query, output) {
       }
     }
     
-    // If we have a direct video ID, use it
+    // If we have a direct video ID, use it with youtube-nocookie.com
     if (videoId) {
-      embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=0&rel=0`;
+      embedUrl = `https://www.youtube-nocookie.com/embed/${videoId}`;
     } else {
       // Try Tavily to find a specific video
       try {
@@ -376,45 +423,46 @@ async function handleVideoSearch(query, output) {
         console.warn('[EchoChamber] Tavily search failed:', tavilyErr);
       }
       
-      // If Tavily didn't find anything, use YouTube's search result embed
-      // This embeds the first video from YouTube search results
+      // If Tavily didn't find anything, show helpful message (NO iframe embed fallback)
       if (!embedUrl) {
-        embedUrl = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query)}`;
-        console.log('[EchoChamber] Using YouTube search embed for:', query);
+        const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+        const fallbackHtml = `
+<span class="echo-info">🎭 The spirits couldn't find a specific video to summon.</span>
+<span class="echo-dim">💡 Try these options:</span>
+<div style="margin: 10px 0; padding: 10px; background: rgba(255,255,255,0.1); border-radius: 5px;">
+  <div>• Paste a YouTube URL or video ID directly</div>
+  <div>• <a href="${searchUrl}" target="_blank" style="color: #ffd700;">Click here to search on YouTube</a></div>
+  <div>• Be more specific with your search terms</div>
+</div>
+<span class="echo-dim">Example: <code>video dQw4w9WgXcQ</code> or <code>video https://youtube.com/watch?v=...</code></span>`;
+        appendOutput(output, fallbackHtml);
+        return;
       }
     }
     
-    // Always embed something - either specific video or search results
+    // Embed the video with proper parameters
     const embedHtml = `
 <span class="echo-success">✨ Portal manifested! Behold the vision:</span>
 <div class="echo-embed">
   <iframe width="100%" height="400"
     src="${embedUrl}"
+    title="YouTube video player"
     frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
     allowfullscreen
-    referrerpolicy="strict-origin-when-cross-origin">
+    loading="lazy">
   </iframe>
 </div>
-${videoId ? `<span class="echo-info">📺 <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">Watch on YouTube</a></span>` : `<span class="echo-dim">🎬 Showing search results for: "${query}"</span>`}`;
+<span class="echo-info">📺 <a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">Watch on YouTube</a></span>`;
     appendOutput(output, embedHtml);
     
   } catch (err) {
     console.error('[EchoChamber] Video search error:', err);
-    // Even on error, try to embed search results
-    const embedUrl = `https://www.youtube.com/embed?listType=search&list=${encodeURIComponent(query)}`;
+    const searchUrl = `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
     const errorHtml = `
-<span class="echo-info">🎭 Summoning search results...</span>
-<div class="echo-embed">
-  <iframe width="100%" height="400"
-    src="${embedUrl}"
-    frameborder="0"
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-    allowfullscreen
-    referrerpolicy="strict-origin-when-cross-origin">
-  </iframe>
-</div>
-<span class="echo-dim">� Showing search results for: "${query}"</span>`;
+<span class="echo-error">⚡ Portal magic fizzled!</span>
+<span class="echo-dim">💡 <a href="${searchUrl}" target="_blank" style="color: #ffd700;">Click here to search on YouTube</a></span>
+<span class="echo-dim">Or paste a YouTube URL/video ID directly (e.g., <code>video dQw4w9WgXcQ</code>)</span>`;
     appendOutput(output, errorHtml);
   }
 }
@@ -592,7 +640,7 @@ async function handleImageGeneration(prompt, output) {
       },
       body: JSON.stringify([{
         taskType: 'imageInference',
-        taskUUID: `task-${Date.now()}`,
+        taskUUID: generateUUID(), // Use proper UUID v4
         model: 'runware:101@1',
         positivePrompt: prompt,
         width: 768,
@@ -608,21 +656,25 @@ async function handleImageGeneration(prompt, output) {
       throw new Error(`Runware API error: ${response.status} - ${errorText}`);
     }
     
-    const data = await response.json();
+    const result = await response.json();
+    console.log('[EchoChamber] Runware response:', result);
     
-    if (data && data.length > 0 && data[0].imageURL) {
-      const imageUrl = data[0].imageURL;
+    // Response structure: { "data": [ { "imageURL": "...", "cost": ... } ] }
+    if (result && result.data && result.data.length > 0 && result.data[0].imageURL) {
+      const imageData = result.data[0];
+      const imageUrl = imageData.imageURL;
       
       const imageHtml = `
 <span class="echo-success">✨ The spell is complete! Behold thy creation:</span>
 <div class="echo-image echo-generated">
   <img src="${imageUrl}" alt="${prompt}" onload="this.classList.add('loaded')" />
   <p class="echo-caption">🎨 Manifested from: "${prompt}"</p>
-  <p class="echo-info" style="font-size: 0.75rem; margin-top: 0.5rem;">⚡ Cost: ${data[0].cost?.toFixed(4) || 'Unknown'} mana</p>
+  <p class="echo-info" style="font-size: 0.75rem; margin-top: 0.5rem;">⚡ Cost: ${imageData.cost?.toFixed(4) || 'Unknown'} mana</p>
 </div>`;
       
       appendOutput(output, imageHtml);
     } else {
+      console.error('[EchoChamber] Invalid response structure:', result);
       throw new Error('No image URL in response');
     }
   } catch (err) {
