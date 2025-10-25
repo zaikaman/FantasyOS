@@ -62,6 +62,9 @@ export function initDesktop() {
   // Initialize spell tome reader click handler
   initSpellTomeReader();
 
+  // Initialize bardic lute player click handler
+  initBardicLutePlayer();
+
   console.log('[Desktop] Initialized');
 }
 
@@ -509,4 +512,42 @@ function initSpellTomeReader() {
   });
 
   console.log('[Desktop] Spell tome reader initialized');
+}
+
+/**
+ * Initialize bardic lute player click handler
+ */
+function initBardicLutePlayer() {
+  const luteElement = document.getElementById('bardic-lute-player');
+  
+  if (!luteElement) {
+    console.warn('[Desktop] Bardic lute player element not found');
+    return;
+  }
+
+  luteElement.addEventListener('click', () => {
+    console.log('[Desktop] Opening bardic lute player...');
+    
+    // Create window for bardic lute player app
+    try {
+      createWindow('bardic-lute-player');
+      
+      // Emit app launch event
+      eventBus.emit(Events.APP_LAUNCHED, {
+        appId: 'bardic-lute-player',
+        appName: 'Bardic Lute Player',
+        timestamp: Date.now()
+      });
+      
+      // Visual feedback
+      luteElement.style.transform = 'scale(0.95) translateY(-2px)';
+      setTimeout(() => {
+        luteElement.style.transform = '';
+      }, 150);
+    } catch (error) {
+      console.error('[Desktop] Failed to open bardic lute player:', error);
+    }
+  });
+
+  console.log('[Desktop] Bardic lute player initialized');
 }

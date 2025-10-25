@@ -18,6 +18,7 @@ import { createRealmCustomizerApp } from './realm-customizer/realm-customizer.js
 import { createEchoChamberApp } from './echo-chamber/echo-chamber.js';
 import { createGamesArcadeApp } from './games-arcade/games-arcade.js';
 import { createSpellTomeLibraryApp } from './spell-tome-library/spell-tome-library.js';
+import { createBardicLutePlayerApp } from './bardic-lute-player/bardic-lute-player.js';
 
 /**
  * Application registry
@@ -129,6 +130,17 @@ const hiddenApps = [
     component: createSpellTomeLibraryApp,
     defaultWidth: 1100,
     defaultHeight: 750,
+    singleton: false // Multiple instances allowed
+  },
+  {
+    id: 'bardic-lute-player',
+    name: 'Bardic Lute Player',
+    icon: '<img src="/src/assets/music.png" alt="Bardic Lute Player" style="width: 100%; height: 100%; object-fit: contain;" />',
+    runeColor: '#9D7FF0',
+    description: 'A mystical music player that searches and plays melodies from across the realms',
+    component: createBardicLutePlayerApp,
+    defaultWidth: 900,
+    defaultHeight: 700,
     singleton: false // Multiple instances allowed
   }
 ];
