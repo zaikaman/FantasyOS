@@ -6,6 +6,7 @@
 import { getAllApps } from '../apps/app-registry.js';
 import { eventBus, Events } from '../core/event-bus.js';
 import { createWindow } from '../window/window-manager.js';
+import { getBackgroundUrl } from '../assets/backgrounds.js';
 
 let desktopElement = null;
 let launcherElement = null;
@@ -21,6 +22,14 @@ export function initDesktop() {
 
   if (!desktopElement || !launcherElement) {
     throw new Error('Desktop elements not found');
+  }
+
+  // Set default background image (will be overridden by settings if needed)
+  const desktopBg = document.querySelector('.desktop-background');
+  if (desktopBg) {
+    const defaultBgUrl = getBackgroundUrl('background');
+    desktopBg.style.backgroundImage = `url('${defaultBgUrl}')`;
+    console.log('[Desktop] Set default background:', defaultBgUrl);
   }
 
   // Render rune launcher

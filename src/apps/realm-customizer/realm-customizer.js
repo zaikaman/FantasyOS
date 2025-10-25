@@ -16,14 +16,7 @@
 
 import { getSetting, setSetting } from '../../storage/queries.js';
 import { eventBus, Events } from '../../core/event-bus.js';
-
-// Available backgrounds
-const BACKGROUNDS = [
-  { id: 'background', name: 'Enchanted Forest', path: '/src/assets/background.png' },
-  { id: 'background2', name: 'Mystical Mountains', path: '/src/assets/background2.png' },
-  { id: 'background3', name: 'Arcane Depths', path: '/src/assets/background3.png' },
-  { id: 'background4', name: 'Celestial Heights', path: '/src/assets/background4.png' }
-];
+import { BACKGROUNDS } from '../../assets/backgrounds.js';
 
 // Theme configurations
 const RUNE_THEMES = [

@@ -35,6 +35,7 @@ import { initializeCleanup } from './storage/cleanup.js';
 import { initializePopupNotifications } from './notifications/popup-notifications.js';
 import { initTaskbar } from './taskbar/taskbar.js';
 import { initClockTower } from './hud/clock-tower.js';
+import { getBackgroundUrl } from './assets/backgrounds.js';
 
 // Global error handling
 let errorBoundary = null;
@@ -212,10 +213,12 @@ function applyRealmSettings(settings) {
   const root = document.documentElement;
   
   // Apply background
-  const background = settings.realm_background || 'background';
+  const backgroundId = settings.realm_background || 'background';
   const desktopBg = document.querySelector('.desktop-background');
   if (desktopBg) {
-    desktopBg.style.backgroundImage = `url('/src/assets/${background}.png')`;
+    const backgroundUrl = getBackgroundUrl(backgroundId);
+    desktopBg.style.backgroundImage = `url('${backgroundUrl}')`;
+    console.log('[Main] Applied background:', backgroundId, backgroundUrl);
   }
 
   // Apply theme
