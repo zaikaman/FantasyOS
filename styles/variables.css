@@ -18,17 +18,26 @@
   --color-secondary-light: #8b6eac;
   --color-secondary-dark: #4b2e6c;
 
-  /* Accent Colors - Glowing Gold */
-  --color-accent: #ffd700;
-  --color-accent-light: #ffe74c;
-  --color-accent-dark: #daa520;
+  /* Accent Colors - Mystical Cyan */
+  --color-accent: #5dd8ed;
+  --color-accent-light: #8ef0ff;
+  --color-accent-dark: #4db8cc;
+
+  /* Gold/Bronze - Ornate Frames */
+  --color-gold: #d4af37;
+  --color-gold-light: #f4d687;
+  --color-gold-dark: #9a7a3a;
+  --color-bronze: #8b5a2b;
+  --color-bronze-light: #b8864b;
+  --color-bronze-dark: #5a3a1a;
 
   /* Neutral Colors - Parchment Tones */
   --color-bg-dark: #1a1410;
   --color-bg-medium: #2a2218;
   --color-bg-light: #3a3228;
-  --color-parchment: #f4e8d0;
-  --color-parchment-dark: #d4c8b0;
+  --color-parchment: #e8dcc0;
+  --color-parchment-light: #f5ead5;
+  --color-parchment-dark: #d4c4a8;
 
   /* Text Colors */
   --color-text-light: #f4e8d0;
@@ -47,7 +56,9 @@
 
   --font-family-base: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu,
     Cantarell, sans-serif;
-  --font-family-fantasy: 'Crimson Text', 'Palatino', 'Georgia', serif;
+  --font-family-fantasy: 'Cinzel', 'Crimson Text', 'Palatino', 'Georgia', serif;
+  --font-family-medieval: 'MedievalSharp', 'Uncial Antiqua', cursive;
+  --font-family-elegant: 'Crimson Text', 'Palatino', 'Georgia', serif;
   --font-family-mono: 'Consolas', 'Monaco', 'Courier New', monospace;
 
   --font-size-xs: 0.75rem; /* 12px */
@@ -143,7 +154,7 @@
   --window-min-width: 300px;
   --window-min-height: 200px;
   --window-title-height: 40px;
-  --sidebar-width: 320px;
+  --sidebar-width: 80px;
   --rune-icon-size: 64px;
   --rune-spacing: 48px;
 }

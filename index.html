@@ -36,6 +36,9 @@
     <!-- Preload critical resources -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Fantasy Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700;900&family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=MedievalSharp&family=Uncial+Antiqua&display=swap" rel="stylesheet" />
   </head>
   <body>
     <!-- Full-viewport desktop container -->
@@ -46,14 +49,16 @@
       <!-- Desktop background layer -->
       <div id="desktop-background" class="desktop-background"></div>
 
+      <!-- Treasure Chest - Bottom Left -->
+      <div class="treasure-chest" id="treasure-chest">
+        <img src="/src/assets/chest.png" alt="Treasure Chest" />
+      </div>
+
       <!-- Application launcher (rune icons) -->
       <div id="app-launcher" class="app-launcher"></div>
 
       <!-- Desktop workspace (windows render here) -->
       <div id="desktop" class="desktop-workspace"></div>
-
-      <!-- Sidebar for minimized windows -->
-      <aside id="sidebar" class="sidebar"></aside>
     </div>
 
     <!-- Loading overlay -->

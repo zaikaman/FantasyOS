@@ -14,19 +14,19 @@ let expandedNotificationId = null;
  * @param {HTMLElement} sidebarEl - Sidebar container element
  */
 export function initializeNotifications(sidebarEl) {
-  // Create notifications section
-  const notificationsSection = document.createElement('div');
-  notificationsSection.className = 'notifications-section';
-  notificationsSection.innerHTML = `
+  // Create notifications container (full sidebar)
+  const notificationsWrapper = document.createElement('div');
+  notificationsWrapper.className = 'notifications-container';
+  notificationsWrapper.innerHTML = `
     <div class="notifications-header">
-      <h3 class="notifications-title">📜 Quest Log</h3>
+      <h3 class="notifications-title">Quest Notifications</h3>
       <span class="notification-badge" id="notification-badge">0</span>
     </div>
     <div class="notifications-list" id="notifications-list"></div>
   `;
 
-  sidebarEl.appendChild(notificationsSection);
-  notificationsContainer = notificationsSection.querySelector('#notifications-list');
+  sidebarEl.appendChild(notificationsWrapper);
+  notificationsContainer = notificationsWrapper.querySelector('#notifications-list');
 
   // Load initial notifications
   renderNotifications();
@@ -88,7 +88,7 @@ function createNotificationElement(notification) {
 
   // Parse context for title, icon, etc.
   let title = 'Notification';
-  let icon = '✨';
+  let icon = '⚔️';
   let message = notification.text;
   
   if (notification.context) {

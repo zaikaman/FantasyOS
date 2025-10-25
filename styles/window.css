@@ -3,32 +3,64 @@
  * Parchment-style windows with fantasy theming
  */
 
-/* Window Container */
+/* Window Container - Ornate Bronze Frame */
 .window {
   position: absolute;
   display: flex;
   flex-direction: column;
   min-width: 300px;
   min-height: 200px;
-  background: var(--parchment-bg);
-  border: 3px solid var(--gold-dark);
-  border-radius: 8px;
-  box-shadow: 
-    0 10px 30px rgba(0, 0, 0, 0.5),
-    0 0 0 1px rgba(139, 69, 19, 0.3) inset,
-    0 0 20px rgba(218, 165, 32, 0.2);
+  background: var(--color-parchment);
+  border-radius: 12px;
   overflow: hidden;
   transition: opacity 0.3s ease, transform 0.3s ease;
   will-change: transform;
   
-  /* Parchment texture overlay */
+  /* Ornate frame border with multiple layers */
+  box-shadow: 
+    /* Outer dark shadow */
+    0 15px 40px rgba(0, 0, 0, 0.7),
+    /* Bronze frame outer edge */
+    0 0 0 8px var(--color-bronze-dark),
+    /* Carved detail line */
+    0 0 0 10px var(--color-bronze),
+    /* Inner bronze highlight */
+    0 0 0 12px var(--color-bronze-light),
+    /* Gold accent line */
+    0 0 0 14px var(--color-gold-dark),
+    /* Inner shadow */
+    inset 0 0 0 2px rgba(139, 90, 43, 0.3),
+    /* Subtle outer glow */
+    0 0 30px rgba(212, 175, 55, 0.2);
+  
+  /* Parchment texture */
   background-image: 
+    /* Paper fibers horizontal */
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 2px,
+      rgba(139, 90, 43, 0.02) 2px,
+      rgba(139, 90, 43, 0.02) 4px
+    ),
+    /* Paper fibers vertical */
     repeating-linear-gradient(
       0deg,
       transparent,
       transparent 2px,
-      rgba(139, 69, 19, 0.03) 2px,
-      rgba(139, 69, 19, 0.03) 4px
+      rgba(139, 90, 43, 0.02) 2px,
+      rgba(139, 90, 43, 0.02) 4px
+    ),
+    /* Aged paper gradient */
+    radial-gradient(
+      ellipse at top left,
+      rgba(245, 234, 213, 0.8) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      ellipse at bottom right,
+      rgba(212, 196, 168, 0.6) 0%,
+      transparent 50%
     );
 }
 
@@ -71,49 +103,99 @@
 
 /* Active window highlighting */
 .window.active {
-  border-color: var(--gold-light);
+  /* Enhanced ornate frame with gold glow */
   box-shadow: 
-    0 15px 40px rgba(0, 0, 0, 0.6),
-    0 0 0 1px rgba(139, 69, 19, 0.4) inset,
-    0 0 30px rgba(218, 165, 32, 0.4),
-    0 0 50px rgba(218, 165, 32, 0.2);
+    /* Outer dark shadow - stronger */
+    0 20px 50px rgba(0, 0, 0, 0.8),
+    /* Bronze frame outer edge */
+    0 0 0 8px var(--color-bronze-dark),
+    /* Carved detail line */
+    0 0 0 10px var(--color-bronze),
+    /* Inner bronze highlight */
+    0 0 0 12px var(--color-bronze-light),
+    /* Gold accent line - brighter */
+    0 0 0 14px var(--color-gold),
+    /* Inner shadow */
+    inset 0 0 0 2px rgba(212, 175, 55, 0.4),
+    /* Strong gold glow */
+    0 0 40px rgba(212, 175, 55, 0.5),
+    0 0 60px rgba(212, 175, 55, 0.3);
   z-index: var(--z-window-active);
 }
 
-/* Title Bar */
+/* Title Bar - Ornate carved wood header */
 .window-titlebar {
   display: flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 12px;
-  background: linear-gradient(
-    180deg,
-    rgba(139, 69, 19, 0.3) 0%,
-    rgba(101, 67, 33, 0.2) 100%
-  );
-  border-bottom: 2px solid var(--gold-dark);
+  padding: 12px 16px;
+  background: 
+    /* Carved wood texture */
+    linear-gradient(
+      180deg,
+      var(--color-bronze-light) 0%,
+      var(--color-bronze) 50%,
+      var(--color-bronze-dark) 100%
+    );
+  border-bottom: 3px solid var(--color-bronze-dark);
   cursor: move;
   user-select: none;
   position: relative;
+  
+  /* Add decorative edge pattern */
+  box-shadow:
+    inset 0 1px 0 rgba(248, 230, 200, 0.4),
+    inset 0 -1px 0 rgba(90, 58, 26, 0.6),
+    0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
+/* Decorative corner flourishes using pseudo-elements */
 .window-titlebar::before {
   content: '';
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
-  height: 1px;
-  background: rgba(218, 165, 32, 0.3);
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--color-gold) 20%,
+    var(--color-gold) 80%,
+    transparent 100%
+  );
+  opacity: 0.6;
+}
+
+.window-titlebar::after {
+  content: '◆';
+  position: absolute;
+  left: 50%;
+  top: -6px;
+  transform: translateX(-50%);
+  color: var(--color-gold);
+  font-size: 12px;
+  text-shadow: 0 0 4px rgba(212, 175, 55, 0.8);
 }
 
 .window.active .window-titlebar {
-  background: linear-gradient(
-    180deg,
-    rgba(139, 69, 19, 0.4) 0%,
-    rgba(101, 67, 33, 0.3) 100%
-  );
-  border-bottom-color: var(--gold-light);
+  background: 
+    linear-gradient(
+      180deg,
+      var(--color-gold-light) 0%,
+      var(--color-gold) 50%,
+      var(--color-gold-dark) 100%
+    );
+  border-bottom-color: var(--color-gold);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 230, 0.6),
+    inset 0 -1px 0 rgba(154, 122, 58, 0.8),
+    0 2px 8px rgba(212, 175, 55, 0.4);
+}
+
+.window.active .window-titlebar::after {
+  color: var(--color-gold-light);
+  text-shadow: 0 0 8px rgba(255, 250, 230, 0.9);
 }
 
 /* Window Icon */
@@ -127,63 +209,80 @@
 /* Window Title */
 .window-title {
   flex: 1;
-  font-family: var(--font-heading);
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--text-primary);
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  font-family: var(--font-family-fantasy);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  text-shadow: 
+    0 1px 0 rgba(255, 250, 230, 0.5),
+    0 -1px 0 rgba(90, 58, 26, 0.3);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  letter-spacing: 0.5px;
 }
 
-/* Window Controls */
+/* Window Controls - Ornate Bronze Buttons */
 .window-controls {
   display: flex;
-  gap: 6px;
+  gap: 8px;
   align-items: center;
 }
 
 .window-btn {
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid var(--gold-dark);
-  border-radius: 4px;
-  background: linear-gradient(
-    180deg,
-    rgba(218, 165, 32, 0.2) 0%,
-    rgba(139, 69, 19, 0.2) 100%
-  );
-  color: var(--text-primary);
+  border: 2px solid var(--color-bronze-dark);
+  border-radius: 6px;
+  background: 
+    linear-gradient(
+      135deg,
+      var(--color-bronze-light) 0%,
+      var(--color-bronze) 50%,
+      var(--color-bronze-dark) 100%
+    );
+  color: var(--color-text-dark);
   cursor: pointer;
   transition: all 0.2s ease;
-  font-size: 16px;
+  font-size: 18px;
+  font-weight: bold;
   line-height: 1;
   user-select: none;
   position: relative;
+  box-shadow:
+    inset 0 1px 0 rgba(248, 230, 200, 0.3),
+    inset 0 -1px 0 rgba(90, 58, 26, 0.4),
+    0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .window-btn::before {
   content: '';
   position: absolute;
-  inset: 0;
-  border-radius: 2px;
-  background: rgba(218, 165, 32, 0.1);
+  inset: 2px;
+  border-radius: 4px;
+  background: rgba(212, 175, 55, 0.15);
   opacity: 0;
   transition: opacity 0.2s ease;
 }
 
 .window-btn:hover {
-  border-color: var(--gold-light);
-  background: linear-gradient(
-    180deg,
-    rgba(218, 165, 32, 0.3) 0%,
-    rgba(139, 69, 19, 0.3) 100%
-  );
-  box-shadow: 0 0 8px rgba(218, 165, 32, 0.3);
+  border-color: var(--color-gold-dark);
+  background: 
+    linear-gradient(
+      135deg,
+      var(--color-gold-light) 0%,
+      var(--color-gold) 50%,
+      var(--color-gold-dark) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 230, 0.4),
+    inset 0 -1px 0 rgba(154, 122, 58, 0.5),
+    0 2px 6px rgba(0, 0, 0, 0.4),
+    0 0 12px rgba(212, 175, 55, 0.4);
+  transform: translateY(-1px);
 }
 
 .window-btn:hover::before {
@@ -191,8 +290,10 @@
 }
 
 .window-btn:active {
-  transform: scale(0.95);
-  box-shadow: 0 0 4px rgba(218, 165, 32, 0.4) inset;
+  transform: translateY(0);
+  box-shadow:
+    inset 0 2px 4px rgba(90, 58, 26, 0.5),
+    0 1px 2px rgba(0, 0, 0, 0.3);
 }
 
 .window-btn-minimize {
@@ -212,61 +313,127 @@
 }
 
 .window-btn-close {
-  border-color: rgba(139, 0, 0, 0.5);
+  border-color: rgba(100, 0, 0, 0.6);
+  background: 
+    linear-gradient(
+      135deg,
+      rgba(139, 69, 43, 0.8) 0%,
+      rgba(100, 40, 20, 0.8) 50%,
+      rgba(70, 20, 10, 0.8) 100%
+    );
 }
 
 .window-btn-close::after {
   content: '×';
-  font-size: 22px;
+  font-size: 24px;
   font-weight: bold;
+  color: rgba(255, 200, 200, 0.9);
 }
 
 .window-btn-close:hover {
   border-color: rgba(139, 0, 0, 0.8);
-  background: linear-gradient(
-    180deg,
-    rgba(139, 0, 0, 0.3) 0%,
-    rgba(100, 0, 0, 0.3) 100%
-  );
-  box-shadow: 0 0 8px rgba(139, 0, 0, 0.3);
+  background: 
+    linear-gradient(
+      135deg,
+      rgba(180, 40, 40, 0.9) 0%,
+      rgba(139, 0, 0, 0.9) 50%,
+      rgba(100, 0, 0, 0.9) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 100, 100, 0.3),
+    inset 0 -1px 0 rgba(70, 0, 0, 0.5),
+    0 2px 6px rgba(0, 0, 0, 0.4),
+    0 0 12px rgba(139, 0, 0, 0.5);
 }
 
-/* Window Content Area */
+/* Window Content Area - Parchment Interior */
 .window-content {
   flex: 1;
   overflow: auto;
-  padding: 16px;
-  background: var(--parchment-bg);
+  padding: 20px;
+  background: var(--color-parchment);
   position: relative;
+  color: var(--color-text-dark);
+  
+  /* Enhanced parchment texture */
+  background-image:
+    /* Subtle aging spots */
+    radial-gradient(
+      circle at 20% 30%,
+      rgba(180, 150, 100, 0.08) 0%,
+      transparent 3%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(180, 150, 100, 0.06) 0%,
+      transparent 4%
+    ),
+    radial-gradient(
+      circle at 50% 90%,
+      rgba(180, 150, 100, 0.05) 0%,
+      transparent 5%
+    ),
+    /* Paper grain */
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 1px,
+      rgba(139, 90, 43, 0.015) 1px,
+      rgba(139, 90, 43, 0.015) 2px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(139, 90, 43, 0.015) 1px,
+      rgba(139, 90, 43, 0.015) 2px
+    );
 }
 
 /* Custom scrollbar for window content */
 .window-content::-webkit-scrollbar {
-  width: 12px;
-  height: 12px;
+  width: 14px;
+  height: 14px;
 }
 
 .window-content::-webkit-scrollbar-track {
-  background: rgba(139, 69, 19, 0.1);
-  border-left: 1px solid var(--gold-dark);
+  background: 
+    linear-gradient(
+      to right,
+      rgba(139, 90, 43, 0.15) 0%,
+      rgba(139, 90, 43, 0.1) 100%
+    );
+  border-left: 2px solid var(--color-bronze-dark);
+  box-shadow: inset 2px 0 4px rgba(0, 0, 0, 0.2);
 }
 
 .window-content::-webkit-scrollbar-thumb {
-  background: linear-gradient(
-    180deg,
-    rgba(139, 69, 19, 0.4) 0%,
-    rgba(101, 67, 33, 0.4) 100%
-  );
-  border: 2px solid var(--gold-dark);
-  border-radius: 6px;
+  background: 
+    linear-gradient(
+      180deg,
+      var(--color-bronze-light) 0%,
+      var(--color-bronze) 50%,
+      var(--color-bronze-dark) 100%
+    );
+  border: 2px solid var(--color-bronze-dark);
+  border-radius: 8px;
+  box-shadow:
+    inset 0 1px 0 rgba(248, 230, 200, 0.3),
+    inset 0 -1px 0 rgba(90, 58, 26, 0.4);
 }
 
 .window-content::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(
-    180deg,
-    rgba(139, 69, 19, 0.5) 0%,
-    rgba(101, 67, 33, 0.5) 100%
-  );
+  background: 
+    linear-gradient(
+      180deg,
+      var(--color-gold-light) 0%,
+      var(--color-gold) 50%,
+      var(--color-gold-dark) 100%
+    );
+  box-shadow:
+    inset 0 1px 0 rgba(255, 250, 230, 0.4),
+    inset 0 -1px 0 rgba(154, 122, 58, 0.5),
+    0 0 8px rgba(212, 175, 55, 0.3);
 }
 
 /* Resize Handles */

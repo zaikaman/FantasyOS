@@ -28,17 +28,6 @@ export const appRegistry = [
     singleton: true // Only one instance allowed
   },
   {
-    id: 'treasure-chest',
-    name: 'Treasure Chest Explorer',
-    icon: treasureChestRune('#FFD700', 64),
-    runeColor: '#FFD700',
-    description: 'Browse and manage your scrolls and artifacts',
-    component: createTreasureChestApp,
-    defaultWidth: 800,
-    defaultHeight: 600,
-    singleton: false // Multiple instances allowed
-  },
-  {
     id: 'quest-log',
     name: 'Quest Log',
     icon: questLogRune('#FFD700', 64),
@@ -54,12 +43,38 @@ export const appRegistry = [
 ];
 
 /**
+ * Hidden apps registry
+ * Apps that can be launched but don't appear in the launcher
+ */
+const hiddenApps = [
+  {
+    id: 'treasure-chest',
+    name: 'Treasure Chest Explorer',
+    icon: treasureChestRune('#FFD700', 64),
+    runeColor: '#FFD700',
+    description: 'Browse and manage your scrolls and artifacts',
+    component: createTreasureChestApp,
+    defaultWidth: 800,
+    defaultHeight: 600,
+    singleton: false // Multiple instances allowed
+  }
+];
+
+/**
  * Get app definition by ID
  * @param {string} appId - Application identifier
  * @returns {Object|null} App definition or null if not found
  */
 export function getAppById(appId) {
-  return appRegistry.find(app => app.id === appId) || null;
+  // Check visible apps first
+  let app = appRegistry.find(app => app.id === appId);
+  
+  // If not found, check hidden apps
+  if (!app) {
+    app = hiddenApps.find(app => app.id === appId);
+  }
+  
+  return app || null;
 }
 
 /**

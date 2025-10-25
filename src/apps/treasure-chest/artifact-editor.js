@@ -24,20 +24,20 @@ export function openArtifactEditor(file, onSave) {
   modalEl.className = 'artifact-editor-modal';
   modalEl.innerHTML = `
     <div class="artifact-editor-container">
-      <div class="artifact-editor-header">
-        <h3 class="artifact-editor-title">${isNewFile ? '🎨 New Artifact' : '🎨 Edit Artifact'}</h3>
+      <div class="scroll-editor-header">
+        <h3 class="scroll-editor-title">${isNewFile ? 'Craft a New Artifact' : 'Modify Sacred Artifact'}</h3>
         <button class="btn-close-editor" title="Close">×</button>
       </div>
 
-      <div class="artifact-editor-body">
+      <div class="scroll-editor-body">
         <div class="form-group">
-          <label for="artifact-name">Artifact Name</label>
+          <label for="artifact-name">Artifact Title</label>
           <input
             type="text"
             id="artifact-name"
-            class="artifact-name-input"
+            class="scroll-name-input"
             value="${escapeHtml(fileName)}"
-            placeholder="Enter artifact name..."
+            placeholder="Name your artifact..."
             maxlength="255"
           />
         </div>
@@ -47,22 +47,22 @@ export function openArtifactEditor(file, onSave) {
           <button class="tool-btn" data-tool="eraser" title="Eraser">🧽</button>
           <input type="color" id="color-picker" value="#2d5016" title="Color">
           <input type="range" id="brush-size" min="1" max="20" value="3" title="Brush Size">
-          <button class="btn-clear-canvas" title="Clear Canvas">🗑️ Clear</button>
+          <button class="btn-clear-canvas" title="Clear Canvas">Clear</button>
         </div>
 
         <div class="canvas-container">
-          <canvas id="drawing-canvas" width="600" height="400"></canvas>
+          <canvas id="drawing-canvas" width="640" height="360"></canvas>
         </div>
 
-        <div class="artifact-editor-info">
+        <div class="scroll-editor-info">
           <span class="content-size" id="content-size">0 / 10 MB</span>
           <span class="content-warning" id="content-warning"></span>
         </div>
       </div>
 
-      <div class="artifact-editor-footer">
+      <div class="scroll-editor-footer">
         <button class="btn-cancel">Cancel</button>
-        <button class="btn-save">${isNewFile ? 'Create Artifact' : 'Save Changes'}</button>
+        <button class="btn-save">${isNewFile ? 'Create' : 'Save'}</button>
       </div>
     </div>
   `;

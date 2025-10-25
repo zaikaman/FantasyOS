@@ -57,13 +57,13 @@ function loadFiles() {
 function render() {
   containerEl.innerHTML = `
     <div class="treasure-chest-header">
-      <h2 class="chest-title">📦 Treasure Chest</h2>
+      <h2 class="chest-title">Treasure Chest</h2>
       <div class="chest-actions">
         <button class="btn-create-scroll" id="btn-create-scroll">
-          📜 Create Scroll
+          Create Scroll
         </button>
         <button class="btn-create-artifact" id="btn-create-artifact">
-          🎨 Create Artifact
+          Create Artifact
         </button>
       </div>
     </div>
@@ -72,7 +72,7 @@ function render() {
       <div class="storage-bar">
         <div class="storage-bar-fill" id="storage-bar-fill"></div>
       </div>
-      <div class="storage-text" id="storage-text">Loading...</div>
+      <div class="storage-text" id="storage-text">Loading vault capacity...</div>
     </div>
 
     <div class="chest-filters">
@@ -80,22 +80,22 @@ function render() {
         type="text" 
         class="search-input" 
         id="file-search" 
-        placeholder="🔍 Search files..."
+        placeholder="⚔ Search your treasures..."
       />
       <select class="filter-type" id="filter-type">
-        <option value="all">All Items</option>
-        <option value="scroll">Scrolls Only</option>
-        <option value="artifact">Artifacts Only</option>
+        <option value="all">✦ All Treasures</option>
+        <option value="scroll">📜 Scrolls</option>
+        <option value="artifact">🎨 Artifacts</option>
       </select>
       <select class="sort-by" id="sort-by">
-        <option value="modified_desc">Recently Modified</option>
-        <option value="modified_asc">Oldest Modified</option>
-        <option value="created_desc">Recently Created</option>
-        <option value="created_asc">Oldest Created</option>
-        <option value="name_asc">Name (A-Z)</option>
-        <option value="name_desc">Name (Z-A)</option>
-        <option value="size_desc">Largest First</option>
-        <option value="size_asc">Smallest First</option>
+        <option value="modified_desc">⏱ Recently Modified</option>
+        <option value="modified_asc">⌛ Oldest Modified</option>
+        <option value="created_desc">✨ Recently Created</option>
+        <option value="created_asc">🕰 Oldest Created</option>
+        <option value="name_asc">📝 Name (A-Z)</option>
+        <option value="name_desc">📝 Name (Z-A)</option>
+        <option value="size_desc">📊 Largest First</option>
+        <option value="size_asc">📊 Smallest First</option>
       </select>
     </div>
 
@@ -342,7 +342,7 @@ async function checkAndDisplayQuota() {
     storageBarFillEl.style.width = `${percentUsed}%`;
 
     // Update text
-    storageTextEl.textContent = `${usedMB} MB / ${totalMB} MB used (${percentUsed.toFixed(1)}%)`;
+    storageTextEl.textContent = `Vault Capacity: ${usedMB} MB / ${totalMB} MB (${percentUsed.toFixed(1)}%)`;
 
     // Warning at 40MB (80% of 50MB)
     if (quota.used > 40 * 1024 * 1024) {

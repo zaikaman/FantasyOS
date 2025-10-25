@@ -7,10 +7,9 @@ import '../styles/reset.css';
 import '../styles/variables.css';
 import '../styles/desktop.css';
 import '../styles/window.css';
-import '../styles/sidebar.css';
 import '../styles/treasure-chest.css';
 import '../styles/mana-calculator.css';
-import '../styles/notifications.css';
+import '../styles/popup-notifications.css';
 
 import { initDatabase, saveToIndexedDB } from './storage/database.js';
 import { getAllWindows, getAllFiles, getAllNotifications, getAllSettings, deleteAllWindows } from './storage/queries.js';
@@ -23,10 +22,10 @@ import { initPerformanceMonitoring, mark, measure, logAllMetrics, showFPSCounter
 import { initWindowManager } from './window/window-manager.js';
 import { initDragHandler } from './window/drag-handler.js';
 import { initResizeHandler } from './window/resize-handler.js';
-import { initSidebar } from './sidebar/sidebar.js';
 import { initKeyboardShortcuts } from './window/keyboard-shortcuts.js';
 import { initializeNotificationTriggers } from './core/notification-triggers.js';
 import { initializeCleanup } from './storage/cleanup.js';
+import { initializePopupNotifications } from './notifications/popup-notifications.js';
 
 // Global error handling
 let errorBoundary = null;
@@ -93,11 +92,11 @@ async function init() {
     initWindowManager();
     initDragHandler();
     initResizeHandler();
-    initSidebar();
     initKeyboardShortcuts();
 
     // Step 5.5: Initialize notification system
     console.log('[Main] Step 5.5: Initializing notifications...');
+    initializePopupNotifications();
     initializeNotificationTriggers();
     initializeCleanup();
 
@@ -141,11 +140,6 @@ async function init() {
 
     // Log all performance metrics
     logAllMetrics();
-
-    // Show FPS counter in development mode
-    if (import.meta.env.DEV) {
-      showFPSCounter(true);
-    }
 
     // Emit initialization complete event
     eventBus.emit('app:ready', { timestamp: Date.now() });

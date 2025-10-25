@@ -26,29 +26,29 @@ export function openScrollEditor(file, onSave) {
   modalEl.innerHTML = `
     <div class="scroll-editor-container">
       <div class="scroll-editor-header">
-        <h3 class="scroll-editor-title">${isNewFile ? '📜 New Scroll' : '📜 Edit Scroll'}</h3>
+        <h3 class="scroll-editor-title">${isNewFile ? 'Craft a New Scroll' : 'Modify Sacred Scroll'}</h3>
         <button class="btn-close-editor" title="Close">×</button>
       </div>
 
       <div class="scroll-editor-body">
         <div class="form-group">
-          <label for="scroll-name">Scroll Name</label>
+          <label for="scroll-name">Scroll Title</label>
           <input
             type="text"
             id="scroll-name"
             class="scroll-name-input"
             value="${escapeHtml(fileName)}"
-            placeholder="Enter scroll name..."
+            placeholder="Name your scroll..."
             maxlength="255"
           />
         </div>
 
         <div class="form-group">
-          <label for="scroll-content">Content</label>
+          <label for="scroll-content">Scroll Contents</label>
           <textarea
             id="scroll-content"
             class="scroll-content-textarea"
-            placeholder="Write your scroll content here..."
+            placeholder="Inscribe your wisdom upon this parchment..."
             rows="15"
           >${escapeHtml(fileContent)}</textarea>
         </div>
@@ -61,7 +61,7 @@ export function openScrollEditor(file, onSave) {
 
       <div class="scroll-editor-footer">
         <button class="btn-cancel">Cancel</button>
-        <button class="btn-save">${isNewFile ? 'Create Scroll' : 'Save Changes'}</button>
+        <button class="btn-save">${isNewFile ? 'Create' : 'Save'}</button>
       </div>
     </div>
   `;

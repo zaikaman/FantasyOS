@@ -10,10 +10,10 @@ import { eventBus, Events } from '../../core/event-bus.js';
 
 /**
  * Create Mana Calculator app
- * @param {Object} window - Window object
+ * @param {HTMLElement} windowEl - Window DOM element
  * @returns {HTMLElement} App container
  */
-export function createManaCalculatorApp(window) {
+export function createManaCalculatorApp(windowEl) {
   const container = document.createElement('div');
   container.className = 'mana-calculator-container';
   
@@ -66,18 +66,19 @@ export function createManaCalculatorApp(window) {
   };
   
   // Add keyboard listener when window is focused
-  window.addEventListener('focus', () => {
+  windowEl.addEventListener('focus', () => {
     document.addEventListener('keydown', keyboardHandler);
   });
   
   // Remove keyboard listener when window loses focus
-  window.addEventListener('blur', () => {
+  windowEl.addEventListener('blur', () => {
     document.removeEventListener('keydown', keyboardHandler);
   });
   
   // Cleanup on window close
+  const windowId = windowEl.dataset.windowId;
   eventBus.on(Events.WINDOW_CLOSED, (data) => {
-    if (data.windowId === window.id) {
+    if (data.windowId === windowId) {
       document.removeEventListener('keydown', keyboardHandler);
     }
   });

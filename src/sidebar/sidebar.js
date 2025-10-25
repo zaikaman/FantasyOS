@@ -1,12 +1,11 @@
 /**
  * Sidebar
- * Tavern-style sidebar for minimized windows
+ * Tavern-style sidebar for minimized windows (notifications removed, now shown as popups)
  */
 
 import { getState, subscribe } from '../core/state.js';
 import { restoreWindow } from '../window/window-manager.js';
 import { getAppById } from '../apps/app-registry.js';
-import { initializeNotifications } from './notifications.js';
 
 let sidebarElement = null;
 let minimizedContainer = null;
@@ -23,20 +22,22 @@ export function initSidebar() {
   }
 
   // Create minimized windows container
-  minimizedContainer = document.createElement('div');
-  minimizedContainer.className = 'sidebar-minimized';
-  minimizedContainer.innerHTML = `
-    <div class="sidebar-section-title">Minimized Windows</div>
+  const minimizedSection = document.createElement('div');
+  minimizedSection.className = 'sidebar-minimized-section';
+  minimizedSection.innerHTML = `
+    <div class="sidebar-section-header">
+      <h3 class="sidebar-section-title">Minimized Windows</h3>
+    </div>
     <div class="sidebar-minimized-list" id="minimized-list"></div>
   `;
   
-  sidebarElement.appendChild(minimizedContainer);
-
-  // Initialize notifications section
-  initializeNotifications(sidebarElement);
+  sidebarElement.appendChild(minimizedSection);
+  minimizedContainer = minimizedSection.querySelector('#minimized-list');
 
   // Subscribe to window state changes
-  subscribe('windows', renderMinimizedWindows);
+  subscribe(() => {
+    renderMinimizedWindows();
+  });
 
   // Initial render
   renderMinimizedWindows();

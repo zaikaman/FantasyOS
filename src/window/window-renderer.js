@@ -167,7 +167,8 @@ export function mountAppContent(windowEl, component) {
   // Mount component
   if (typeof component === 'function') {
     // Component is a function that returns DOM element
-    const appElement = component();
+    // Pass the window element to the component function
+    const appElement = component(windowEl);
     contentEl.appendChild(appElement);
   } else if (component instanceof HTMLElement) {
     // Component is already a DOM element

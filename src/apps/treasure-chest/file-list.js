@@ -17,9 +17,9 @@ export function renderFileList(containerEl, files, handlers) {
   if (files.length === 0) {
     containerEl.innerHTML = `
       <div class="file-list-empty">
-        <div class="empty-icon">📦</div>
-        <p class="empty-text">Your treasure chest is empty!</p>
-        <p class="empty-subtext">Create a scroll or artifact to get started.</p>
+        <div class="empty-icon">⚱</div>
+        <p class="empty-text">Your treasure vault is empty!</p>
+        <p class="empty-subtext">Begin your journey by creating a scroll or artifact.</p>
       </div>
     `;
     return;
@@ -50,7 +50,7 @@ function createFileItem(file, handlers) {
   itemEl.dataset.fileType = file.type;
 
   const icon = file.type === 'scroll' ? '📜' : '🎨';
-  const typeLabel = file.type === 'scroll' ? 'Scroll' : 'Artifact';
+  const typeLabel = file.type === 'scroll' ? '⚜ Ancient Scroll' : '✦ Mystical Artifact';
   const sizeKB = (file.size_bytes / 1024).toFixed(2);
   const createdDate = formatTimestamp(file.created_at);
   const modifiedDate = formatTimestamp(file.modified_at);
@@ -61,8 +61,8 @@ function createFileItem(file, handlers) {
       <div class="file-name" title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</div>
       <div class="file-meta">
         <span class="file-type">${typeLabel}</span>
-        <span class="file-size">${sizeKB} KB</span>
-        <span class="file-date" title="Created: ${createdDate}">Modified: ${modifiedDate}</span>
+        <span class="file-size">📊 ${sizeKB} KB</span>
+        <span class="file-date" title="Created: ${createdDate}">⏱ ${modifiedDate}</span>
       </div>
     </div>
     <div class="file-actions">

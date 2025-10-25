@@ -26,6 +26,9 @@ export function initDesktop() {
   // Render rune launcher
   renderRuneLauncher();
 
+  // Initialize treasure chest click handler
+  initTreasureChest();
+
   console.log('[Desktop] Initialized');
 }
 
@@ -131,4 +134,42 @@ export function hideDesktop() {
   if (desktopElement) {
     desktopElement.style.opacity = '0';
   }
+}
+
+/**
+ * Initialize treasure chest click handler
+ */
+function initTreasureChest() {
+  const chestElement = document.getElementById('treasure-chest');
+  
+  if (!chestElement) {
+    console.warn('[Desktop] Treasure chest element not found');
+    return;
+  }
+
+  chestElement.addEventListener('click', () => {
+    console.log('[Desktop] Opening treasure chest...');
+    
+    // Create window for treasure chest app
+    try {
+      createWindow('treasure-chest');
+      
+      // Emit app launch event
+      eventBus.emit(Events.APP_LAUNCHED, {
+        appId: 'treasure-chest',
+        appName: 'Treasure Chest',
+        timestamp: Date.now()
+      });
+      
+      // Visual feedback
+      chestElement.style.transform = 'scale(0.95) translateY(-2px)';
+      setTimeout(() => {
+        chestElement.style.transform = '';
+      }, 150);
+    } catch (error) {
+      console.error('[Desktop] Failed to open treasure chest:', error);
+    }
+  });
+
+  console.log('[Desktop] Treasure chest initialized');
 }
