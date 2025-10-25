@@ -51,6 +51,7 @@ export function createWindowElement(window) {
       <div class="window-title" id="window-title-${window.id}">${escapeHtml(window.title)}</div>
       <div class="window-controls">
         <button class="window-btn window-btn-minimize" aria-label="Minimize window" title="Minimize"></button>
+        <button class="window-btn window-btn-maximize" aria-label="Maximize window" title="Maximize"></button>
         <button class="window-btn window-btn-close" aria-label="Close window" title="Close"></button>
       </div>
     </div>
@@ -329,4 +330,53 @@ export function constrainWindowSize(width, height) {
     width: Math.max(minWidth, Math.min(maxWidth, width)),
     height: Math.max(minHeight, Math.min(maxHeight, height)),
   };
+}
+
+/**
+ * Set window to maximized state
+ * @param {HTMLElement} windowEl - Window element
+ */
+export function maximizeWindow(windowEl) {
+  windowEl.classList.add('maximized');
+  windowEl.style.width = '100vw';
+  windowEl.style.height = '100vh';
+  windowEl.style.transform = 'translate(0, 0)';
+  
+  // Update maximize button to restore icon
+  const maximizeBtn = windowEl.querySelector('.window-btn-maximize');
+  if (maximizeBtn) {
+    maximizeBtn.setAttribute('aria-label', 'Restore window');
+    maximizeBtn.setAttribute('title', 'Restore');
+  }
+}
+
+/**
+ * Restore window from maximized state
+ * @param {HTMLElement} windowEl - Window element
+ * @param {number} x - Original X position
+ * @param {number} y - Original Y position
+ * @param {number} width - Original width
+ * @param {number} height - Original height
+ */
+export function restoreWindowFromMaximized(windowEl, x, y, width, height) {
+  windowEl.classList.remove('maximized');
+  windowEl.style.width = `${width}px`;
+  windowEl.style.height = `${height}px`;
+  windowEl.style.transform = `translate(${x}px, ${y}px)`;
+  
+  // Update maximize button back to maximize icon
+  const maximizeBtn = windowEl.querySelector('.window-btn-maximize');
+  if (maximizeBtn) {
+    maximizeBtn.setAttribute('aria-label', 'Maximize window');
+    maximizeBtn.setAttribute('title', 'Maximize');
+  }
+}
+
+/**
+ * Check if window is maximized
+ * @param {HTMLElement} windowEl - Window element
+ * @returns {boolean} True if maximized
+ */
+export function isWindowMaximized(windowEl) {
+  return windowEl.classList.contains('maximized');
 }

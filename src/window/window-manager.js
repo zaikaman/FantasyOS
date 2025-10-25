@@ -29,6 +29,9 @@ import {
   calculateCascadePosition,
   constrainWindowPosition,
   constrainWindowSize,
+  maximizeWindow as rendererMaximizeWindow,
+  restoreWindowFromMaximized,
+  isWindowMaximized,
 } from './window-renderer.js';
 import { attachDragHandlers } from './drag-handler.js';
 import { attachResizeHandlers } from './resize-handler.js';
@@ -433,6 +436,101 @@ export function restoreWindow(windowId) {
 }
 
 /**
+ * Toggle maximize/restore window
+ * @param {string} windowId - Window ID
+ */
+export function toggleMaximizeWindow(windowId) {
+  const windowEl = getWindowElement(windowId);
+  if (!windowEl) {
+    throw new Error('Window element not found');
+  }
+
+  const state = getState();
+  const window = state.windows.find(w => w.id === windowId);
+  
+  if (!window) {
+    throw new Error('Window not found');
+  }
+
+  if (isWindowMaximized(windowEl)) {
+    // Restore to previous size/position
+    const restoreData = window.preMaximizeState || {
+      x: window.x,
+      y: window.y,
+      width: window.width,
+      height: window.height
+    };
+
+    restoreWindowFromMaximized(
+      windowEl,
+      restoreData.x,
+      restoreData.y,
+      restoreData.width,
+      restoreData.height
+    );
+
+    // Update state - remove preMaximizeState
+    const newWindows = state.windows.map(w =>
+      w.id === windowId 
+        ? { 
+            ...w, 
+            x: restoreData.x,
+            y: restoreData.y,
+            width: restoreData.width,
+            height: restoreData.height,
+            preMaximizeState: undefined,
+            updated_at: now()
+          } 
+        : w
+    );
+
+    setState({ windows: newWindows });
+
+    // Update database
+    updateWindow(windowId, {
+      x: restoreData.x,
+      y: restoreData.y,
+      width: restoreData.width,
+      height: restoreData.height
+    });
+
+    // Emit event
+    eventBus.emit(Events.WINDOW_RESTORED, { windowId });
+
+    console.log('[WindowManager] Window restored from maximized:', windowId);
+  } else {
+    // Save current state before maximizing
+    const preMaximizeState = {
+      x: window.x,
+      y: window.y,
+      width: window.width,
+      height: window.height
+    };
+
+    // Maximize
+    rendererMaximizeWindow(windowEl);
+
+    // Update state - store pre-maximize state
+    const newWindows = state.windows.map(w =>
+      w.id === windowId 
+        ? { 
+            ...w, 
+            preMaximizeState,
+            updated_at: now()
+          } 
+        : w
+    );
+
+    setState({ windows: newWindows });
+
+    // Emit event
+    eventBus.emit(Events.WINDOW_MAXIMIZED, { windowId });
+
+    console.log('[WindowManager] Window maximized:', windowId);
+  }
+}
+
+/**
  * Set window position
  * @param {string} windowId - Window ID
  * @param {number} x - X coordinate
@@ -629,6 +727,26 @@ function attachWindowEventListeners(windowEl, windowId) {
     minimizeBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       minimizeWindow(windowId);
+    });
+  }
+
+  // Maximize button
+  const maximizeBtn = windowEl.querySelector('.window-btn-maximize');
+  if (maximizeBtn) {
+    maximizeBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMaximizeWindow(windowId);
+    });
+  }
+
+  // Double-click titlebar to maximize/restore
+  const titlebar = windowEl.querySelector('.window-titlebar');
+  if (titlebar) {
+    titlebar.addEventListener('dblclick', (e) => {
+      // Don't trigger if clicking on buttons
+      if (!e.target.closest('.window-btn')) {
+        toggleMaximizeWindow(windowId);
+      }
     });
   }
 }

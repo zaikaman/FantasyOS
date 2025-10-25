@@ -58,13 +58,18 @@ function handleResizeStart(event, windowId, direction) {
     return;
   }
 
-  event.preventDefault();
-  event.stopPropagation(); // Prevent window drag
-
   const windowEl = getWindowElement(windowId);
   if (!windowEl) {
     return;
   }
+
+  // Don't resize maximized windows
+  if (windowEl.classList.contains('maximized')) {
+    return;
+  }
+
+  event.preventDefault();
+  event.stopPropagation(); // Prevent window drag
 
   const window = getWindowById(windowId);
   if (!window) {

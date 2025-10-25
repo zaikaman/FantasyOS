@@ -101,6 +101,7 @@ export const Events = {
   WINDOW_FOCUSED: 'window:focused',
   WINDOW_MINIMIZED: 'window:minimized',
   WINDOW_RESTORED: 'window:restored',
+  WINDOW_MAXIMIZED: 'window:maximized',
   WINDOW_MOVED: 'window:moved',
   WINDOW_RESIZED: 'window:resized',
 

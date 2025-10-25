@@ -110,8 +110,9 @@ async function init() {
 
     // Step 5.5: Initialize notification system
     console.log('[Main] Step 5.5: Initializing notifications...');
-    initializePopupNotifications();
-    initializeNotificationTriggers();
+    // Quest notifications disabled per user request
+    // initializePopupNotifications();
+    // initializeNotificationTriggers();
     initializeCleanup();
 
     // Step 5.7: Initialize Clock Tower HUD

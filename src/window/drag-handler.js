@@ -59,12 +59,17 @@ function handleDragStart(event, windowId) {
     return;
   }
 
-  event.preventDefault();
-
   const windowEl = getWindowElement(windowId);
   if (!windowEl) {
     return;
   }
+
+  // Don't drag maximized windows
+  if (windowEl.classList.contains('maximized')) {
+    return;
+  }
+
+  event.preventDefault();
 
   // Get current window position
   const transform = windowEl.style.transform;
