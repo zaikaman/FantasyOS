@@ -29,6 +29,9 @@ export function initDesktop() {
   // Initialize treasure chest click handler
   initTreasureChest();
 
+  // Initialize mana calculator orb click handler
+  initManaCalculatorOrb();
+
   console.log('[Desktop] Initialized');
 }
 
@@ -172,4 +175,42 @@ function initTreasureChest() {
   });
 
   console.log('[Desktop] Treasure chest initialized');
+}
+
+/**
+ * Initialize mana calculator orb click handler
+ */
+function initManaCalculatorOrb() {
+  const orbElement = document.getElementById('mana-calculator-orb');
+  
+  if (!orbElement) {
+    console.warn('[Desktop] Mana calculator orb element not found');
+    return;
+  }
+
+  orbElement.addEventListener('click', () => {
+    console.log('[Desktop] Opening mana calculator...');
+    
+    // Create window for mana calculator app
+    try {
+      createWindow('mana-calculator');
+      
+      // Emit app launch event
+      eventBus.emit(Events.APP_LAUNCHED, {
+        appId: 'mana-calculator',
+        appName: 'Mana Calculator',
+        timestamp: Date.now()
+      });
+      
+      // Visual feedback
+      orbElement.style.transform = 'scale(0.95) translateY(-2px)';
+      setTimeout(() => {
+        orbElement.style.transform = '';
+      }, 150);
+    } catch (error) {
+      console.error('[Desktop] Failed to open mana calculator:', error);
+    }
+  });
+
+  console.log('[Desktop] Mana calculator orb initialized');
 }

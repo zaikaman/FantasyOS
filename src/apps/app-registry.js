@@ -17,17 +17,6 @@ import { createManaCalculatorApp } from './mana-calculator/mana-calculator.js';
  */
 export const appRegistry = [
   {
-    id: 'mana-calculator',
-    name: 'Mana Calculator',
-    icon: calculatorRune('#FFD700', 64),
-    runeColor: '#FFD700',
-    description: 'Perform arcane calculations with mystical precision',
-    component: createManaCalculatorApp,
-    defaultWidth: 400,
-    defaultHeight: 550,
-    singleton: true // Only one instance allowed
-  },
-  {
     id: 'quest-log',
     name: 'Quest Log',
     icon: questLogRune('#FFD700', 64),
@@ -57,6 +46,17 @@ const hiddenApps = [
     defaultWidth: 800,
     defaultHeight: 600,
     singleton: false // Multiple instances allowed
+  },
+  {
+    id: 'mana-calculator',
+    name: 'Mana Calculator',
+    icon: calculatorRune('#FFD700', 64),
+    runeColor: '#FFD700',
+    description: 'Perform arcane calculations with mystical precision',
+    component: createManaCalculatorApp,
+    defaultWidth: 480,
+    defaultHeight: 720,
+    singleton: true // Only one instance allowed
   }
 ];
 

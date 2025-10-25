@@ -1,6 +1,6 @@
 /**
  * Mana Calculator Styles
- * Crystal orb aesthetic with glowing magical effects
+ * Fantasy parchment aesthetic with magical runes
  */
 
 /* Main Container */
@@ -10,77 +10,46 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: radial-gradient(circle at center, #1a0f2e 0%, #0a0515 100%);
+  padding: 16px;
+  background: transparent;
   overflow: hidden;
   position: relative;
 }
 
-/* Mystical Orb Frame */
+/* Mystical Parchment Frame */
 .calculator-orb {
   position: relative;
-  width: 360px;
-  padding: 30px;
-  background: linear-gradient(135deg, rgba(66, 33, 99, 0.3) 0%, rgba(33, 16, 66, 0.3) 100%);
-  border: 3px solid rgba(147, 112, 219, 0.5);
-  border-radius: 50% / 45%;
+  width: 100%;
+  max-width: 420px;
+  padding: 0;
+  background: linear-gradient(135deg, #2d1f16 0%, #1a1410 100%);
+  border: 4px solid #8b6f47;
+  border-radius: 16px;
   box-shadow: 
-    0 0 40px rgba(147, 112, 219, 0.4),
-    0 0 80px rgba(138, 43, 226, 0.2),
-    inset 0 0 60px rgba(147, 112, 219, 0.1);
-  animation: orbFloat 6s ease-in-out infinite;
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    inset 0 2px 4px rgba(139, 111, 71, 0.3),
+    0 0 0 2px rgba(212, 175, 55, 0.2);
 }
 
-@keyframes orbFloat {
-  0%, 100% {
-    transform: translateY(0px) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-10px) rotate(2deg);
-  }
-}
-
-/* Outer Glow */
+/* Outer Glow - removed animation */
 .orb-glow-outer {
   position: absolute;
-  top: -20px;
-  left: -20px;
-  right: -20px;
-  bottom: -20px;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
   background: radial-gradient(
     circle at center,
-    rgba(147, 112, 219, 0.2) 0%,
+    rgba(212, 175, 55, 0.15) 0%,
     transparent 70%
   );
-  border-radius: 50% / 45%;
-  animation: pulseGlow 4s ease-in-out infinite;
+  border-radius: 20px;
   pointer-events: none;
-}
-
-@keyframes pulseGlow {
-  0%, 100% {
-    opacity: 0.6;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1.05);
-  }
 }
 
 /* Inner Glow */
 .orb-glow-inner {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  right: 10px;
-  bottom: 10px;
-  background: radial-gradient(
-    circle at 40% 40%,
-    rgba(186, 85, 211, 0.15) 0%,
-    transparent 60%
-  );
-  border-radius: 50% / 45%;
-  pointer-events: none;
+  display: none;
 }
 
 /* Calculator Body */
@@ -90,47 +59,56 @@
   display: flex;
   flex-direction: column;
   gap: 16px;
+  padding: 20px;
 }
 
 /* Header */
 .calculator-header {
   text-align: center;
-  margin-bottom: 8px;
+  padding: 14px 16px;
+  background: linear-gradient(135deg, rgba(139, 111, 71, 0.3) 0%, rgba(101, 67, 33, 0.3) 100%);
+  border-bottom: 2px solid rgba(212, 175, 55, 0.3);
+  margin: -20px -20px 0 -20px;
+  border-radius: 12px 12px 0 0;
 }
 
 .calculator-title {
-  font-size: 20px;
-  font-weight: 700;
-  color: #d8bfd8;
+  font-size: 24px;
+  font-weight: 900;
+  color: #d4af37;
   text-shadow: 
-    0 0 10px rgba(147, 112, 219, 0.8),
-    0 0 20px rgba(138, 43, 226, 0.4);
-  font-family: var(--font-fantasy);
-  margin-bottom: 4px;
+    2px 2px 4px rgba(0, 0, 0, 0.8),
+    0 0 20px rgba(212, 175, 55, 0.5);
+  font-family: 'Cinzel', var(--font-fantasy);
+  margin-bottom: 6px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
 .calculator-subtitle {
-  font-size: 11px;
-  color: #b19cd9;
+  font-size: 13px;
+  color: #c9a961;
   font-style: italic;
-  font-family: var(--font-fantasy);
+  font-family: 'Crimson Text', serif;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6);
 }
 
 /* Display */
 .calculator-display {
   position: relative;
-  background: linear-gradient(135deg, #1a0f2e 0%, #2d1b4e 100%);
-  border: 2px solid rgba(147, 112, 219, 0.6);
-  border-radius: 12px;
-  padding: 16px;
-  min-height: 80px;
+  background: linear-gradient(135deg, #0f0a08 0%, #1a1410 100%);
+  border: 3px solid #654321;
+  border-radius: 10px;
+  padding: 18px;
+  min-height: 90px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
   box-shadow: 
-    inset 0 2px 10px rgba(0, 0, 0, 0.5),
-    0 0 20px rgba(147, 112, 219, 0.2);
+    inset 0 3px 12px rgba(0, 0, 0, 0.8),
+    inset 0 0 30px rgba(101, 67, 33, 0.3),
+    0 0 20px rgba(212, 175, 55, 0.15);
   overflow: hidden;
 }
 
@@ -169,13 +147,14 @@
 }
 
 .display-operation {
-  font-size: 12px;
-  color: #b19cd9;
+  font-size: 14px;
+  color: #c9a961;
   font-family: 'Courier New', monospace;
-  margin-bottom: 4px;
-  min-height: 14px;
+  margin-bottom: 8px;
+  min-height: 16px;
   opacity: 0;
   transition: opacity 0.2s ease;
+  text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
 }
 
 .display-operation.active {
@@ -183,50 +162,53 @@
 }
 
 .display-value {
-  font-size: 32px;
+  font-size: 34px;
   font-weight: 700;
-  color: #e6d8ff;
+  color: #ffd700;
   font-family: 'Courier New', monospace;
   text-shadow: 
-    0 0 15px rgba(147, 112, 219, 0.8),
-    0 0 30px rgba(138, 43, 226, 0.4);
-  letter-spacing: 2px;
+    0 0 20px rgba(255, 215, 0, 0.8),
+    0 0 40px rgba(255, 215, 0, 0.4),
+    2px 2px 4px rgba(0, 0, 0, 0.8);
+  letter-spacing: 3px;
   word-break: break-all;
   text-align: right;
   width: 100%;
 }
 
 .display-value.error {
-  font-size: 14px;
-  color: #ff6b9d;
+  font-size: 16px;
+  color: #ff6347;
   text-shadow: 
-    0 0 15px rgba(255, 107, 157, 0.8),
-    0 0 30px rgba(255, 107, 157, 0.4);
+    0 0 15px rgba(255, 99, 71, 0.8),
+    0 0 30px rgba(255, 99, 71, 0.4);
 }
 
 /* Buttons Grid */
 .calculator-buttons {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+  gap: 9px;
 }
 
 .calc-btn {
-  height: 50px;
-  background: linear-gradient(135deg, #2d1b4e 0%, #1a0f2e 100%);
-  border: 2px solid rgba(147, 112, 219, 0.4);
+  height: 54px;
+  background: linear-gradient(135deg, #3d2817 0%, #2d1f16 100%);
+  border: 2px solid #654321;
   border-radius: 8px;
-  color: #d8bfd8;
-  font-family: var(--font-fantasy);
-  font-size: 16px;
+  color: #d4af37;
+  font-family: 'Cinzel', var(--font-fantasy);
+  font-size: 18px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
   box-shadow: 
-    0 2px 8px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    0 3px 10px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(212, 175, 55, 0.2),
+    0 0 15px rgba(212, 175, 55, 0.1);
   position: relative;
   overflow: hidden;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .calc-btn::before {
@@ -238,7 +220,7 @@
   height: 0;
   background: radial-gradient(
     circle,
-    rgba(147, 112, 219, 0.4) 0%,
+    rgba(212, 175, 55, 0.3) 0%,
     transparent 70%
   );
   transform: translate(-50%, -50%);
@@ -247,86 +229,95 @@
 }
 
 .calc-btn:hover {
-  background: linear-gradient(135deg, #3d2b5e 0%, #2a1f3e 100%);
-  border-color: rgba(147, 112, 219, 0.8);
+  background: linear-gradient(135deg, #4d3827 0%, #3d2817 100%);
+  border-color: #8b6f47;
   box-shadow: 
-    0 0 20px rgba(147, 112, 219, 0.4),
-    0 2px 8px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    0 0 25px rgba(212, 175, 55, 0.4),
+    0 3px 10px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 215, 0, 0.3);
   transform: translateY(-2px);
+  color: #ffd700;
 }
 
 .calc-btn:hover::before {
-  width: 100%;
-  height: 100%;
+  width: 120%;
+  height: 120%;
 }
 
 .calc-btn:active {
   transform: translateY(0);
   box-shadow: 
-    0 0 10px rgba(147, 112, 219, 0.3),
-    inset 0 2px 8px rgba(0, 0, 0, 0.6);
+    0 0 15px rgba(212, 175, 55, 0.3),
+    inset 0 3px 10px rgba(0, 0, 0, 0.8);
 }
 
 /* Number Buttons */
 .btn-number {
-  background: linear-gradient(135deg, #2d1b4e 0%, #1a0f2e 100%);
-  color: #e6d8ff;
-  text-shadow: 0 0 10px rgba(147, 112, 219, 0.6);
+  background: linear-gradient(135deg, #3d2817 0%, #2d1f16 100%);
+  color: #e6d7c3;
+  font-weight: 700;
 }
 
 .btn-number:hover {
-  text-shadow: 0 0 15px rgba(147, 112, 219, 0.9);
+  color: #fff;
 }
 
 /* Operator Buttons */
 .btn-operator {
-  background: linear-gradient(135deg, #4a2d66 0%, #2d1b4e 100%);
-  color: #dda0dd;
-  text-shadow: 0 0 10px rgba(221, 160, 221, 0.6);
-  font-size: 20px;
+  background: linear-gradient(135deg, #654321 0%, #4d3827 100%);
+  color: #ffd700;
+  font-size: 24px;
+  font-weight: 700;
+  border-color: #8b6f47;
 }
 
 .btn-operator:hover {
-  background: linear-gradient(135deg, #5a3d76 0%, #3d2b5e 100%);
-  text-shadow: 0 0 15px rgba(221, 160, 221, 0.9);
+  background: linear-gradient(135deg, #755431 0%, #5d4837 100%);
+  box-shadow: 
+    0 0 30px rgba(255, 215, 0, 0.5),
+    0 3px 10px rgba(0, 0, 0, 0.6),
+    inset 0 1px 0 rgba(255, 215, 0, 0.4);
 }
 
 /* Function Buttons */
 .btn-function {
-  background: linear-gradient(135deg, #3d2b5e 0%, #2d1b4e 100%);
-  color: #b19cd9;
-  text-shadow: 0 0 8px rgba(177, 156, 217, 0.5);
-  font-size: 14px;
+  background: linear-gradient(135deg, #4d3827 0%, #3d2817 100%);
+  color: #c9a961;
+  font-size: 15px;
+  border-color: #6d5333;
 }
 
 .btn-function:hover {
-  background: linear-gradient(135deg, #4d3b6e 0%, #3d2b5e 100%);
+  background: linear-gradient(135deg, #5d4837 0%, #4d3827 100%);
+  color: #ffd700;
 }
 
 /* Equals Button (Cast Spell) */
 .btn-equals {
-  background: linear-gradient(135deg, #6a2d8a 0%, #4a1d6a 100%);
-  border-color: rgba(186, 85, 211, 0.8);
-  color: #ffd700;
-  font-size: 16px;
-  font-weight: 700;
+  background: linear-gradient(135deg, #8b6f47 0%, #654321 100%);
+  border-color: #d4af37;
+  color: #fff;
+  font-size: 17px;
+  font-weight: 900;
   text-shadow: 
-    0 0 10px rgba(255, 215, 0, 0.8),
-    0 0 20px rgba(255, 215, 0, 0.4);
+    0 0 15px rgba(255, 215, 0, 1),
+    0 0 30px rgba(255, 215, 0, 0.6),
+    2px 2px 4px rgba(0, 0, 0, 0.9);
   box-shadow: 
-    0 0 20px rgba(186, 85, 211, 0.6),
-    0 2px 8px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    0 0 25px rgba(212, 175, 55, 0.6),
+    0 3px 12px rgba(0, 0, 0, 0.6),
+    inset 0 2px 0 rgba(255, 215, 0, 0.3),
+    inset 0 -2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .btn-equals:hover {
-  background: linear-gradient(135deg, #7a3d9a 0%, #5a2d7a 100%);
+  background: linear-gradient(135deg, #9b7f57 0%, #755431 100%);
+  border-color: #ffd700;
   box-shadow: 
-    0 0 30px rgba(186, 85, 211, 0.8),
-    0 0 40px rgba(255, 215, 0, 0.4),
-    0 2px 8px rgba(0, 0, 0, 0.4),
-    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    0 0 40px rgba(255, 215, 0, 0.8),
+    0 0 60px rgba(212, 175, 55, 0.6),
+    0 3px 12px rgba(0, 0, 0, 0.6),
+    inset 0 2px 0 rgba(255, 215, 0, 0.5);
   transform: translateY(-3px);
 }
 
@@ -337,34 +328,37 @@
 @keyframes castSpell {
   0% {
     box-shadow: 
-      0 0 40px rgba(186, 85, 211, 1),
-      0 0 60px rgba(255, 215, 0, 0.6);
+      0 0 50px rgba(255, 215, 0, 1),
+      0 0 70px rgba(212, 175, 55, 0.8);
   }
   50% {
     box-shadow: 
-      0 0 60px rgba(186, 85, 211, 1),
-      0 0 80px rgba(255, 215, 0, 0.8);
+      0 0 70px rgba(255, 215, 0, 1),
+      0 0 100px rgba(212, 175, 55, 1);
     transform: scale(1.05);
   }
   100% {
     box-shadow: 
-      0 0 20px rgba(186, 85, 211, 0.6);
+      0 0 30px rgba(212, 175, 55, 0.6);
   }
 }
 
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   .calculator-orb {
-    width: 320px;
-    padding: 24px;
+    max-width: 380px;
+  }
+  
+  .calculator-body {
+    padding: 20px;
   }
   
   .calc-btn {
-    height: 45px;
-    font-size: 14px;
+    height: 52px;
+    font-size: 16px;
   }
   
   .display-value {
-    font-size: 28px;
+    font-size: 32px;
   }
 }
