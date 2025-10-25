@@ -367,7 +367,7 @@ html, body {
 .rune-wizz-icon {
   position: absolute;
   bottom: 80px; /* Base position for row 3 */
-  left: calc(50px + 250px * 4); /* Column 5 - same column as the clock */
+  left: calc(320px + 250px * 4); /* Column 5 - same column as the clock */
   width: 180px;
   height: 180px;
   cursor: pointer;
@@ -422,7 +422,7 @@ html, body {
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: var(--z-desktop);
-  display: flex;
+  display: none;
   gap: var(--rune-spacing);
   align-items: center;
   justify-content: center;
