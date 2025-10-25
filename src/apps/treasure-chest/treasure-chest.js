@@ -21,6 +21,7 @@ import {
 } from "./file-system.js";
 import { deleteFile, updateFile } from "../../storage/queries.js";
 import { formatTimestamp } from "../../utils/date.js";
+import { showAlert, showConfirm, showPrompt } from "../../utils/modal.js";
 
 let containerEl = null;
 let currentFolderId = null;
@@ -269,7 +270,7 @@ function handleDrop(dragData, targetFolderId) {
     try {
       moveFolder(dragData.id, targetFolderId);
     } catch (error) {
-      alert(error.message);
+      showAlert(error.message, '❌ Move Error');
     }
   }
 }
@@ -285,6 +286,15 @@ function showContextMenu(e, itemType, item) {
     { icon: '✂️', label: 'Cut', action: () => handleCut(itemType, item) },
     { divider: true },
     { icon: '🗑️', label: 'Delete', action: () => handleDeleteFolder(item), class: 'danger' }
+  ] : item.type === 'scroll' ? [
+    { icon: '✏️', label: 'Edit', action: () => handleEditFile(item) },
+    { icon: '🧪', label: 'Open in Potion Mixer', action: () => handleOpenInPotionMixer(item) },
+    { icon: '🏷️', label: 'Rename', action: () => handleRenameFile(item) },
+    { divider: true },
+    { icon: '📋', label: 'Copy', action: () => handleCopy(itemType, item) },
+    { icon: '✂️', label: 'Cut', action: () => handleCut(itemType, item) },
+    { divider: true },
+    { icon: '🗑️', label: 'Delete', action: () => handleDeleteFile(item), class: 'danger' }
   ] : [
     { icon: '✏️', label: 'Edit', action: () => handleEditFile(item) },
     { icon: '🏷️', label: 'Rename', action: () => handleRenameFile(item) },
@@ -397,33 +407,34 @@ function handleSearch(e) {
   renderContent(results);
 }
 
-function handleCreateFolder() {
-  const name = prompt('Enter folder name:');
+async function handleCreateFolder() {
+  const name = await showPrompt('Enter folder name:', '', '📁 Create Folder');
   if (!name || name.trim() === '') return;
 
   try {
     createFolder(name.trim(), currentFolderId);
   } catch (error) {
     console.error('[TreasureChest] Failed to create folder:', error);
-    alert('Failed to create folder. Please try again.');
+    showAlert('Failed to create folder. Please try again.', '❌ Error');
   }
 }
 
-function handleRenameFolder(folder) {
-  const newName = prompt('Enter new folder name:', folder.name);
+async function handleRenameFolder(folder) {
+  const newName = await showPrompt('Enter new folder name:', folder.name, '🏷️ Rename Folder');
   if (!newName || newName.trim() === '' || newName === folder.name) return;
 
   try {
     renameFolder(folder.id, newName.trim());
   } catch (error) {
     console.error('[TreasureChest] Failed to rename folder:', error);
-    alert('Failed to rename folder. Please try again.');
+    showAlert('Failed to rename folder. Please try again.', '❌ Error');
   }
 }
 
-function handleDeleteFolder(folder) {
-  const confirmed = confirm(
-    `Are you sure you want to delete the folder "${folder.name}" and all its contents?\n\nThis action cannot be undone.`
+async function handleDeleteFolder(folder) {
+  const confirmed = await showConfirm(
+    `Are you sure you want to delete the folder "${folder.name}" and all its contents?\n\nThis action cannot be undone.`,
+    '🗑️ Delete Folder'
   );
 
   if (!confirmed) return;
@@ -432,7 +443,7 @@ function handleDeleteFolder(folder) {
     deleteFolder(folder.id);
   } catch (error) {
     console.error('[TreasureChest] Failed to delete folder:', error);
-    alert('Failed to delete folder. Please try again.');
+    showAlert('Failed to delete folder. Please try again.', '❌ Error');
   }
 }
 
@@ -452,8 +463,20 @@ function handleEditFile(file) {
   }
 }
 
-function handleRenameFile(file) {
-  const newName = prompt('Enter new file name:', file.name);
+function handleOpenInPotionMixer(file) {
+  // Emit FILE_OPEN event that Potion Mixer listens to
+  eventBus.emit(Events.FILE_OPEN, {
+    fileId: file.id,
+    fileName: file.name,
+    fileType: file.type,
+    timestamp: Date.now()
+  });
+  
+  console.log('[TreasureChest] Opening scroll in Potion Mixer:', file.name);
+}
+
+async function handleRenameFile(file) {
+  const newName = await showPrompt('Enter new file name:', file.name, '🏷️ Rename File');
   if (!newName || newName.trim() === '' || newName === file.name) return;
 
   try {
@@ -465,13 +488,14 @@ function handleRenameFile(file) {
     });
   } catch (error) {
     console.error('[TreasureChest] Failed to rename file:', error);
-    alert('Failed to rename file. Please try again.');
+    showAlert('Failed to rename file. Please try again.', '❌ Error');
   }
 }
 
-function handleDeleteFile(file) {
-  const confirmed = confirm(
-    `Are you sure you want to delete "${file.name}"?\n\nThis action cannot be undone.`
+async function handleDeleteFile(file) {
+  const confirmed = await showConfirm(
+    `Are you sure you want to delete "${file.name}"?\n\nThis action cannot be undone.`,
+    '🗑️ Delete File'
   );
 
   if (!confirmed) return;
@@ -485,7 +509,7 @@ function handleDeleteFile(file) {
     });
   } catch (error) {
     console.error('[TreasureChest] Failed to delete file:', error);
-    alert('Failed to delete file. Please try again.');
+    showAlert('Failed to delete file. Please try again.', '❌ Error');
   }
 }
 
@@ -515,12 +539,12 @@ function handlePaste() {
         moveFolder(clipboard.id, currentFolderId);
         clipboard = null;
       } else {
-        alert('Copying folders is not yet supported');
+        showAlert('Copying folders is not yet supported', 'ℹ️ Not Supported');
       }
     }
   } catch (error) {
     console.error('[TreasureChest] Paste failed:', error);
-    alert(error.message || 'Failed to paste. Please try again.');
+    showAlert(error.message || 'Failed to paste. Please try again.', '❌ Paste Error');
   }
 }
 

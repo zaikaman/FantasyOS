@@ -40,25 +40,42 @@
   background-repeat: no-repeat;
 }
 
-/* Quest Log Button - Bottom Left (Above Treasure Chest) */
-.quest-log-button {
+/* Desktop App Icons - Grid Layout System */
+/* 3 icons per column with automatic column wrapping */
+/* Column width: 150px icon + 100px spacing = 250px per column */
+/* Row height: 150px icon + 80px spacing = 230px per row */
+
+/* Base styles for all desktop icons */
+.quest-log-button,
+.potion-mixer-notepad,
+.treasure-chest,
+.weather-orb,
+.mana-orb {
   position: absolute;
-  bottom: 380px; /* Position above treasure chest */
-  left: 60px;
-  width: 240px;
+  width: 150px;
   height: auto;
   z-index: var(--z-desktop);
   cursor: pointer;
   transition: transform var(--transition-normal), filter var(--transition-normal);
   filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
-  animation: float 3.8s ease-in-out infinite;
-  animation-delay: 0.3s;
 }
 
-.quest-log-button img {
+.quest-log-button img,
+.potion-mixer-notepad img,
+.treasure-chest img,
+.weather-orb img,
+.mana-orb img {
   width: 100%;
   height: auto;
   display: block;
+}
+
+/* Icon 1: Quest Log - Column 1, Row 1 (Top) */
+.quest-log-button {
+  bottom: calc(80px + 230px * 2); /* 80px base + 2 rows */
+  left: 50px;
+  animation: float 3.8s ease-in-out infinite;
+  animation-delay: 0.3s;
 }
 
 .quest-log-button:hover {
@@ -71,25 +88,30 @@
   transform: scale(0.98) translateY(-2px);
 }
 
-/* Treasure Chest - Bottom Left Corner */
-.treasure-chest {
-  position: absolute;
-  bottom: 80px; /* Moved up to avoid taskbar */
-  left: 40px;
-  width: 280px;
-  height: auto;
-  z-index: var(--z-desktop);
-  cursor: pointer;
-  transition: transform var(--transition-normal), filter var(--transition-normal);
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
-  animation: float 4s ease-in-out infinite;
-  animation-delay: 0.5s;
+/* Icon 2: Potion Mixer - Column 1, Row 2 (Middle) */
+.potion-mixer-notepad {
+  bottom: calc(80px + 230px * 1); /* 80px base + 1 row */
+  left: 50px;
+  animation: float 4.1s ease-in-out infinite;
+  animation-delay: 0.6s;
 }
 
-.treasure-chest img {
-  width: 100%;
-  height: auto;
-  display: block;
+.potion-mixer-notepad:hover {
+  transform: scale(1.05) translateY(-5px);
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.7))
+          drop-shadow(0 0 20px rgba(144, 238, 144, 0.5));
+}
+
+.potion-mixer-notepad:active {
+  transform: scale(0.98) translateY(-2px);
+}
+
+/* Icon 3: Treasure Chest - Column 1, Row 3 (Bottom) */
+.treasure-chest {
+  bottom: 80px; /* Base position */
+  left: 50px;
+  animation: float 4s ease-in-out infinite;
+  animation-delay: 0.5s;
 }
 
 .treasure-chest:hover {
@@ -102,25 +124,30 @@
   transform: scale(0.98) translateY(-2px);
 }
 
-/* Mana Calculator Orb - Bottom Right Corner */
-.mana-orb {
-  position: absolute;
-  bottom: 80px; /* Moved up to avoid taskbar */
-  right: 40px;
-  width: 200px;
-  height: auto;
-  z-index: var(--z-desktop);
-  cursor: pointer;
-  transition: transform var(--transition-normal), filter var(--transition-normal);
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
-  animation: float 3.5s ease-in-out infinite;
-  animation-delay: 0.2s;
+/* Icon 4: Weather Oracle - Column 2, Row 1 (Top) */
+.weather-orb {
+  bottom: calc(80px + 230px * 2); /* 80px base + 2 rows */
+  left: calc(50px + 250px * 1); /* 50px base + 1 column width */
+  animation: float 4.2s ease-in-out infinite;
+  animation-delay: 0.7s;
 }
 
-.mana-orb img {
-  width: 100%;
-  height: auto;
-  display: block;
+.weather-orb:hover {
+  transform: scale(1.08) translateY(-5px);
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.7))
+          drop-shadow(0 0 30px rgba(157, 127, 240, 0.6));
+}
+
+.weather-orb:active {
+  transform: scale(0.95) translateY(-2px);
+}
+
+/* Icon 5: Mana Calculator - Column 2, Row 2 (Middle) */
+.mana-orb {
+  bottom: calc(80px + 230px * 1); /* 80px base + 1 row */
+  left: calc(50px + 250px * 1); /* 50px base + 1 column width */
+  animation: float 3.5s ease-in-out infinite;
+  animation-delay: 0.2s;
 }
 
 .mana-orb:hover {
@@ -133,36 +160,13 @@
   transform: scale(0.95) translateY(-2px);
 }
 
-/* Weather Oracle Crystal Ball - Bottom Right (Above Mana Calculator) */
-.weather-orb {
-  position: absolute;
-  bottom: 310px; /* Position above mana calculator */
-  right: 40px;
-  width: 200px;
-  height: auto;
-  z-index: var(--z-desktop);
-  cursor: pointer;
-  transition: transform var(--transition-normal), filter var(--transition-normal);
-  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.6));
-  animation: float 4.2s ease-in-out infinite;
-  animation-delay: 0.7s;
-}
-
-.weather-orb img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.weather-orb:hover {
-  transform: scale(1.08) translateY(-5px);
-  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.7))
-          drop-shadow(0 0 30px rgba(157, 127, 240, 0.6));
-}
-
-.weather-orb:active {
-  transform: scale(0.95) translateY(-2px);
-}
+/* Future Icon Positioning Guide:
+ * Icon 6 would be: bottom: 80px; left: calc(50px + 250px * 1); (Column 2, Row 3)
+ * Icon 7 would be: bottom: calc(80px + 230px * 2); left: calc(50px + 250px * 2); (Column 3, Row 1)
+ * Icon 8 would be: bottom: calc(80px + 230px * 1); left: calc(50px + 250px * 2); (Column 3, Row 2)
+ * Icon 9 would be: bottom: 80px; left: calc(50px + 250px * 2); (Column 3, Row 3)
+ * And so on...
+ */
 
 /* App Launcher - Rune icons grid */
 .app-launcher {

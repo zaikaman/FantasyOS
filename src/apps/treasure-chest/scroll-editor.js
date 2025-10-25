@@ -7,6 +7,7 @@ import { insertFile, updateFile } from '../../storage/queries.js';
 import { generateFileId } from '../../utils/uuid.js';
 import { now } from '../../utils/date.js';
 import { eventBus, Events } from '../../core/event-bus.js';
+import { showAlert } from '../../utils/modal.js';
 
 const MAX_CONTENT_SIZE = 100 * 1024; // 100 KB
 
@@ -158,14 +159,14 @@ export function openScrollEditor(file, folderId = null, onSave = null) {
 function handleSave(file, folderId, name, content, onSave, closeModal) {
   // Validate name
   if (!name || name.trim() === '') {
-    alert('Please enter a scroll name.');
+    showAlert('Please enter a scroll name.', '⚠️ Name Required');
     return;
   }
 
   // Validate content size
   const sizeBytes = new Blob([content]).size;
   if (sizeBytes > MAX_CONTENT_SIZE) {
-    alert('Content exceeds maximum size of 100 KB. Please reduce the content.');
+    showAlert('Content exceeds maximum size of 100 KB. Please reduce the content.', '⚠️ Size Limit');
     return;
   }
 
@@ -224,10 +225,10 @@ function handleSave(file, folderId, name, content, onSave, closeModal) {
 
     // Check if it's a quota error
     if (error.message && error.message.includes('quota')) {
-      alert('Storage quota exceeded! Please delete some files to free up space.');
+      showAlert('Storage quota exceeded! Please delete some files to free up space.', '💾 Storage Full');
       eventBus.emit(Events.STORAGE_QUOTA_ERROR, { timestamp: now() });
     } else {
-      alert('Failed to save scroll. Please try again.');
+      showAlert('Failed to save scroll. Please try again.', '❌ Save Error');
     }
   }
 }

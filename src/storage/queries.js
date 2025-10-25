@@ -493,3 +493,140 @@ export function setSetting(key, value) {
   stmt.run([key, jsonValue, timestamp]);
   stmt.free();
 }
+
+// ============================================================================
+// Calendar Event Queries
+// ============================================================================
+
+export function getAllCalendarEvents() {
+  const db = getDatabase();
+  const result = db.exec('SELECT * FROM calendar_events ORDER BY event_date ASC');
+
+  if (result.length === 0) {
+    return [];
+  }
+
+  const columns = result[0].columns;
+  const rows = result[0].values;
+
+  return rows.map(row => {
+    const event = {};
+    columns.forEach((col, i) => {
+      event[col] = row[i];
+    });
+    return event;
+  });
+}
+
+export function getCalendarEvents() {
+  return getAllCalendarEvents();
+}
+
+export function getCalendarEventById(id) {
+  const db = getDatabase();
+  const stmt = db.prepare('SELECT * FROM calendar_events WHERE id = ?');
+  stmt.bind([id]);
+
+  if (stmt.step()) {
+    const event = stmt.getAsObject();
+    stmt.free();
+    return event;
+  }
+
+  stmt.free();
+  return null;
+}
+
+export function getUpcomingCalendarEvents(limit = 10) {
+  const db = getDatabase();
+  const today = new Date().toISOString().split('T')[0];
+  const stmt = db.prepare(`
+    SELECT * FROM calendar_events 
+    WHERE event_date >= ? 
+    ORDER BY event_date ASC 
+    LIMIT ?
+  `);
+  stmt.bind([today, limit]);
+
+  const events = [];
+  while (stmt.step()) {
+    events.push(stmt.getAsObject());
+  }
+
+  stmt.free();
+  return events;
+}
+
+export function addCalendarEvent(event) {
+  const db = getDatabase();
+  const stmt = db.prepare(`
+    INSERT INTO calendar_events 
+    (id, title, event_date, event_time, description, event_type, linked_quest_id, created_at, modified_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+  `);
+
+  const id = event.id || `event-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  const now = Date.now();
+
+  stmt.run([
+    id,
+    event.title,
+    event.event_date,
+    event.event_time || null,
+    event.description || null,
+    event.event_type || 'custom',
+    event.linked_quest_id || null,
+    event.created_at || now,
+    event.modified_at || now
+  ]);
+
+  stmt.free();
+  
+  // Return the created event
+  return getCalendarEventById(id);
+}
+
+export function insertCalendarEvent(event) {
+  return addCalendarEvent(event);
+}
+
+export function updateCalendarEvent(id, updates) {
+  const db = getDatabase();
+  const fields = Object.keys(updates)
+    .map(key => `${key} = ?`)
+    .join(', ');
+
+  updates.modified_at = Date.now();
+
+  const stmt = db.prepare(`UPDATE calendar_events SET ${fields} WHERE id = ?`);
+  stmt.run([...Object.values(updates), id]);
+  stmt.free();
+}
+
+export function deleteCalendarEvent(id) {
+  const db = getDatabase();
+  const stmt = db.prepare('DELETE FROM calendar_events WHERE id = ?');
+  stmt.run([id]);
+  stmt.free();
+}
+
+export function getCalendarEventsByType(eventType) {
+  const db = getDatabase();
+  const stmt = db.prepare('SELECT * FROM calendar_events WHERE event_type = ? ORDER BY event_date ASC');
+  stmt.bind([eventType]);
+
+  const events = [];
+  while (stmt.step()) {
+    events.push(stmt.getAsObject());
+  }
+
+  stmt.free();
+  return events;
+}
+
+export function linkCalendarEventToQuest(eventId, questId) {
+  const db = getDatabase();
+  const stmt = db.prepare('UPDATE calendar_events SET linked_quest_id = ?, modified_at = ? WHERE id = ?');
+  stmt.run([questId, Date.now(), eventId]);
+  stmt.free();
+}

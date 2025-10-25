@@ -6,6 +6,7 @@
 import { deleteFile, updateFile } from '../../storage/queries.js';
 import { eventBus, Events } from '../../core/event-bus.js';
 import { formatTimestamp } from '../../utils/date.js';
+import { showAlert, showConfirm, showPrompt } from '../../utils/modal.js';
 
 /**
  * Render file list
@@ -121,8 +122,8 @@ function createFileItem(file, handlers) {
  * @param {Object} file - File to rename
  * @param {Function} callback - Callback after rename
  */
-function handleRenameFile(file, callback) {
-  const newName = prompt('Enter new name:', file.name);
+async function handleRenameFile(file, callback) {
+  const newName = await showPrompt('Enter new name:', file.name, '🏷️ Rename File');
 
   if (!newName || newName.trim() === '') {
     return;
@@ -150,7 +151,7 @@ function handleRenameFile(file, callback) {
     }
   } catch (error) {
     console.error('[FileList] Failed to rename file:', error);
-    alert('Failed to rename file. Please try again.');
+    showAlert('Failed to rename file. Please try again.', '❌ Error');
   }
 }
 
@@ -159,9 +160,10 @@ function handleRenameFile(file, callback) {
  * @param {Object} file - File to delete
  * @param {Function} callback - Callback after delete
  */
-function handleDeleteFile(file, callback) {
-  const confirmed = confirm(
-    `Are you sure you want to delete "${file.name}"?\n\nThis action cannot be undone.`
+async function handleDeleteFile(file, callback) {
+  const confirmed = await showConfirm(
+    `Are you sure you want to delete "${file.name}"?\n\nThis action cannot be undone.`,
+    '🗑️ Delete File'
   );
 
   if (!confirmed) {
@@ -187,7 +189,7 @@ function handleDeleteFile(file, callback) {
     }
   } catch (error) {
     console.error('[FileList] Failed to delete file:', error);
-    alert('Failed to delete file. Please try again.');
+    showAlert('Failed to delete file. Please try again.', '❌ Error');
   }
 }
 

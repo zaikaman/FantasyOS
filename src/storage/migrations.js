@@ -6,6 +6,7 @@
 import initialSchema from './001_initial_schema.sql?raw';
 import addQuests from './002_add_quests.sql?raw';
 import addFolders from './003_add_folders.sql?raw';
+import addCalendarEvents from './004_add_calendar_events.sql?raw';
 
 /**
  * Available migrations in order
@@ -13,7 +14,8 @@ import addFolders from './003_add_folders.sql?raw';
 const migrations = [
   { version: 1, name: 'Initial Schema', sql: initialSchema },
   { version: 2, name: 'Add Quests Table', sql: addQuests },
-  { version: 3, name: 'Add Folders Support', sql: addFolders }
+  { version: 3, name: 'Add Folders Support', sql: addFolders },
+  { version: 4, name: 'Add Calendar Events', sql: addCalendarEvents }
 ];
 
 /**

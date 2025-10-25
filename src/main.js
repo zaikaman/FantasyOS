@@ -11,11 +11,14 @@ import '../styles/treasure-chest.css';
 import '../styles/mana-calculator.css';
 import '../styles/quest-log.css';
 import '../styles/weather-oracle.css';
+import '../styles/potion-mixer.css';
 import '../styles/popup-notifications.css';
 import '../styles/taskbar.css';
+import '../styles/clock-tower.css';
+import '../styles/modal.css';
 
 import { initDatabase, saveToIndexedDB } from './storage/database.js';
-import { getAllWindows, getAllFiles, getAllNotifications, getAllSettings, deleteAllWindows } from './storage/queries.js';
+import { getAllWindows, getAllFiles, getAllNotifications, getAllSettings, deleteAllWindows, getCalendarEvents } from './storage/queries.js';
 import { restoreWindowSession, setupAutoSnapshot } from './storage/restore-session.js';
 import { initializeState, subscribe } from './core/state.js';
 import { eventBus, Events } from './core/event-bus.js';
@@ -30,6 +33,7 @@ import { initializeNotificationTriggers } from './core/notification-triggers.js'
 import { initializeCleanup } from './storage/cleanup.js';
 import { initializePopupNotifications } from './notifications/popup-notifications.js';
 import { initTaskbar } from './taskbar/taskbar.js';
+import { initClockTower } from './hud/clock-tower.js';
 
 // Global error handling
 let errorBoundary = null;
@@ -70,12 +74,14 @@ async function init() {
     const files = getAllFiles();
     const notifications = getAllNotifications();
     const settings = getAllSettings();
+    const calendar_events = getCalendarEvents();
 
     console.log('[Main] Loaded:', {
       windows: windows.length,
       files: files.length,
       notifications: notifications.length,
-      settings: Object.keys(settings).length
+      settings: Object.keys(settings).length,
+      calendar_events: calendar_events.length
     });
 
     // Step 3: Initialize global state
@@ -84,7 +90,8 @@ async function init() {
       windows,
       files,
       notifications,
-      settings
+      settings,
+      calendar_events
     });
 
     // Step 4: Initialize desktop environment
@@ -104,6 +111,10 @@ async function init() {
     initializePopupNotifications();
     initializeNotificationTriggers();
     initializeCleanup();
+
+    // Step 5.7: Initialize Clock Tower HUD
+    console.log('[Main] Step 5.7: Initializing Arcane Clock Tower...');
+    initClockTower();
 
     // Step 6: Initialize particle system
     console.log('[Main] Step 6: Initializing particles...');
@@ -181,6 +192,7 @@ function setupAutoSave() {
   subscribe('files', debouncedSave);
   subscribe('notifications', debouncedSave);
   subscribe('settings', debouncedSave);
+  subscribe('calendar_events', debouncedSave);
 }
 
 /**

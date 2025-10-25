@@ -7,6 +7,7 @@ import { insertFile, updateFile } from '../../storage/queries.js';
 import { generateFileId } from '../../utils/uuid.js';
 import { now } from '../../utils/date.js';
 import { eventBus, Events } from '../../core/event-bus.js';
+import { showAlert, showConfirm } from '../../utils/modal.js';
 
 const MAX_CONTENT_SIZE = 10 * 1024 * 1024; // 10 MB
 
@@ -123,8 +124,8 @@ export function openArtifactEditor(file, folderId = null, onSave = null) {
   });
 
   // Clear canvas
-  clearBtn.addEventListener('click', () => {
-    if (confirm('Clear the entire canvas?')) {
+  clearBtn.addEventListener('click', async () => {
+    if (await showConfirm('Clear the entire canvas?', '🗑️ Clear Canvas')) {
       ctx.fillStyle = '#f4e4c1';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
@@ -216,7 +217,7 @@ export function openArtifactEditor(file, folderId = null, onSave = null) {
  */
 function handleSave(file, folderId, name, canvas, onSave, closeModal) {
   if (!name || name.trim() === '') {
-    alert('Please enter an artifact name.');
+    showAlert('Please enter an artifact name.', '⚠️ Name Required');
     return;
   }
 
@@ -226,7 +227,7 @@ function handleSave(file, folderId, name, canvas, onSave, closeModal) {
     const sizeBytes = Math.ceil((dataURL.length * 3) / 4);
 
     if (sizeBytes > MAX_CONTENT_SIZE) {
-      alert('Artifact exceeds maximum size of 10 MB.');
+      showAlert('Artifact exceeds maximum size of 10 MB.', '⚠️ Size Limit');
       return;
     }
 
@@ -285,10 +286,10 @@ function handleSave(file, folderId, name, canvas, onSave, closeModal) {
     console.error('[ArtifactEditor] Failed to save artifact:', error);
 
     if (error.message && error.message.includes('quota')) {
-      alert('Storage quota exceeded! Please delete some files to free up space.');
+      showAlert('Storage quota exceeded! Please delete some files to free up space.', '💾 Storage Full');
       eventBus.emit(Events.STORAGE_QUOTA_ERROR, { timestamp: now() });
     } else {
-      alert('Failed to save artifact. Please try again.');
+      showAlert('Failed to save artifact. Please try again.', '❌ Save Error');
     }
   }
 }

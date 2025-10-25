@@ -15,6 +15,7 @@ import {
   getQuestStats
 } from './quest-manager.js';
 import { eventBus } from '../../core/event-bus.js';
+import { showConfirm } from '../../utils/modal.js';
 
 /**
  * Create Quest Log application
@@ -199,7 +200,7 @@ export function createQuestLogApp() {
           showEditQuestForm(quest);
           break;
         case 'delete':
-          if (confirm(`Are you sure you want to delete the quest "${quest.title}"?`)) {
+          if (await showConfirm(`Are you sure you want to delete the quest "${quest.title}"?`, '🗑️ Delete Quest')) {
             await deleteQuest(quest.id);
           }
           break;

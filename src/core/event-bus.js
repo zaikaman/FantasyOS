@@ -109,6 +109,7 @@ export const Events = {
   FILE_UPDATED: 'file:updated',
   FILE_DELETED: 'file:deleted',
   FILE_MOVED: 'file:moved',
+  FILE_OPEN: 'file:open',
 
   // Folder events
   FOLDER_CREATED: 'folder:created',

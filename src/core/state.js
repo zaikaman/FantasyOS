@@ -24,6 +24,9 @@ const state = {
   notifications: [],
   unreadNotificationCount: 0,
 
+  // Calendar Events
+  calendar_events: [],
+
   // Desktop Environment
   desktop: {
     particleCount: 100,
@@ -255,6 +258,9 @@ export function initializeState(data) {
     reactiveState.notifications = data.notifications;
     reactiveState.unreadNotificationCount = data.notifications.filter(n => !n.read).length;
   }
+  if (data.calendar_events) {
+    reactiveState.calendar_events = data.calendar_events;
+  }
   if (data.settings) {
     reactiveState.settings = data.settings;
     // Apply settings to desktop/sidebar state
@@ -271,6 +277,16 @@ export function initializeState(data) {
 
   reactiveState.isInitialized = true;
   eventBus.emit(Events.STATE_INITIALIZED, { state: reactiveState });
+}
+
+/**
+ * Update state (convenience function for updating state keys)
+ * @param {Object} updates - Object with key-value pairs to update
+ */
+export function updateState(updates) {
+  Object.keys(updates).forEach(key => {
+    reactiveState[key] = updates[key];
+  });
 }
 
 // Export as default for convenience

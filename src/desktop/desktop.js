@@ -38,6 +38,9 @@ export function initDesktop() {
   // Initialize weather oracle orb click handler
   initWeatherOracleOrb();
 
+  // Initialize potion mixer notepad click handler
+  initPotionMixerNotepad();
+
   console.log('[Desktop] Initialized');
 }
 
@@ -295,4 +298,42 @@ function initWeatherOracleOrb() {
   });
 
   console.log('[Desktop] Weather oracle orb initialized');
+}
+
+/**
+ * Initialize potion mixer notepad click handler
+ */
+function initPotionMixerNotepad() {
+  const notepadElement = document.getElementById('potion-mixer-notepad');
+  
+  if (!notepadElement) {
+    console.warn('[Desktop] Potion mixer notepad element not found');
+    return;
+  }
+
+  notepadElement.addEventListener('click', () => {
+    console.log('[Desktop] Opening potion mixer notepad...');
+    
+    // Create window for potion mixer app
+    try {
+      createWindow('potion-mixer');
+      
+      // Emit app launch event
+      eventBus.emit(Events.APP_LAUNCHED, {
+        appId: 'potion-mixer',
+        appName: 'Potion Mixer Notepad',
+        timestamp: Date.now()
+      });
+      
+      // Visual feedback
+      notepadElement.style.transform = 'scale(0.95) translateY(-2px)';
+      setTimeout(() => {
+        notepadElement.style.transform = '';
+      }, 150);
+    } catch (error) {
+      console.error('[Desktop] Failed to open potion mixer notepad:', error);
+    }
+  });
+
+  console.log('[Desktop] Potion mixer notepad initialized');
 }

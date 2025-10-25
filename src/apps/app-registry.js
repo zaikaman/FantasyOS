@@ -13,6 +13,7 @@ import { createTreasureChestApp } from './treasure-chest/treasure-chest.js';
 import { createManaCalculatorApp } from './mana-calculator/mana-calculator.js';
 import { createQuestLogApp } from './quest-log/quest-log.js';
 import { createWeatherOracleApp } from './weather-oracle/weather-oracle.js';
+import { createPotionMixerApp } from './potion-mixer/potion-mixer.js';
 
 /**
  * Application registry
@@ -70,6 +71,17 @@ const hiddenApps = [
     defaultWidth: 700,
     defaultHeight: 800,
     singleton: true // Only one instance allowed
+  },
+  {
+    id: 'potion-mixer',
+    name: 'Potion Mixer Notepad',
+    icon: '🧪',
+    runeColor: '#90EE90',
+    description: 'A mystical notepad for brewing notes with alchemical animations',
+    component: createPotionMixerApp,
+    defaultWidth: 1200,
+    defaultHeight: 700,
+    singleton: false // Multiple instances allowed
   }
 ];
 
